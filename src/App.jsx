@@ -30,7 +30,7 @@ function App() {
       <div className="flex flex-1">
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-64 bg-slate-800 text-white p-4">
+          <aside className="w-50 bg-slate-800 text-white p-4">
             <h4 className="font-bold mb-3">Options (Sidebar)</h4>
             <div className="space-y-2">
               <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>A</p>
@@ -42,8 +42,24 @@ function App() {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-6 bg-slate-100 text-slate-900">
-          {/* Uncomment as needed */}
+        <main className="flex-1 bg-slate-100 text-slate-900">
+
+          <div
+            className="w-full h-12 bg-amber-200 overflow-x-auto whitespace-nowrap flex items-center px-4 gap-2 scrollbar-thin"
+            role="region"
+            aria-label="Suggestion Box"
+          >
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 1</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 2</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 3</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 4</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 5</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 6</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 7</button>
+            <button className="bg-white text-sm px-4 py-1 rounded-full shadow whitespace-nowrap">Suggestion 8</button>
+          </div>
+
+
           {/* <Loginpage /> */}
           <h1 className="text-2xl font-bold mb-4">Main Content</h1>
           <p>This is the main area of your application.</p>

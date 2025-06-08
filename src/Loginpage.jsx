@@ -98,8 +98,8 @@ const AuthForm = () => {
             disabled={loading}
             className={`w-full py-3 rounded-xl font-semibold text-white transition-transform transform hover:scale-105 ${
               isRegistering
-                ? 'bg-gradient-to-r from-green-400 to-green-600 hover:shadow-lg'
-                : 'bg-gradient-to-r from-blue-500 to-blue-700 hover:shadow-lg'
+                ? 'bg-gradient-to-r from-green-300 to-green-500 hover:shadow-lg'
+                : 'bg-gradient-to-r from-green-300 to-green-500 hover:shadow-lg'
             }`}
           >
             {loading ? 'Please wait...' : isRegistering ? 'Sign Up' : 'Sign In'}

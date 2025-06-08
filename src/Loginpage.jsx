@@ -43,7 +43,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
+    <div className="flex items-center justify-center w-screen min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 px-4">
       <div className="w-full max-w-md bg-white p-10 rounded-3xl shadow-2xl relative transition-all">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -61,7 +61,7 @@ const AuthForm = () => {
                 type="text"
                 name="username"
                 placeholder="Username"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
                 value={form.username}
                 onChange={handleChange}
                 required
@@ -73,7 +73,7 @@ const AuthForm = () => {
               type="email"
               name="email"
               placeholder="Email"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
               value={form.email}
               onChange={handleChange}
               required
@@ -84,7 +84,7 @@ const AuthForm = () => {
               type="password"
               name="password"
               placeholder="Password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
               value={form.password}
               onChange={handleChange}
               required

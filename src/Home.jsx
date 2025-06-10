@@ -8,7 +8,7 @@ const Home = ({ sidebarVisible }) => {
       <div className="flex flex-1">
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-50 bg-slate-500 text-white p-4">
+          <aside className="w-40 bg-slate-500 text-white p-4">
             <h4 className="font-bold mb-3">Options (Sidebar)</h4>
             <div className="space-y-2">
               <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>A</p>

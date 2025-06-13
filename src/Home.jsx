@@ -5,16 +5,16 @@ const Home = ({ sidebarVisible }) => {
     <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col">
 
       {/* Content Area */}
-      <div className="flex flex-1">
+      <div className={`flex flex-1 flex-col md:flex-row`}>
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-40 bg-transparent text-black p-4">
+          <aside className="w-full md:w-40 bg-transparent text-black p-4 md:block">
             <h4 className="font-bold mb-3">Options (Sidebar)</h4>
             <div className="space-y-2">
-              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>A</p>
-              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>B</p>
-              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>C</p>
-              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>D</p>
+              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>A</button>
+              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>B</button>
+              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>C</button>
+              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>D</button>
             </div>
           </aside>
         )}
@@ -27,7 +27,7 @@ const Home = ({ sidebarVisible }) => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-gray-300 py-6 px-10 flex flex-wrap justify-around">
+      <footer className="bg-slate-900 text-gray-300 py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
         <div>
           <p>Content 1</p>
           <p>Content 2</p>

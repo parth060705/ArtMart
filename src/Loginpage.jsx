@@ -43,64 +43,56 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen bg-gradient-to-br from-blue-200 to-purple-300 px-4">
-      <div className="w-full max-w-md bg-white p-10 rounded-3xl shadow-2xl relative transition-all">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-300 px-4 sm:px-6">
+      <div className="w-full max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-2xl transition-all">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
             {isRegistering ? 'Create Account' : 'Welcome Back'}
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm sm:text-base text-gray-500">
             {isRegistering ? 'Please register to continue' : 'Login to your account'}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {isRegistering && (
-            <div>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-                value={form.username}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
           )}
-          <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-xl font-semibold text-white transition-transform transform hover:scale-105 ${
-              isRegistering
-                ? 'bg-gradient-to-r from-green-300 to-green-500 hover:shadow-lg'
-                : 'bg-gradient-to-r from-green-300 to-green-500 hover:shadow-lg'
-            }`}
+            className="w-full py-3 rounded-xl font-semibold text-white text-sm sm:text-base transition-transform transform hover:scale-105 bg-gradient-to-r from-green-300 to-green-500 hover:shadow-lg"
           >
             {loading ? 'Please wait...' : isRegistering ? 'Sign Up' : 'Sign In'}
           </button>

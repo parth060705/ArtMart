@@ -3,7 +3,7 @@ import React from 'react';
 const Home = ({ sidebarVisible }) => {
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col overflow-x-hidden">
-      
+
       {/* Content Area */}
       <div className={`flex flex-1 flex-col md:flex-row`}>
         {/* Sidebar */}
@@ -27,7 +27,7 @@ const Home = ({ sidebarVisible }) => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-gray-300 py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
+      <footer className="bg-white text-black py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
         <div>
           <p>Content 1</p>
           <p>Content 2</p>
@@ -49,7 +49,7 @@ const Home = ({ sidebarVisible }) => {
       </footer>
 
       {/* Bottom Bar */}
-      <div className="bg-slate-950 text-gray-400 text-sm text-center py-3">
+      <div className="bg-gray-100 text-gray-900 text-sm text-center py-3">
         &copy; 2025 YourCompany. All rights reserved.
       </div>
     </div>

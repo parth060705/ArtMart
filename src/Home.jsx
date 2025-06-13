@@ -5,7 +5,7 @@ const Home = ({ sidebarVisible }) => {
     <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col overflow-x-hidden">
 
       {/* Content Area */}
-      <div className={`flex flex-1 flex-col md:flex-row`}>
+      <div className={`flex flex-1 md:flex-row`}>
         {/* Sidebar */}
         {sidebarVisible && (
           <aside className="w-full md:w-40 bg-transparent text-black p-4 md:block text-sm">

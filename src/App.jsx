@@ -16,6 +16,7 @@ function App() {
 
   return (
     <BrowserRouter>
+
       {/* Navbar */}
       <header className="bg-white text-black flex justify-between items-center px-4 py-2 shadow-md">
         
@@ -62,6 +63,7 @@ function App() {
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
       </Routes>
+      
     </BrowserRouter >
   );
 }

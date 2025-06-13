@@ -18,6 +18,7 @@ function App() {
     <BrowserRouter>
       {/* Navbar */}
       <header className="bg-white text-black flex justify-between items-center px-4 py-2 shadow-md">
+        
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -36,9 +37,9 @@ function App() {
           <Link className="hover:underline cursor-pointer" to="/">About</Link> */}
         </nav>
 
-        <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
-
         <div className="flex items-center gap-4">
+           <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
+
           <Link to="/loginpage">
             <button
               type="button"

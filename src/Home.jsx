@@ -2,8 +2,8 @@ import React from 'react';
 
 const Home = ({ sidebarVisible }) => {
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col">
-
+    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col overflow-x-hidden">
+      
       {/* Content Area */}
       <div className={`flex flex-1 flex-col md:flex-row`}>
         {/* Sidebar */}

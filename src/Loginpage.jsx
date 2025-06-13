@@ -102,7 +102,7 @@ const AuthForm = () => {
             <span
               onClick={() => setIsRegistering(!isRegistering)}
               className={`cursor-pointer font-medium underline ${
-                isRegistering ? 'text-green-600' : 'text-blue-600'
+                isRegistering ? 'text-blue-600' : 'text-blue-600'
               }`}
             >
               {isRegistering ? 'Login' : 'Register'}

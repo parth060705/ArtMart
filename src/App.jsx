@@ -26,8 +26,8 @@ function App() {
 
         <nav className="flex gap-6 text-sm font-medium">
           <Link className="hover:underline cursor-pointer" to="/">Home</Link>
-          <Link className="hover:underline cursor-pointer" to="/contact">Contact</Link>
-          <Link className="hover:underline cursor-pointer" to="/about">About</Link>
+          <Link className="hover:underline cursor-pointer" to="/">Contact</Link>
+          <Link className="hover:underline cursor-pointer" to="/">About</Link>
         </nav>
 
         <div className="flex items-center gap-4">

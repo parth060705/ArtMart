@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home';
 import Loginpage from './Loginpage';
+import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
+
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -40,7 +42,7 @@ function App() {
 
           <Link to="/cart">
             <button type="button" aria-label="View cart">
-              <img src="src/assets/shopping-cart-01-svgrepo-com.svg" alt="Cart" className="w-6 h-6" />
+              <img src={cartIcon} alt="Cart" className="w-6 h-6" />
             </button>
           </Link>
         </div>

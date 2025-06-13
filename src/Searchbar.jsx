@@ -20,7 +20,7 @@ const SearchBar = ({ placeholder = "Search...", onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center border rounded-2xl shadow-sm px-4 py-2 bg-white w-64">
+    <form onSubmit={handleSubmit} className="flex items-center border hover:border-2 rounded-2xl shadow-sm px-4 py-2 bg-white w-64">
       <Search className="text-gray-500 mr-2" />
       <input
         type="text"

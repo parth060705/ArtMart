@@ -3,10 +3,16 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home';
 import Loginpage from './Loginpage';
 import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
+import SearchBar from './Searchbar';
 
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  const handleSearch = (query) => {
+    console.log('Searching for:', query);
+    // Add your filtering logic here
+  };
 
   return (
     <BrowserRouter>
@@ -26,9 +32,11 @@ function App() {
 
         <nav className="flex gap-6 text-sm font-medium">
           <Link className="hover:underline cursor-pointer" to="/">Home</Link>
-          <Link className="hover:underline cursor-pointer" to="/">Contact</Link>
-          <Link className="hover:underline cursor-pointer" to="/">About</Link>
+          {/* <Link className="hover:underline cursor-pointer" to="/">Contact</Link>
+          <Link className="hover:underline cursor-pointer" to="/">About</Link> */}
         </nav>
+
+        <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
 
         <div className="flex items-center gap-4">
           <Link to="/loginpage">

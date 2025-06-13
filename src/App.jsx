@@ -9,9 +9,10 @@ function App() {
   return (
     <BrowserRouter>
       {/* Navbar */}
-      <header className="bg-slate-900 text-white flex justify-between items-center px-4 py-2 shadow-md">
+      <header className="bg-white text-black flex justify-between items-center px-4 py-2 shadow-md">
         <div className="flex items-center gap-4">
           <button
+            type="button"
             className="text-2xl px-3 py-1 border-none"
             onClick={() => setSidebarVisible(!sidebarVisible)}
             aria-label="Toggle sidebar"
@@ -21,12 +22,28 @@ function App() {
           <h2 className="text-xl font-bold">Logo</h2>
         </div>
 
-        <ul className="flex gap-6 text-sm font-medium">
+        <nav className="flex gap-6 text-sm font-medium">
           <Link className="hover:underline cursor-pointer" to="/">Home</Link>
-          <Link className="hover:underline cursor-pointer" to="/Loginpage">Login</Link>
-          <Link className="hover:underline cursor-pointer" to="/">Contact</Link>
-          <Link className="hover:underline cursor-pointer" to="/">About</Link>
-        </ul>
+          <Link className="hover:underline cursor-pointer" to="/contact">Contact</Link>
+          <Link className="hover:underline cursor-pointer" to="/about">About</Link>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <Link to="/loginpage">
+            <button
+              type="button"
+              className="bg-purple-500 hover:bg-purple-600 text-white text-sm px-3 py-1 rounded-full"
+            >
+              Login
+            </button>
+          </Link>
+
+          <Link to="/cart">
+            <button type="button" aria-label="View cart">
+              <img src="src/assets/shopping-cart-01-svgrepo-com.svg" alt="Cart" className="w-6 h-6" />
+            </button>
+          </Link>
+        </div>
       </header>
 
       {/* Routes */}
@@ -34,7 +51,7 @@ function App() {
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

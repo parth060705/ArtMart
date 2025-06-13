@@ -2,25 +2,25 @@ import React from 'react';
 
 const Home = ({ sidebarVisible }) => {
   return (
-    <div className="min-h-screen w-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col">
 
       {/* Content Area */}
       <div className="flex flex-1">
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-40 bg-slate-500 text-white p-4">
+          <aside className="w-40 bg-transparent text-black p-4">
             <h4 className="font-bold mb-3">Options (Sidebar)</h4>
             <div className="space-y-2">
-              <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>A</p>
-              <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>B</p>
-              <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>C</p>
-              <p className='hover:bg-white hover:text-black cursor-pointer px-4 py-2 rounded-lg'>D</p>
+              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>A</p>
+              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>B</p>
+              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>C</p>
+              <p className='hover:bg-white cursor-pointer px-4 py-2 rounded-lg'>D</p>
             </div>
           </aside>
         )}
 
         {/* Main Content */}
-        <main className="flex-1 bg-slate-100 text-slate-900 p-4">
+        <main className="flex-1 bg-transparent text-slate-900 p-4">
           <h1 className="text-2xl font-bold mb-4">Main Content</h1>
           <p>This is the main area of your application.</p>
         </main>

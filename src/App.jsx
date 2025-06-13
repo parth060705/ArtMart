@@ -44,7 +44,7 @@ function App() {
           <Link to="/loginpage">
             <button
               type="button"
-              className="bg-purple-500 hover:bg-purple-600 text-white text-sm px-3 py-1 rounded-full"
+              className="bg-gradient-to-br from-blue-300 to-purple-400 text-white text-sm px-3 py-1 rounded-full"
             >
               Login
             </button>
@@ -63,7 +63,7 @@ function App() {
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
       </Routes>
-      
+
     </BrowserRouter >
   );
 }

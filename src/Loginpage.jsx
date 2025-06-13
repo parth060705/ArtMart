@@ -43,7 +43,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-300 px-4 sm:px-6">
+    <div className="flex items-center justify-center min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 px-4 sm:px-6">
       <div className="w-full max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-2xl transition-all">
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">

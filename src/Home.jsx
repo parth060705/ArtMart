@@ -1,4 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import profileIcon from './assets/profile-circle-svgrepo-com.svg';
+
 
 const Home = ({ sidebarVisible }) => {
   return (
@@ -8,13 +12,18 @@ const Home = ({ sidebarVisible }) => {
       <div className={`flex flex-1 md:flex-row`}>
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-full md:w-40 bg-transparent text-black p-4 md:block text-sm">
-            <h4 className="font-medium mb-3">Options (Sidebar)</h4>
+          <aside className="w-full md:w-50 bg-transparent text-black p-4 md:block text-sm">
+            {/* <h4 className="font-medium mb-3">Options (Sidebar)</h4> */}
             <div className="space-y-2">
-              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>A</button>
+              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>Search artist</button>
               <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>B</button>
               <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>C</button>
               <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>D</button>
+            </div>
+            <div className='mt-18'>
+              <Link to="/profile" aria-label="View profile">
+                <img src={profileIcon} alt="profile" className="w-15 h-15 rounded-full hover:w-16 hover:h-16 transition duration-200" />
+              </Link>
             </div>
           </aside>
         )}

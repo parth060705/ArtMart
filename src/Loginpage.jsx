@@ -60,7 +60,7 @@ const AuthForm = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
               value={form.username}
               onChange={handleChange}
               required
@@ -71,7 +71,7 @@ const AuthForm = () => {
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
             value={form.email}
             onChange={handleChange}
             required
@@ -81,7 +81,7 @@ const AuthForm = () => {
             type="password"
             name="password"
             placeholder="Password"
-            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
             value={form.password}
             onChange={handleChange}
             required

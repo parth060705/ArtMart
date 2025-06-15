@@ -4,7 +4,7 @@ import Home from './Home';
 import Loginpage from './Loginpage';
 import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
 import SearchBar from './Searchbar';
-
+import Cart from './Cart';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -34,8 +34,7 @@ function App() {
 
         <nav className="flex gap-6 text-sm font-medium">
           <Link className="hover:underline cursor-pointer" to="/">Home</Link>
-          {/* <Link className="hover:underline cursor-pointer" to="/">Contact</Link>
-          <Link className="hover:underline cursor-pointer" to="/">About</Link> */}
+          <Link className="hover:underline cursor-pointer" to="/">About</Link>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -50,7 +49,7 @@ function App() {
             </button>
           </Link>
 
-          <Link to="/cart">
+          <Link to="/Cart">
             <button type="button" aria-label="View cart">
               <img src={cartIcon} alt="Cart" className="w-6 h-6" />
             </button>
@@ -62,6 +61,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
+        <Route path="/Cart" element={<Cart />} />
       </Routes>
 
     </BrowserRouter >

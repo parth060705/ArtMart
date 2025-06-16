@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const Profile = () => {
   return (
@@ -33,9 +35,11 @@ const Profile = () => {
             <button className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm hover:bg-purple-600 transition">
               Edit Profile
             </button>
-            <button className="border border-purple-500 text-purple-500 px-4 py-2 rounded-full text-sm hover:bg-purple-100 transition">
-              View Orders
-            </button>
+            <Link to="/cart">
+              <button className="border border-purple-500 text-purple-500 px-4 py-2 rounded-full text-sm hover:bg-purple-100 transition">
+                View Orders
+              </button>
+            </Link>
           </div>
           <div>
             <button className="text-red-500 px-4 py-2 rounded-full text-sm hover:text-red-700 transition">

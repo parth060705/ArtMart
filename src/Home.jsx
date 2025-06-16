@@ -27,13 +27,13 @@ const artworksData = [
     price: 1450,
     image: 'https://via.placeholder.com/300x200?text=Dream+Forest',
   },
-   {
+  {
     id: 5,
     name: 'Dream Forest',
     price: 1550,
     image: 'https://via.placeholder.com/300x200?text=Dream+Forest',
   },
-   {
+  {
     id: 6,
     name: 'Dream Forest',
     price: 1460,
@@ -68,29 +68,44 @@ const Home = ({ sidebarVisible }) => {
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white flex flex-col overflow-x-hidden">
       <div className="flex flex-1 md:flex-row">
-        
+
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-full md:w-50 bg-transparent text-black p-4 md:block text-sm">
-            <div className="space-y-2">
-              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>Search artist</button>
-              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>B</button>
-              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>C</button>
-              <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>D</button>
-            </div>
-            <div className='mt-30'>
+          <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 md:block text-sm transition-all duration-300">
+            {/* Navigation Buttons */}
+            <nav className="space-y-3">
+              {['Search artist', 'Shorts', 'Menu', 'Add'].map((item) => (
+                <button
+                  key={item}
+                  className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition duration-200 font-medium"
+                >
+                  {item}
+                </button>
+              ))}
+            </nav>
+
+            {/* Profile Section */}
+            <div className="flex items-center space-x-4 border-t pt-4">
               <Link to="/profile" aria-label="View profile">
-                <img src="src/assets/user.png" alt="profile" className="w-14 h-14 rounded-full hover:w-15 hover:h-15 transition duration-200" />
+                <img
+                  src="src/assets/user.png"
+                  alt="Profile"
+                  className="w-12 h-12 rounded-full object-cover hover:scale-105 transition-transform duration-200"
+                />
               </Link>
-              <p className='text-gray-800 font-bold pl-3.5'>you</p>
+              <div>
+                <p className="text-base font-semibold">Account</p>
+                <p className="text-xs text-gray-500">View profile</p>
+              </div>
             </div>
           </aside>
         )}
 
+
         {/* Main Content */}
         <main className="flex-1 bg-transparent p-6">
           <h1 className="text-3xl font-bold text-slate-900 mb-6 text-center">Explore Artworks</h1>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {artworksData.map((art) => (
               <div
@@ -114,12 +129,11 @@ const Home = ({ sidebarVisible }) => {
                 </div>
                 <button
                   onClick={() => toggleWishlist(art.id)}
-                  className="absolute top-3 right-3 bg-white p-1 rounded-full hover:bg-purple-100 transition"
+                  className="absolute top-3 right-3"
                 >
                   <Heart
-                    className={`w-5 h-5 ${
-                      wishlist.includes(art.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'
-                    }`}
+                    className={`w-5 h-5 ${wishlist.includes(art.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'
+                      }`}
                   />
                 </button>
               </div>

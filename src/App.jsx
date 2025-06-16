@@ -36,7 +36,7 @@ function App() {
 
         <nav className="flex gap-6 text-sm font-medium">
           <Link className="hover:underline cursor-pointer" to="/">Home</Link>
-          <Link className="hover:underline cursor-pointer" to="/Profile">About</Link>
+          <Link className="hover:underline cursor-pointer" to="/">About</Link>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -68,7 +68,7 @@ function App() {
       </Routes>
 
       {/* Footer */}
-      <footer className="bg-white text-black py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
+      <footer className="bg-gray-100 text-black py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
         <div>
           <p>Content 1</p>
           <p>Content 2</p>
@@ -90,7 +90,7 @@ function App() {
       </footer>
 
       {/* Bottom Bar */}
-      <div className="bg-gray-100 text-gray-900 text-sm text-center py-3">
+      <div className="bg-gray-200 text-gray-900 text-sm text-center py-3">
         &copy; 2025 YourCompany. All rights reserved.
       </div>
 

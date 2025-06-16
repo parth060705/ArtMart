@@ -27,6 +27,18 @@ const artworksData = [
     price: 1450,
     image: 'https://via.placeholder.com/300x200?text=Dream+Forest',
   },
+   {
+    id: 5,
+    name: 'Dream Forest',
+    price: 1550,
+    image: 'https://via.placeholder.com/300x200?text=Dream+Forest',
+  },
+   {
+    id: 6,
+    name: 'Dream Forest',
+    price: 1460,
+    image: 'https://via.placeholder.com/300x200?text=Dream+Forest',
+  },
 ];
 
 const Home = ({ sidebarVisible }) => {
@@ -66,7 +78,7 @@ const Home = ({ sidebarVisible }) => {
               <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>C</button>
               <button className='hover:bg-white transition duration-200 cursor-pointer px-4 py-2 rounded-lg w-full text-left'>D</button>
             </div>
-            <div className='mt-8'>
+            <div className='mt-30'>
               <Link to="/profile" aria-label="View profile">
                 <img src="src/assets/user.png" alt="profile" className="w-14 h-14 rounded-full hover:w-15 hover:h-15 transition duration-200" />
               </Link>

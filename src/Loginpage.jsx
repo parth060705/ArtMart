@@ -60,7 +60,7 @@ const AuthForm = () => {
               type="text"
               name="username"
               placeholder="Username"
-              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
+              className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl hover:border-purple-600 hover:ring-2 hover:ring-purple-500 hover:ring-offset-1 cursor-pointer transition"
               value={form.username}
               onChange={handleChange}
               required
@@ -71,7 +71,7 @@ const AuthForm = () => {
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl hover:border-purple-600 hover:ring-2 hover:ring-purple-500 hover:ring-offset-1 cursor-pointer transition"
             value={form.email}
             onChange={handleChange}
             required
@@ -81,7 +81,7 @@ const AuthForm = () => {
             type="password"
             name="password"
             placeholder="Password"
-            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent cursor-pointer"
+            className="w-full px-4 py-3 border border-gray-400 text-black rounded-xl hover:border-purple-600 hover:ring-2 hover:ring-purple-500 hover:ring-offset-1 cursor-pointer transition"
             value={form.password}
             onChange={handleChange}
             required
@@ -101,9 +101,8 @@ const AuthForm = () => {
             {isRegistering ? 'Already have an account?' : "Don't have an account?"}{' '}
             <span
               onClick={() => setIsRegistering(!isRegistering)}
-              className={`cursor-pointer font-medium underline ${
-                isRegistering ? 'text-blue-600' : 'text-blue-600'
-              }`}
+              className={`cursor-pointer font-medium underline ${isRegistering ? 'text-blue-600' : 'text-blue-600'
+                }`}
             >
               {isRegistering ? 'Login' : 'Register'}
             </span>

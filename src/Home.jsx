@@ -24,6 +24,7 @@ const Home = ({ sidebarVisible }) => {
               <Link to="/profile" aria-label="View profile">
                 <img src={profileIcon} alt="profile" className="w-15 h-15 rounded-full hover:w-16 hover:h-16 transition duration-200" />
               </Link>
+              <p className='text-gray-800 font-bold pl-3.5'>you</p>
             </div>
           </aside>
         )}

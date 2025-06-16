@@ -34,33 +34,6 @@ const Home = ({ sidebarVisible }) => {
           <p>This is the main area of your application.</p>
         </main>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-white text-black py-6 px-6 flex flex-col md:flex-row md:justify-around gap-6">
-        <div>
-          <p>Content 1</p>
-          <p>Content 2</p>
-          <p>Content 3</p>
-          <p>Content 4</p>
-        </div>
-        <div>
-          <p>A</p>
-          <p>B</p>
-          <p>C</p>
-          <p>D</p>
-        </div>
-        <div>
-          <p>LINK 1</p>
-          <p>LINK 2</p>
-          <p>LINK 3</p>
-          <p>LINK 4</p>
-        </div>
-      </footer>
-
-      {/* Bottom Bar */}
-      <div className="bg-gray-100 text-gray-900 text-sm text-center py-3">
-        &copy; 2025 YourCompany. All rights reserved.
-      </div>
     </div>
   );
 };

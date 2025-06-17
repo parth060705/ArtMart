@@ -6,6 +6,7 @@ import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
 import SearchBar from './Searchbar';
 import Cart from './Cart';
 import Profile from './Profile';
+import ProtectedRoute from './ProtectedRoutes';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
 
       {/* Navbar */}
       <header className="bg-white text-black flex justify-between items-center px-4 py-2 shadow-md">
-        
+
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -40,7 +41,7 @@ function App() {
         </nav>
 
         <div className="flex items-center gap-4">
-           <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
+          <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
 
           <Link to="/loginpage">
             <button
@@ -61,10 +62,14 @@ function App() {
 
       {/* Routes */}
       <Routes>
+        {/* public Routes */}
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
-        <Route path="/Cart" element={<Cart />} />
-        <Route path="/Profile" element={<Profile />} />
+        {/* protected Routes */}
+        {/* <Route element={<ProtectedRoute />}>   Uncomment this for proctecting routes */} 
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="/Profile" element={<Profile />} />
+        {/* </Route> */}
       </Routes>
 
       {/* Footer */}

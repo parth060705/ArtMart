@@ -8,11 +8,12 @@ const Profile = () => {
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl">
         <div className="flex flex-col items-center px-6 py-8 text-center">
           <img
-            className="w-20 h-20 rounded-full border-4 border-purple-300 object-cover mb-4"
+            className="w-20 h-20 rounded-full border-4 border-purple-300 object-cover mb-1"
             src="src\assets\user.png"
             alt="User Profile"
           />
-          <h2 className="text-xl font-bold text-gray-800">Parth Gharat</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-3">Parth Gharat</h2>
+          <h2 className="text-xl font-semibold text-gray-800">Parth1234</h2>
           <p className="text-sm text-gray-500 mb-1">parth.gharat@example.com</p>
           <p className="text-sm text-gray-500">+91 9876543210</p>
 
@@ -24,11 +25,6 @@ const Profile = () => {
               Lokhandwala Market, Andheri West,<br />
               Mumbai, Maharashtra 400053
             </p>
-          </div>
-
-          <div className="mt-6 w-full text-left">
-            <h3 className="text-md font-semibold text-gray-700 mb-2">Recent Orders</h3>
-            <p className="text-sm text-gray-600 italic">You haven't placed any orders yet.</p>
           </div>
 
           <div className="flex gap-4 mt-8">

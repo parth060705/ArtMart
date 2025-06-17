@@ -7,7 +7,7 @@ const generateMockItems = () => {
     name: `Artwork #${idx + 1}`,
     price: parseFloat((Math.random() * 100 + 20).toFixed(2)),
     quantity: 1,
-    image: `https://picsum.photos/300/200`,
+    // image:,
   }));
 
   return {

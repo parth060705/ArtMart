@@ -1,13 +1,14 @@
 import React from 'react';
 
-// Utility function to generate mock artworks
+const fallbackImage = 'https://via.placeholder.com/100x100?text=No+Image';
+
 const generateMockItems = () => {
   const artworks = Array.from({ length: 6 }).map((_, idx) => ({
     id: idx + 1,
     name: `Artwork #${idx + 1}`,
     price: parseFloat((Math.random() * 100 + 20).toFixed(2)),
     quantity: 1,
-    // image:,
+    image: fallbackImage,
   }));
 
   return {
@@ -38,124 +39,131 @@ const Cart = ({
       ? propWishlistItems
       : mock.wishlist;
 
-  const calculateTotal = () => {
-    return cartItems
-      .reduce((sum, item) => sum + item.price * item.quantity, 0)
-      .toFixed(2);
-  };
+  const calculateTotal = () =>
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 
   return (
-    <div className="p-6 w-screen min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 space-y-10">
-      {/* Cart Section */}
-      <section>
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">🛒 Your Orders</h2>
+    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 py-10 px-6 sm:px-10 lg:px-20 font-sans">
+      {/* HEADER */}
+      <header className="max-w-7xl mx-auto mb-12 text-center">
+        <h1 className="text-5xl font-bold text-gray-900 mb-2">🎨 My Art Collection</h1>
+        <p className="text-gray-600 text-lg">Curate your favorite artworks with ease</p>
+      </header>
+
+      {/* CART SECTION */}
+      <section className="max-w-7xl mx-auto mb-16">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6">🛒 Shopping Cart</h2>
+
         {cartItems.length === 0 ? (
-          <p className="text-gray-500">Your cart is empty.</p>
+          <p className="text-gray-500 text-center">Your cart is currently empty.</p>
         ) : (
-          <ul className="space-y-4">
+          <div className="space-y-6">
             {cartItems.map((item) => (
-              <li
+              <div
                 key={item.id}
-                className="flex justify-between items-center p-4 bg-white rounded-xl shadow"
+                className="flex flex-col md:flex-row justify-between items-center bg-white rounded-xl shadow-lg p-6 transition hover:shadow-2xl"
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-6 w-full md:w-auto">
                   <img
-                    src={item.image}
+                    src={item.image || fallbackImage}
                     alt={item.name}
-                    className="w-16 h-16 object-cover rounded-lg"
+                    className="w-24 h-24 object-cover rounded-lg border"
                   />
                   <div>
-                    <p className="font-semibold text-gray-800">{item.name}</p>
+                    <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
                     <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+
+                <div className="flex items-center gap-4 mt-4 md:mt-0">
                   <button
                     onClick={() => onDecrease(item.id)}
-                    className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                    className="bg-gray-100 hover:bg-gray-300 px-3 py-1 rounded-full text-lg"
                   >
                     −
                   </button>
-                  <span className="min-w-[20px] text-center">{item.quantity}</span>
+                  <span className="min-w-[24px] text-center font-medium">{item.quantity}</span>
                   <button
                     onClick={() => onIncrease(item.id)}
-                    className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                    className="bg-gray-100 hover:bg-gray-300 px-3 py-1 rounded-full text-lg"
                   >
                     +
                   </button>
+                </div>
+
+                <div className="flex items-center gap-4 mt-4 md:mt-0">
                   <button
                     onClick={() => onMoveToWishlist(item.id)}
-                    className="text-blue-500 hover:text-blue-700 ml-2"
-                    title="Move to Wishlist"
+                    className="text-blue-600 hover:text-blue-800 text-sm"
                   >
-                    ♡
+                    Move to Wishlist
                   </button>
                   <button
                     onClick={() => onRemoveFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700 ml-2"
-                    title="Remove from Cart"
+                    className="text-red-500 hover:text-red-700 text-lg"
                   >
                     ✕
                   </button>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
 
         {cartItems.length > 0 && (
-          <div className="mt-6">
-            <div className="flex justify-between font-semibold text-lg">
-              <span>Total:</span>
-              <span>${calculateTotal()}</span>
-            </div>
-            <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+          <div className="mt-10 text-right">
+            <p className="text-2xl font-bold text-gray-800 mb-4">
+              Total: ${calculateTotal()}
+            </p>
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition">
               Proceed to Checkout
             </button>
           </div>
         )}
       </section>
 
-      {/* Wishlist Section */}
-      <section>
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">💖 Your Wishlist</h2>
+      {/* WISHLIST SECTION */}
+      <section className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6">💖 Wishlist</h2>
+
         {wishlistItems.length === 0 ? (
-          <p className="text-gray-500">Your wishlist is empty.</p>
+          <p className="text-center text-gray-500">Your wishlist is empty.</p>
         ) : (
-          <ul className="space-y-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {wishlistItems.map((item) => (
-              <li
+              <div
                 key={item.id}
-                className="flex justify-between items-center p-4 bg-white rounded-xl shadow"
+                className="bg-white p-5 rounded-xl shadow-md flex flex-col justify-between transition hover:shadow-xl"
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-4">
                   <img
-                    src={item.image}
+                    src={item.image || fallbackImage}
                     alt={item.name}
-                    className="w-16 h-16 object-cover rounded-lg"
+                    className="w-20 h-20 object-cover rounded-lg border"
                   />
                   <div>
-                    <p className="font-semibold text-gray-800">{item.name}</p>
-                    <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                    <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">${item.price.toFixed(2)}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+
+                <div className="flex justify-between items-center mt-6">
                   <button
                     onClick={() => onMoveToCart(item.id)}
-                    className="text-green-600 hover:text-green-800"
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
                   >
                     Add to Cart
                   </button>
                   <button
                     onClick={() => onRemoveFromWishlist(item.id)}
-                    className="text-red-500 hover:text-red-700 ml-2"
+                    className="text-red-500 hover:text-red-700 text-lg"
                   >
                     ✕
                   </button>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </section>
     </div>

@@ -7,6 +7,7 @@ import SearchBar from './Searchbar';
 import Cart from './Cart';
 import Profile from './Profile';
 import ProtectedRoute from './ProtectedRoutes';
+import ArtworkDetail from './ArtworkDetail';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -38,7 +39,7 @@ function App() {
 
         <nav className="text-black flex flex-col md:flex-row gap-2 md:gap-6 text-sm font-medium items-center">
           <Link className="hover:underline" to="/">Home</Link>
-          <Link className="hover:underline" to="/">About</Link>
+          {/* <Link className="hover:underline" to="/ArtworkDetail">About</Link> */}
         </nav>
 
         <div className="text-black flex flex-col sm:flex-row items-center gap-4">
@@ -60,10 +61,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
         <Route path="/Loginpage" element={<Loginpage />} />
+        <Route path="/art/:id" element={<ArtworkDetail />} />
         {/* Uncomment this block to protect the routes */}
         {/* <Route element={<ProtectedRoute />}> */}
-          <Route path="/Cart" element={<Cart />} />
-          <Route path="/Profile" element={<Profile />} />
+        <Route path="/Cart" element={<Cart />} />
+        <Route path="/Profile" element={<Profile />} />
         {/* </Route> */}
       </Routes>
 

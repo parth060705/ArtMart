@@ -31,16 +31,12 @@ function App() {
               ☰
             </button>
             <h2 className="text-black text-xl font-bold">ArtMart</h2>
+            <Link className=" text-black hover:underline" to="/">Home</Link>
           </div>
           <div className="md:hidden">
             {/* Optional: Add mobile menu toggle logic here */}
           </div>
         </div>
-
-        <nav className="text-black flex flex-col md:flex-row gap-2 md:gap-6 text-sm font-medium items-center">
-          <Link className="hover:underline" to="/">Home</Link>
-          {/* <Link className="hover:underline" to="/ArtworkDetail">About</Link> */}
-        </nav>
 
         <div className="text-black flex flex-col sm:flex-row items-center gap-4">
           <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />

@@ -71,7 +71,7 @@ const Home = ({ sidebarVisible }) => {
 
         {/* Sidebar */}
         {sidebarVisible && (
-          <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 md:block text-sm transition-all duration-300">
+          <aside className="w-full md:w-50 bg-white shadow-lg text-gray-800 p-6 space-y-8 md:block text-sm transition-all duration-300">
             {/* Navigation Buttons */}
             <nav className="space-y-3">
               {['Search artist', 'Shorts', 'Menu', 'Add'].map((item) => (

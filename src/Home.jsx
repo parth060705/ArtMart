@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, ShoppingCart } from 'lucide-react'; // Using Lucide icons
+import { Heart, ShoppingCart} from 'lucide-react'; // Using Lucide icons
 
 const artworksData = [
   {

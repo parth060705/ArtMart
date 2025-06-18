@@ -21,7 +21,7 @@ function App() {
       {/* Navbar */}
       <header className="bg-white shadow-md px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-10">
             <button
               type="button"
               onClick={() => setSidebarVisible(!sidebarVisible)}

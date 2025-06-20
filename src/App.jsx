@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './Home';
-import Loginpage from './Loginpage';
+import Home from './components/Home';
+import Loginpage from './pages/Loginpage';
 import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
-import SearchBar from './Searchbar';
-import Cart from './Cart';
-import Profile from './Profile';
-import ProtectedRoute from './ProtectedRoutes';
-import ArtworkDetail from './ArtworkDetail';
+import SearchBar from './components/Searchbar';
+import Cart from './pages/Cart';
+import Profile from './pages/Profile';
+import ProtectedRoute from './components/ProtectedRoutes';
+import ArtworkDetail from './components/ArtworkDetail';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);

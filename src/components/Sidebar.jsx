@@ -1,11 +1,11 @@
 // src/components/Sidebar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import userIcon from '../assets/user.png'; // Ensure this exists in your assets
+import userIcon from '../assets/user.png';
 
 const Sidebar = () => {
   return (
-    <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 text-sm h-screen flex flex-col justify-between">
+    <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 text-sm h-full flex flex-col justify-between">
       {/* Navigation Section */}
       <nav className="space-y-3">
         <Link

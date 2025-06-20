@@ -1,14 +1,16 @@
-import { Navigate, Outlet } from "react-router-dom";
+// src/components/ProtectedRoute.jsx
+import { Navigate, Outlet } from 'react-router-dom';
 
-// Simulated auth check – replace with real logic (e.g., check JWT or user state)
 const useAuth = () => {
-  const user = localStorage.getItem("user"); // or context/API, Backend logic
-  return !!user; // returns true if user is logged in
+  // Replace with real auth logic, e.g. check token validity
+  const user = localStorage.getItem('user'); 
+  return Boolean(user);
 };
 
 const ProtectedRoute = () => {
-  const isAuth = useAuth();
-  return isAuth ? <Outlet /> : <Navigate to="/Loginpage" />;
+  const isAuthenticated = useAuth();
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/Loginpage" replace />;
 };
 
 export default ProtectedRoute;

@@ -38,7 +38,7 @@ const ArtworkDetail = () => {
 
     if (!artwork) {
         return (
-            <div className="text-center py-24 text-gray-500 text-xl">Loading artwork...</div>
+            <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-center py-24 text-gray-500 text-xl">Loading artwork...</div>
         );
     }
 

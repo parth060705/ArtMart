@@ -1,96 +1,26 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from './components/Home';
+// src/App.jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import MainLayout from './Layout/Mainlayout';
+import Home from './pages/Home';
 import Loginpage from './pages/Loginpage';
-import cartIcon from './assets/shopping-cart-01-svgrepo-com.svg';
-import SearchBar from './components/Searchbar';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
+import ArtworkDetail from './pages/ArtworkDetail'; // Consider moving this to pages/
 import ProtectedRoute from './components/ProtectedRoutes';
-import ArtworkDetail from './components/ArtworkDetail';
 
 function App() {
-  const [sidebarVisible, setSidebarVisible] = useState(true);
-
-  const handleSearch = (query) => {
-    console.log('Searching for:', query);
-  };
-
   return (
     <BrowserRouter>
-      {/* Navbar */}
-      <header className="bg-white shadow-md px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-10">
-            <button
-              type="button"
-              onClick={() => setSidebarVisible(!sidebarVisible)}
-              aria-label="Toggle sidebar"
-              className="text-black text-2xl"
-            >
-              ☰
-            </button>
-            <h2 className="text-black text-xl font-bold">ArtMart</h2>
-            <Link className=" text-black hover:underline" to="/">Home</Link>
-          </div>
-          <div className="md:hidden">
-            {/* Optional: Add mobile menu toggle logic here */}
-          </div>
-        </div>
-
-        <div className="text-black flex flex-col sm:flex-row items-center gap-4">
-          <SearchBar placeholder="Search artworks..." onSearch={handleSearch} />
-          <Link to="/loginpage">
-            <button className="bg-gradient-to-br from-blue-300 to-purple-400 text-white text-sm px-4 py-2 rounded-full w-full sm:w-auto">
-              Login
-            </button>
-          </Link>
-          <Link to="/Cart">
-            <button aria-label="View cart" className="mt-2 sm:mt-0">
-              <img src={cartIcon} alt="Cart" className="w-6 h-6" />
-            </button>
-          </Link>
-        </div>
-      </header>
-
-      {/* Routes */}
       <Routes>
-        <Route path="/" element={<Home sidebarVisible={sidebarVisible} />} />
-        <Route path="/Loginpage" element={<Loginpage />} />
-        <Route path="/art/:id" element={<ArtworkDetail />} />
-        {/* Uncomment this block to protect the routes */}
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/Cart" element={<Cart />} />
-        <Route path="/Profile" element={<Profile />} />
-        {/* </Route> */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="Cart" element={<Cart />} />
+          <Route path="Profile" element={<Profile />} />
+          <Route path="art/:id" element={<ArtworkDetail />} />
+          <Route path="/Loginpage" element={<Loginpage />} />
+        </Route>
       </Routes>
-
-      {/* Footer */}
-      <footer className="bg-gray-100 text-black py-6 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center sm:text-left">
-        <div>
-          <p>Content 1</p>
-          <p>Content 2</p>
-          <p>Content 3</p>
-          <p>Content 4</p>
-        </div>
-        <div>
-          <p>A</p>
-          <p>B</p>
-          <p>C</p>
-          <p>D</p>
-        </div>
-        <div>
-          <p>LINK 1</p>
-          <p>LINK 2</p>
-          <p>LINK 3</p>
-          <p>LINK 4</p>
-        </div>
-      </footer>
-
-      {/* Bottom Bar */}
-      <div className="bg-gray-200 text-gray-900 text-sm text-center py-3">
-        &copy; 2025 YourCompany. All rights reserved.
-      </div>
     </BrowserRouter>
   );
 }

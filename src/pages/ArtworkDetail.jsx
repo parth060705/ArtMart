@@ -38,12 +38,12 @@ const ArtworkDetail = () => {
 
     if (!artwork) {
         return (
-            <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 text-center py-24 text-gray-500 text-xl">Loading artwork...</div>
+            <div className="h-screen bg-gradient-to-br from-blue-200 to-purple-300 text-center py-24 text-gray-500 text-xl">Loading artwork...</div>
         );
     }
 
     return (
-        <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 py-12 px-6 sm:px-12 flex justify-center items-start">
+        <div className="h-screen w-full bg-gradient-to-br from-blue-200 to-purple-300 py-12 px-6 sm:px-12 flex justify-center items-start">
             <div className="w-full max-w-5xl bg-white rounded-3xl shadow-lg overflow-hidden md:flex">
 
                 {/* Artwork Image */}

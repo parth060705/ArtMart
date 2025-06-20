@@ -5,7 +5,7 @@ import userIcon from '../assets/user.png';
 
 const Sidebar = () => {
   return (
-    <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 text-sm h-full flex flex-col justify-between">
+    <aside className="w-full md:w-64 bg-white shadow-lg text-gray-800 p-6 space-y-8 text-sm min-h-screen flex flex-col justify-between">
       {/* Navigation Section */}
       <nav className="space-y-3">
         <Link

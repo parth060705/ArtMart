@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Profile = () => {
   return (
-    <div className="w-screen min-h-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white py-10">
+    <div className="w-full min-h-screen bg-gradient-to-br from-blue-200 to-purple-300 text-white py-10">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl">
         <div className="flex flex-col items-center px-6 py-8 text-center">
           <img

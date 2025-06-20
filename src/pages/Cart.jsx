@@ -43,7 +43,7 @@ const Cart = ({
     cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-blue-200 to-purple-300 py-10 px-6 sm:px-10 lg:px-20 font-sans">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-200 to-purple-300 py-10 px-6 sm:px-10 lg:px-20 font-sans">
       {/* HEADER */}
       <header className="max-w-7xl mx-auto mb-12 text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-2">🎨 My Art Collection</h1>

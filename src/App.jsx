@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Loginpage from './pages/Loginpage';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
-import ArtworkDetail from './pages/ArtworkDetail'; // Consider moving this to pages/
+import ArtworkDetail from './pages/ArtworkDetail';
 import ProtectedRoute from './components/ProtectedRoutes';
 
 function App() {

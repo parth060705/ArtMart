@@ -67,7 +67,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-gradient-to-br from-blue-200 to-purple-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="bg-gradient-to-br from-blue-200 to-purple-300 w-full min-h-screen grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-6">
       {artworksData.map((art) => (
         <div
           key={art.id}

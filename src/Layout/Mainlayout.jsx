@@ -14,7 +14,7 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-200 to-purple-300 flex flex-col min-h-screen">
+    <div className="bg-gradient-to-br from-blue-200 to-purple-300 flex flex-col min-h-screen overflow-x-hidden">
       <Navbar
         onToggleSidebar={() => setSidebarVisible((prev) => !prev)}
         onSearch={handleSearch}

@@ -1,16 +1,37 @@
 // src/hooks/useAuth.js
-export const useAuth = () => {
-  const token = localStorage.getItem('token');
-  try {
-    if (!token) return false;
+import { useState, useEffect, useContext, createContext } from 'react';
+import { getCurrentUser, logout as apiLogout } from '../services/Authservices';
 
-    // Optionally: validate expiration if token includes "exp"
-    const [, payloadBase64] = token.split('.');
-    const payload = JSON.parse(atob(payloadBase64));
+const AuthContext = createContext();
 
-    const isExpired = payload.exp * 1000 < Date.now(); // convert exp to ms
-    return !isExpired;
-  } catch {
-    return false;
-  }
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  const fetchUser = async () => {
+    try {
+      const res = await getCurrentUser();
+      setUser(res.data);
+    } catch (err) {
+      setUser(null);
+      console.error('Error fetching user:', err);
+    }
+  };
+
+  const logout = () => {
+    apiLogout();
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, logout, refreshUser: fetchUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
+
+export const useAuth = () => useContext(AuthContext);

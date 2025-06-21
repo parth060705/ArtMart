@@ -27,7 +27,7 @@ const Sidebar = () => {
           📋 Menu
         </Link>
         <Link
-          to="/upload"
+          to="/Uploadartworks"
           className="block w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition duration-200 font-medium"
         >
           ⬆️ Upload Arts

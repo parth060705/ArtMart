@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import Profile from './pages/Profile';
 import ArtworkDetail from './pages/ArtworkDetail';
 import ProtectedRoute from './components/ProtectedRoutes';
+import UploadArtwork from './pages/Uploadartworks';
 
 function App() {
   // Example: using localStorage for auth token
@@ -28,6 +29,7 @@ function App() {
           <Route path="art/:id" element={<ArtworkDetail />} />
           <Route path="Cart" element={<Cart />} />
           <Route path="Profile" element={<Profile />} />
+          <Route path="Uploadartworks" element={<UploadArtwork />} />
 
           {/* Protected Routes Group */}
           {/* <Route element={<ProtectedRoute />}>

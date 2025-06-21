@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { uploadArtwork } from '../services/ArtworkServices';
+import { uploadArtwork } from '../service/artworkService';
 import { useAuth } from '../hooks/useAuth';
 
 const UploadArtwork = () => {

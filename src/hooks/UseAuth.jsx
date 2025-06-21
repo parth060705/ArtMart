@@ -1,6 +1,6 @@
 // src/hooks/useAuth.js
 import { useState, useEffect, useContext, createContext } from 'react';
-import { getCurrentUser, logout as apiLogout } from '../services/Authservices';
+import { getCurrentUser, logout as apiLogout } from '../service/authService';
 
 const AuthContext = createContext();
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/UseAuth';
-import { getArtworksByArtist, deleteArtwork } from '../services/ArtworkServices';
+import { useAuth } from '../hooks/useAuth';
+import { getArtworksByArtist, deleteArtwork } from '../service/artworkService';
 import { Link } from 'react-router-dom';
 
 const ArtistDashboard = () => {

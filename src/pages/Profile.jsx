@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { updateProfile } from '../services/userservices'; // Your update API
+import { updateProfile } from '../service/userService'; // Your update API
 import userIcon from '../assets/user.png';
 
 const Profile = () => {

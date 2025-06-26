@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '../hooks/useAuth';
 import { getArtworksByArtist, deleteArtwork } from '../service/artworkService';
 import { Link } from 'react-router-dom';
 

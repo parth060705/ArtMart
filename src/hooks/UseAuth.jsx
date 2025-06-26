@@ -1,37 +1,21 @@
-// src/hooks/useAuth.js
-import { useState, useEffect, useContext, createContext } from 'react';
-import { getCurrentUser, logout as apiLogout } from '../service/authService';
+// src/hooks/useAuth.jsx
+import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const fetchUser = async () => {
-    try {
-      const res = await getCurrentUser();
-      setUser(res.data);
-    } catch (err) {
-      setUser(null);
-      console.error('Error fetching user:', err);
-    }
-  };
-
-  const logout = () => {
-    apiLogout();
-    localStorage.removeItem('token');
-    setUser(null);
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const login = (userData) => setUser(userData);
+  const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, logout, refreshUser: fetchUser }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}

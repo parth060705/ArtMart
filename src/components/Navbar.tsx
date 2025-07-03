@@ -4,7 +4,12 @@
 
 import { Menu } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-
+import ProductSearchBar from "@/components/ProductSearchBar";
+import FilterSidebar from "@/components/FilterSidebar";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/UseAuth";
+import { toast } from 'sonner';
 import {
   Accordion,
   AccordionContent,
@@ -68,83 +73,34 @@ const Navbar = ({
     {
       title: "Products",
       url: "/products",
-      // items: [
-      //   {
-      //     title: "Blog",
-      //     description: "The latest industry news, updates, and info",
-      //     icon: <Book className="size-5 shrink-0" />,
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Company",
-      //     description: "Our mission is to innovate and empower the world",
-      //     icon: <Trees className="size-5 shrink-0" />,
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Careers",
-      //     description: "Browse job listing and discover our workspace",
-      //     icon: <Sunset className="size-5 shrink-0" />,
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Support",
-      //     description:
-      //       "Get in touch with our support team or visit our community forums",
-      //     icon: <Zap className="size-5 shrink-0" />,
-      //     url: "#",
-      //   },
-      // ],
     },
-    // {
-    //   title: "Resources",
-    //   url: "#",
-    //   items: [
-    //     {
-    //       title: "Help Center",
-    //       description: "Get all the answers you need right here",
-    //       icon: <Zap className="size-5 shrink-0" />,
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Contact Us",
-    //       description: "We are here to help you with any questions you have",
-    //       icon: <Sunset className="size-5 shrink-0" />,
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Status",
-    //       description: "Check the current status of our services and APIs",
-    //       icon: <Trees className="size-5 shrink-0" />,
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Terms of Service",
-    //       description: "Our terms and conditions for using our services",
-    //       icon: <Book className="size-5 shrink-0" />,
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Pricing",
-    //   url: "#",
-    // },
-    // {
-    //   title: "Blog",
-    //   url: "#",
-    // },
   ],
   auth = {
-    login: { title: "Login", url: "#" },
-    signup: { title: "Sign up", url: "#" },
+    login: { title: "Login", url: "/auth/login" },
+    signup: { title: "Sign up", url: "/auth/register" },
   },
 }: NavbarProps) => {
+  const { isAuthenticated, username } = useAuth();
+  // Search/filter state for Product Listing Page
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    toast.success('Logged out successfully!');
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 500);
+  };
+
   return (
     <section className="p-4 border-b border-gray-200">
       <div className="container">
         {/* Desktop Menu */}
-        <nav className="hidden justify-between lg:flex">
+        <nav className="hidden justify-between lg:flex items-center">
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
@@ -162,19 +118,60 @@ const Navbar = ({
             </div>
           </div>
 
-
-
+          {/* Search and Filter for Product Listing Page */}
+          {typeof window !== 'undefined' && window.location.pathname.includes('/products') && (
+            <div className="flex items-center gap-3 mr-6">
+              <ProductSearchBar value={search} onChange={setSearch} />
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="rounded-full px-6 font-semibold border-[var(--primary)] text-[var(--primary)] ml-2">
+                    Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="max-w-xs w-full">
+                  <FilterSidebar
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    selectedLocation={selectedLocation}
+                    setSelectedLocation={setSelectedLocation}
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                  />
+                </SheetContent>
+              </Sheet>
+            </div>
+          )}
           <div className="flex gap-2">
             {/* Theme Switcher Button (Desktop) */}
             <div className="hidden lg:flex items-center ml-4">
-              <ThemeSwitcher />
+              {/* <ThemeSwitcher /> */}
             </div>
-            <Button asChild variant="outline" size="sm">
-              <a href={auth.login.url}>{auth.login.title}</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href={auth.signup.url}>{auth.signup.title}</a>
-            </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-3">
+                {isAuthenticated ? (
+                  <Button variant="destructive" onClick={handleLogout}>Logout</Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button asChild variant="outline">
+                      <a href={auth.login.url}>{auth.login.title}</a>
+                    </Button>
+                    <Button asChild>
+                      <a href={auth.signup.url}>{auth.signup.title}</a>
+                    </Button>
+                  </div>
+                )}
+              </div>
+              {/* User Avatar Link */}
+              {isAuthenticated && ( 
+                <Link to={`/profile/${username}`} className="ml-2" aria-label="Go to profile">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    alt="Go to profile"
+                    className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
+                  />
+                </Link>
+              )}
+            </div>
           </div>
         </nav>
 
@@ -209,15 +206,31 @@ const Navbar = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
-                    </Button>
-                    <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
-                    </Button>
+                    {isAuthenticated ? (
+                      <Button variant="destructive" onClick={handleLogout}>Logout</Button>
+                    ) : (
+                      <>
+                        <Button asChild variant="outline">
+                          <a href={auth.login.url}>{auth.login.title}</a>
+                        </Button>
+                        <Button asChild>
+                          <a href={auth.signup.url}>{auth.signup.title}</a>
+                        </Button>
+                      </>
+                    )}
+                    {/* User Avatar Link (Mobile) */}
+                    {isAuthenticated && (
+                      <Link to={`/profile/${username}`} className="self-center mt-2" aria-label="Go to profile">
+                        <img
+                          src="https://randomuser.me/api/portraits/men/32.jpg"
+                          alt="Go to profile"
+                          className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
+                        />
+                      </Link>
+                    )}
                   </div>
                   {/* Theme Switcher Button (Mobile) */}
-                  <ThemeSwitcher />
+                  {/* <ThemeSwitcher /> */}
                 </div>
               </SheetContent>
             </Sheet>
@@ -297,6 +310,6 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
       </div>
     </a>
   );
-};
+};  
 
-export default Navbar
+export default Navbar;

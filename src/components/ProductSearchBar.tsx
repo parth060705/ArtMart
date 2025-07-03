@@ -1,4 +1,3 @@
-import React from "react";
 import { Search } from "lucide-react";
 
 export default function ProductSearchBar({ value, onChange }: { value: string; onChange: (v: string) => void }) {

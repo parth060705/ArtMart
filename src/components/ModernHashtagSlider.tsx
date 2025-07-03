@@ -1,5 +1,3 @@
-import React from "react";
-
 const tags = [
   "#handmade", "#painting", "#sculpture", "#craft", "#decor", "#textile", "#jewelry", "#fiberart", "#artisan", "#indiancraft"
 ];

@@ -1,4 +1,3 @@
-import React from "react";
 
 const categories = ["Painting", "Sculpture", "Textile", "Jewelry", "Decor", "Other"];
 const locations = ["Delhi", "Mumbai", "Bangalore", "Kolkata", "Chennai", "All India"];

@@ -24,7 +24,8 @@ import {
 import { Input } from '@/components/ui/input'
 
 import { registerFormSchema } from '@/lib/validation-schemas'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useRegister } from '@/query/hooks/useRegister'
 
 const formSchema = registerFormSchema
 
@@ -34,25 +35,31 @@ export default function RegisterPage() {
         defaultValues: {
             name: '',
             email: '',
+            username: '',
+            location: '',
+            gender: '',
+            age: '',
+            pincode: '',
             phone: '',
             password: '',
             confirmPassword: '',
         },
     })
 
+    const navigate = useNavigate();
+    const registerMutation = useRegister();
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            // Assuming an async registration function
-            console.log(values)
-            toast(
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-                </pre>,
-            )
-        } catch (error) {
-            console.error('Form submission error', error)
-            toast.error('Failed to submit the form. Please try again.')
-        }
+        registerMutation.mutate(values, {
+            onSuccess: (data) => {
+                toast.success('Registration successful!');
+                // Optionally store token or redirect
+                setTimeout(() => navigate('/auth/login'), 500);
+            },
+            onError: (error: any) => {
+                toast.error(error?.response?.data?.message || 'Registration failed');
+            }
+        });
     }
 
     return (
@@ -67,7 +74,7 @@ export default function RegisterPage() {
                 <CardContent>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            <div className="grid gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {/* Name Field */}
                                 <FormField
                                     control={form.control}
@@ -104,15 +111,115 @@ export default function RegisterPage() {
                                     )}
                                 />
 
+                                {/* Username Field */}
+                                <FormField
+                                    control={form.control}
+                                    name="username"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel htmlFor="username">Username</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="username"
+                                                    placeholder="tony"
+                                                    type="text"
+                                                    autoComplete="username"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Location Field */}
+                                <FormField
+                                    control={form.control}
+                                    name="location"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel htmlFor="location">Location</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="location"
+                                                    placeholder="Mumbai"
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Gender Field */}
+                                <FormField
+                                    control={form.control}
+                                    name="gender"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel htmlFor="gender">Gender</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="gender"
+                                                    placeholder="Male/Female/Other"
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Age Field */}
+                                <FormField
+                                    control={form.control}
+                                    name="age"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel htmlFor="age">Age</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="age"
+                                                    placeholder="21"
+                                                    type="number"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Pincode Field */}
+                                <FormField
+                                    control={form.control}
+                                    name="pincode"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel htmlFor="pincode">Pincode</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    id="pincode"
+                                                    placeholder="400001"
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
                                 {/* Phone Field */}
-                                {/* <FormField
+                                <FormField
                                     control={form.control}
                                     name="phone"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="phone">Phone Number</FormLabel>
+                                            <FormLabel htmlFor="phone">Phone</FormLabel>
                                             <FormControl>
-                                                <PhoneInput {...field} defaultCountry="TR" />
                                                 <Input
                                                     id="phone"
                                                     placeholder="555-123-4567"
@@ -124,7 +231,7 @@ export default function RegisterPage() {
                                             <FormMessage />
                                         </FormItem>
                                     )}
-                                /> */}
+                                />
 
                                 {/* Password Field */}
                                 <FormField
@@ -170,9 +277,11 @@ export default function RegisterPage() {
                                     )}
                                 />
 
-                                <Button type="submit" className="w-full">
-                                    Register
-                                </Button>
+                                <div className="md:col-span-2">
+                                    <Button type="submit" className="w-full">
+                                        Register
+                                    </Button>
+                                </div>
                             </div>
                         </form>
                     </Form>

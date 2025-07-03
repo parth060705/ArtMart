@@ -13,6 +13,7 @@ type ProductCardProps = {
     likes: number;
     comments: number;
     variant?: 'default' | 'gallery';
+    onClick?: () => void;
 };
 
 export default function ProductCard({
@@ -27,22 +28,62 @@ export default function ProductCard({
     likes,
     comments,
     variant = 'default',
+    onClick,
 }: ProductCardProps) {
+    // Extract hashtags/tags from caption (simple demo)
+    const tags = caption.match(/#[\w]+/g) || [];
     return (
-        <Card key={id} className="mb-4 break-inside-avoid bg-[var(--card)] border-0 shadow-md p-0 overflow-hidden">
-            <img src={image} alt={caption} className="w-full h-60 object-cover" />
-            <div className="flex items-center gap-3 px-4 py-3">
-                <img src={avatar} alt={user} className="w-9 h-9 rounded-full border-2 border-[var(--primary)] object-cover" />
-                <span className="font-semibold text-[var(--foreground)]" style={{ fontFamily: 'Poppins' }}>{user}</span>
-            </div>
-            <div className="px-4 pb-3">
-                <p className="text-sm text-[var(--foreground)] mb-2 truncate" title={caption}>{caption}</p>
-                <div className="flex items-center gap-4 text-gray-400">
-                    <span className="flex items-center gap-1"><Heart className="w-5 h-5" />{likes}</span>
-                    <span className="flex items-center gap-1"><MessageCircle className="w-5 h-5" />{comments}</span>
-                    <button className="ml-auto"><Share2 className="w-5 h-5 hover:text-[var(--primary)]" /></button>
+        <div
+            key={id}
+            className={
+                `group relative mb-6 break-inside-avoid rounded-3xl overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-[1.03] focus-within:scale-[1.03] bg-gray-100`
+            }
+            tabIndex={onClick ? 0 : undefined}
+            role={onClick ? 'button' : undefined}
+            aria-pressed={onClick ? false : undefined}
+            onClick={onClick}
+            style={{ fontFamily: 'Poppins' }}
+        >
+            {/* Background Image */}
+            <img
+                src={image}
+                alt={caption}
+                className="w-full h-auto min-h-[280px] max-h-[420px] object-cover object-center block transition-all duration-300"
+                style={{ aspectRatio: '3/4', background: 'var(--card)' }}
+            />
+            {/* Overlay: hidden by default, show on hover/focus/tap */}
+            <div
+                className="absolute inset-0 flex flex-col justify-between opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-300 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 md:p-5"
+                tabIndex={-1}
+            >
+                {/* Top: Tags */}
+                <div className="flex flex-wrap gap-2">
+                    {tags.map(tag => (
+                        <span key={tag} className="bg-[var(--primary)]/80 text-[var(--primary-foreground)] px-2 py-1 rounded-full text-xs font-medium shadow">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+                {/* Bottom: Actions + Profile */}
+                <div className="flex items-end w-full justify-between mt-auto">
+                    {/* Profile */}
+                    <div className="flex items-center gap-2">
+                        <img src={avatar} alt={user} className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow" />
+                        <span className="font-semibold text-white text-base drop-shadow" style={{ fontFamily: 'Poppins' }}>{user}</span>
+                    </div>
+                    {/* Social Actions */}
+                    <div className="flex gap-3 ml-auto">
+                        <button className="flex items-center gap-1 text-white/90 hover:text-[var(--primary)] transition-all">
+                            <MessageCircle className="w-6 h-6" />
+                        </button>
+                        <button className="flex items-center gap-1 text-white/90 hover:text-[var(--primary)] transition-all">
+                            <Share2 className="w-6 h-6" />
+                        </button>
+                    </div>
                 </div>
             </div>
-        </Card>
+            {/* Card is still accessible for keyboard users */}
+        </div>
     );
 }
+

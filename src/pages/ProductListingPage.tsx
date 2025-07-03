@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FilterSidebar from '@/components/FilterSidebar';
 import ProductSearchBar from '@/components/ProductSearchBar';
 import ProductCard from '@/components/ProductCard';
@@ -72,6 +73,7 @@ const ProductListingPage = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
   // Filter logic
   const filtered = mockProducts.filter(prod => {
@@ -93,34 +95,24 @@ const ProductListingPage = () => {
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] font-sans" style={{ fontFamily: 'Poppins' }}>
       <div className="w-full mx-auto px-4 py-10">
         <div className="flex flex-col md:flex-row gap-8 relative">
-          {/* Sidebar: Desktop */}
-          <div className="hidden md:block w-full md:w-64 mb-6 md:mb-0">
-            <FilterSidebar
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-            />
-          </div>
 
           {/* Main content */}
           <div className="flex-1 flex flex-col gap-6">
-            {/* Top bar: Filters button on mobile/tablet */}
-            <div className="flex justify-end md:hidden mb-2">
-              <Button
-                variant="outline"
-                className="rounded-full px-6 font-semibold border-[var(--primary)] text-[var(--primary)]"
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Open filters"
-              >
-                Filters
-              </Button>
+            {/* Product grid: Pinterest-style masonry */}
+            <div className="w-full">
+              <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 [column-fill:_balance]"><div className="[&>*]:mb-6">
+                {paginated.length ? paginated.map(prod => (
+                  <div key={prod.id} className="break-inside-avoid">
+                    <ProductCard
+                      {...prod}
+                      onClick={() => navigate(`/product/${prod.id}`)}
+                    />
+                  </div>
+                )) : (
+                  <div className="col-span-full text-center text-lg text-muted-foreground py-12">No products found.</div>
+                )}
+              </div></div>
             </div>
-            {/* Search bar */}
-            <div className="mb-4"><ProductSearchBar value={search} onChange={setSearch} /></div>
-            {/* Product grid */}
 
             {/* Sidebar Overlay: Mobile/Tablet */}
             {sidebarOpen && (
@@ -134,7 +126,7 @@ const ProductListingPage = () => {
                     onClick={() => setSidebarOpen(false)}
                     aria-label="Close filters"
                   >
-                    ×
+                   x
                   </button>
                   <FilterSidebar
                     selectedCategory={selectedCategory}
@@ -159,7 +151,11 @@ const ProductListingPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {paginated.length ? paginated.map(prod => (
-                <ProductCard key={prod.id} {...prod} />
+                <ProductCard
+                  key={prod.id}
+                  {...prod}
+                  onClick={() => navigate(`/product/${prod.id}`)}
+                />
               )) : (
                 <div className="col-span-full text-center text-lg text-muted-foreground py-12">No products found.</div>
               )}

@@ -76,18 +76,18 @@ const Home = () => {
       <section className="relative w-full flex flex-col items-start justify-start py-24 px-4 md:px-16 bg-gradient-to-b from-[var(--background)] to-[var(--card)] gap-10 text-start">
         <div className="flex flex-col items-start z-10 text-left">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-5 tracking-tight drop-shadow-lg" style={{ fontFamily: 'Poppins' }}>
-            Discover, Collect & <br/> Share Artistry
+            Discover, Collect & <br /> Share Artistry
           </h1>
           <p className="text-lg md:text-2xl max-w-xl mb-8 text-muted-foreground">
             India's handmade art & craft marketplace. Where artists meet admirers. Where every piece tells a story.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center w-full md:w-auto mb-8">
-            <Button size="lg" className="bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-all text-lg font-semibold">
-             <Link to="/products">Start Exploring</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-[var(--primary)] text-[var(--primary)] px-8 py-3 rounded-full hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all text-lg font-semibold">
-              <Link to="/register">Join as Artist</Link>
-            </Button>
+            <Link to="/products" className="bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-all text-lg font-semibold">
+              Start Exploring
+            </Link>
+            <Link to="/auth/register" className="border border-[var(--primary)] text-[var(--primary)] px-8 py-3 rounded-full hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all text-lg font-semibold">
+              Join as Artist
+            </Link>
           </div>
         </div>
 
@@ -149,12 +149,12 @@ const Home = () => {
           Sign up and join a vibrant community of creators and collectors. Every purchase supports an artist’s dream.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" className="bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-3 rounded-full shadow-md hover:scale-105 transition">
-            <Link to="/register">Start Exploring</Link>
-          </Button>
-          <Button size="lg" variant="outline" className="border-[var(--primary)] text-[var(--primary)] px-8 py-3 rounded-full hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition">
-            <Link to="/register">Join as an Artist</Link>
-          </Button>
+          <Link to="/register" className="bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-3 rounded-full shadow-md hover:scale-105 transition">
+            Start Exploring
+          </Link>
+          <Link to="/register" className="border border-[var(--primary)] text-[var(--primary)] px-8 py-3 rounded-full hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition">
+            Join as an Artist
+          </Link>
         </div>
       </footer>
     </div>

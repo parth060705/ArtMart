@@ -13,9 +13,6 @@ const MainLayout = () => {
 
   return (
     <>
-      <div className=''>
-        <Navbar />
-      </div>
       <main className='px-6 py-4'>
         <Outlet />
       </main>

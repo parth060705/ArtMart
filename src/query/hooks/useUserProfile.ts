@@ -4,11 +4,15 @@ import { axiosClient } from "@/lib/axios";
 interface UserProfile {
   id: string;
   username: string;
+  name: string;
   email: string;
   avatar?: string;
   bio?: string;
   followers?: number;
   following?: number;
+  profileImage: string;
+  images: string[];
+  title: string;
 }
 
 type UseUserProfileOptions = Omit<UseQueryOptions<UserProfile, Error, UserProfile, ["userProfile"]>, 'queryKey' | 'queryFn'>;

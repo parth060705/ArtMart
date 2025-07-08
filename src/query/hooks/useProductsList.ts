@@ -5,7 +5,7 @@ export const useProductsList = () => {
   return useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const { data } = await axiosClient.get("/products");
+      const { data } = await axiosClient.get("/artworks");
       return data;
     },
   });

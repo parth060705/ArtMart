@@ -1,4 +1,6 @@
+import { useProductsList } from "@/query/hooks/useProductsList";
 import ProductCard from "./ProductCard";
+import { Product } from "@/lib/types";
 
 const demoPosts = [
   {
@@ -64,21 +66,22 @@ const demoPosts = [
 ];
 
 export default function MasonrySocialFeed() {
+  const { data } = useProductsList()
   return (
     <div className="columns-1 sm:columns-2 md:columns-3 gap-4 w-full">
-      {demoPosts.map((post) => (
-       <ProductCard
-        id={post.id}
-        image={post.image}
-        caption={post.caption}
-        name={post.user}
-        avatar={post.avatar}
-        description={post.caption}
-        user={post.user}
-        price={post.price}
-        likes={post.likes}
-        comments={post.comments}
-       />
+      {data?.map((item: Product) => (
+        <ProductCard
+          key={item.id}
+          id={item.id}
+          images={item.images}
+          username={item.username}
+          profileImage={item.profileImage}
+          description={item.description}
+          price={item.price.toString()}
+          likes={item.likes}
+          comments={item.comments}
+          title={item.title}
+        />
       ))}
     </div>
   );

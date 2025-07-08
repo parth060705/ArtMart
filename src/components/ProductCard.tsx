@@ -3,11 +3,10 @@ import { Heart, MessageCircle, Share2 } from "lucide-react";
 
 type ProductCardProps = {
     id: number;
-    image: string;
-    caption: string;
-    name: string;
-    avatar: string;
-    user: string;
+    images: string[];
+    title: string;
+    profileImage: string;
+    username: string;
     description: string;
     price: string;
     likes: number;
@@ -18,12 +17,11 @@ type ProductCardProps = {
 
 export default function ProductCard({
     id,
-    image,
-    caption,
-    name,
-    avatar,
+    images,
+    title,
+    profileImage,
     description,
-    user,
+    username,
     price,
     likes,
     comments,
@@ -31,7 +29,8 @@ export default function ProductCard({
     onClick,
 }: ProductCardProps) {
     // Extract hashtags/tags from caption (simple demo)
-    const tags = caption.match(/#[\w]+/g) || [];
+    // const tags = caption.match(/#[\w]+/g) || [];
+    const tags = ['a', 'sdfa', 'fsa']
     return (
         <div
             key={id}
@@ -46,8 +45,8 @@ export default function ProductCard({
         >
             {/* Background Image */}
             <img
-                src={image}
-                alt={caption}
+                src={images && images[0]}
+                alt={description}
                 className="w-full h-auto min-h-[280px] max-h-[420px] object-cover object-center block transition-all duration-300"
                 style={{ aspectRatio: '3/4', background: 'var(--card)' }}
             />
@@ -68,8 +67,8 @@ export default function ProductCard({
                 <div className="flex items-end w-full justify-between mt-auto">
                     {/* Profile */}
                     <div className="flex items-center gap-2">
-                        <img src={avatar} alt={user} className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow" />
-                        <span className="font-semibold text-white text-base drop-shadow" style={{ fontFamily: 'Poppins' }}>{user}</span>
+                        <img src={profileImage} alt={username} className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow" />
+                        <span className="font-semibold text-white text-base drop-shadow" style={{ fontFamily: 'Poppins' }}>{username}</span>
                     </div>
                     {/* Social Actions */}
                     <div className="flex gap-3 ml-auto">

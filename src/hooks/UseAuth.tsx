@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import { decodeJWT } from '../utils/jwtDecode';
-import { useUserProfile } from '../query/hooks/useUserProfile';
-import { axiosClient } from '@/lib/axios';
-// User info type (adjust fields as needed)
+// import { useUserProfile } from '../query/hooks/useUserProfile';
 interface DecodedToken {
   sub?: string; // username
   email?: string;
   [key: string]: any;
 }
 
-// Auth context type
 interface AuthContextType {
   isAuthenticated: boolean;
   username: string | undefined;
@@ -36,20 +33,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [userProfile, setUserProfile] = useState<any>(null);
 
-
-  // Update user profile data when profileData changes
-  // useEffect(() => {
-  //   if (profileData) {
-  //     setUserProfile(profileData);
-  //     setUsername(profileData.username || undefined);
-  //   }
-  // }, [profileData]);
-
   const login = (token: string) => {
     localStorage.setItem('token', token);
     setToken(token);
     setIsAuthenticated(true);
-    getUserProfile();
+    // getUserProfile();
   };
 
   const logout = () => {
@@ -85,11 +73,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, [token]);
 
-  const getUserProfile = () => {
-    axiosClient.get('/me').then((res) => {
-      setUserProfile(res.data);
-    })
-  }
+  // const getUserProfile = () => {
+  //   const data = useUserProfile()
+  //   setUserProfile(data)
+  // }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, username, login, logout, userProfile }}>

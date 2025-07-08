@@ -98,7 +98,7 @@ const Navbar = ({
 
   return (
     <section className="p-4 border-b border-gray-200">
-      <div className="container">
+      <div className="container mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex items-center">
           <div className="flex items-center gap-6">

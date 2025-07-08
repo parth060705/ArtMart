@@ -3,20 +3,14 @@ import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 import { useAuth } from '../hooks/UseAuth';
 import { Link } from 'react-router-dom';
+import { useUserProfile } from '@/query/hooks/useUserProfile';
+import { useProductsList } from '@/query/hooks/useProductsList';
 // import { useUserContext } from '../context/context';
 
 const Profile = () => {
-  const { username, userProfile } = useAuth();
-  console.log(userProfile)
-  // const { user } = useUserContext();
-  const user = {
-    avatar: userProfile?.avatar || '',
-    name: username || '',
-    email: userProfile?.email || '',
-    bio: userProfile?.bio || '',
-    followers: userProfile?.followers || 0,
-    following: userProfile?.following || 0,
-  };
+  const { data: userProfile } = useUserProfile();
+  const {data:products} = useProductsList()
+  console.log(products)
 
   // Mock uploaded products
   const uploadedProducts = [
@@ -25,8 +19,8 @@ const Profile = () => {
       image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308',
       caption: 'Sunset #nature #art',
       name: 'Sunset',
-      avatar: user.avatar,
-      user: user.name || '',
+      profileImage: userProfile?.profileImage,
+      user: userProfile?.name || '',
       description: 'A beautiful sunset.',
       price: '$120',
       likes: 12,
@@ -37,8 +31,8 @@ const Profile = () => {
       image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
       caption: 'Forest walk #green #relax',
       name: 'Forest Walk',
-      avatar: user.avatar,
-      user: user.name || '',
+      profileImage: userProfile?.profileImage,
+      user: userProfile?.name || '',
       description: 'A walk in the forest.',
       price: '$90',
       likes: 8,
@@ -49,8 +43,8 @@ const Profile = () => {
       image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca',
       caption: 'City lights #nightlife #urban',
       name: 'City Lights',
-      avatar: user.avatar,
-      user: user.name || '',
+      profileImage: userProfile?.profileImage,
+      user: userProfile?.name || '',
       description: 'Night cityscape.',
       price: '$150',
       likes: 20,
@@ -63,8 +57,8 @@ const Profile = () => {
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
-          src={userProfile?.avatar}
-          alt={userProfile?.profileImage}
+          src={userProfile?.profileImage}
+          alt={userProfile?.name}
           className="w-32 h-32 rounded-full border-4 border-[var(--primary)] object-cover shadow-lg -mt-16 md:mt-0"
         />
         <div className="flex-1 flex flex-col items-center md:items-start">
@@ -94,14 +88,14 @@ const Profile = () => {
       </div>
 
       {/* Uploaded Products Grid */}
-      <div>
+      {/* <div>
         <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'Poppins' }}>Uploaded Artworks</h3>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {uploadedProducts.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

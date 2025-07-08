@@ -11,7 +11,6 @@ import Loginpage from './pages/auth/Loginpage';
 import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import ProtectedRoute from './components/ProtectedRoutes';
-import AuthLayout from './Layout/AuthLayout';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
@@ -22,7 +21,7 @@ import Navbar from './components/Navbar';
 import { queryClient } from './query/client';
 import Profile from './pages/Profile';
 import UploadProduct from './pages/UploadProduct';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -30,9 +29,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Toaster richColors position="top-center" />
         <BrowserRouter>
-          <Navbar />
           <Routes>
-            <Route path="/auth" element={<AuthLayout />}>
+            <Route path="/auth" element={<MainLayout />}>
               <Route index element={<Loginpage />} />
               <Route path="login" element={<Loginpage />} />
               <Route path="register" element={<RegisterPage />} />
@@ -59,6 +57,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ThemeProvider>
   );

@@ -22,6 +22,14 @@ import { queryClient } from './query/client';
 import Profile from './pages/Profile';
 import UploadProduct from './pages/UploadProduct';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+// -----------------------------------------------------------
+import UserManage from './admin-panel/user_manage';
+import ArtworkManage from './admin-panel/artwork_manage';
+
+// -----------------------------------------------------------
+
+
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -47,6 +55,10 @@ function App() {
               <Route path="upload" element={<UploadProduct />} />
               {/* <Route path="Artistdashboard" element={<ArtistDashboard />} /> */}
               <Route path="*" element={<NotFound />} />
+
+              <Route path="user_manage" element={<UserManage />} />
+              <Route path="artwork_manage" element={<ArtworkManage />} />
+
 
               {/* Protected Routes Group */}
               {/* <Route element={<ProtectedRoute />}>

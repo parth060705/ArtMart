@@ -34,6 +34,12 @@ export default function Footer() {
           <a href="/terms" className="text-base hover:text-[var(--primary)] transition-colors font-medium">Terms</a>
           <a href="/privacy" className="text-base hover:text-[var(--primary)] transition-colors font-medium">Privacy</a>
           <a href="/help" className="text-base hover:text-[var(--primary)] transition-colors font-medium">Help</a>
+
+          {/* ------------------------------------------------------------------------------------------- */}
+          <a href="/user_manage" className="text-base hover:text-[var(--primary)] transition-colors font-medium">user manage</a>
+          <a href="/artwork_manage" className="text-base hover:text-[var(--primary)] transition-colors font-medium">artwork manage</a>
+          {/* ------------------------------------------------------------------------------------------ */}
+
         </nav>
       </div>
       <div className="text-center text-xs text-muted-foreground py-3 bg-[var(--background)] border-t border-[var(--card)] opacity-80">

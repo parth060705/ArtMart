@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import api from '../service/admin_api';
+import api from '../service/admin_api'; // Your custom API handler
 
+// Template for an empty user
 const emptyUser = {
   name: '',
   email: '',
@@ -9,7 +10,7 @@ const emptyUser = {
   gender: '',
   age: '',
   pincode: '',
-  role: 'User',
+  role: '',
 };
 
 const UserManage = () => {
@@ -18,6 +19,7 @@ const UserManage = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
+  // Fetch users from the server
   const fetchUsers = async () => {
     try {
       const res = await api.get('/users');
@@ -31,10 +33,12 @@ const UserManage = () => {
     fetchUsers();
   }, []);
 
+  // Handle form input changes
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission (create or update)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -52,6 +56,7 @@ const UserManage = () => {
     }
   };
 
+  // Trigger editing
   const handleEdit = (user) => {
     const { id, ...rest } = user;
     setForm(rest);
@@ -59,16 +64,18 @@ const UserManage = () => {
     setShowForm(true);
   };
 
+  // Handle user deletion
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await api.delete(`users/${id}`);
+      await api.delete(`/users/${id}`);
       fetchUsers();
     } catch (err) {
       console.error('Error deleting user:', err);
     }
   };
 
+  // Open empty form for new user
   const openCreateForm = () => {
     setForm(emptyUser);
     setEditingId(null);
@@ -86,6 +93,7 @@ const UserManage = () => {
         + Add User
       </button>
 
+      {/* User Form */}
       {showForm && (
         <form
           onSubmit={handleSubmit}
@@ -135,6 +143,7 @@ const UserManage = () => {
         </form>
       )}
 
+      {/* User Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         <table className="min-w-full text-sm text-gray-800">
           <thead className="bg-gray-100 text-left font-semibold">

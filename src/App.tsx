@@ -35,7 +35,7 @@ function App() {
             <Routes>
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
-                {/* <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} /> */}
+                <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
                 <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
                 <Route path={AppRoutes.AuthForgotPasswordPage} element={<ForgotPasswordPage />} />
                 <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />

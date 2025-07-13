@@ -54,7 +54,7 @@ const Home = () => {
         <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{ fontFamily: 'Poppins' }}>
           Social Feed Highlights
         </h2>
-        <MasonryFeed className="columns-1 sm:columns-2 md:columns-3 gap-4 w-full" />
+        <MasonryFeed className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full" />
       </section>
 
       {/* Testimonial Cards */}

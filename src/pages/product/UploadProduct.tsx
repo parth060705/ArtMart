@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/hooks/UseAuth';
@@ -13,6 +14,7 @@ import { Upload, ImagePlus, X } from 'lucide-react';
 import { useUploadProduct } from '@/hooks/useUploadProduct';
 import { uploadProductSchema } from '@/lib/validation-schemas';
 import type { z } from 'zod';
+import { Routes } from '@/lib/routes';
 
 const categories = [
   'Painting',
@@ -34,6 +36,8 @@ interface ProductFormData {
 type FormData = z.infer<typeof uploadProductSchema>;
 
 const UploadProduct = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated } = useAuth();
   const { mutate: uploadProduct, isPending: isUploading } = useUploadProduct();
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
@@ -183,6 +187,19 @@ const UploadProduct = () => {
       toast.error('An unexpected error occurred');
     }
   };
+
+  useEffect(() => {
+    // Redirect if user is not authenticated
+    if (!isAuthenticated) {
+      navigate(`/auth/${Routes.AuthLoginPage}`, {
+        state: { from: location },
+        replace: true
+      });
+    }
+  }, [isAuthenticated, navigate, location]);
+
+  // If user is not authenticated, return null (will be handled by useEffect)
+  if (!isAuthenticated) return null;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

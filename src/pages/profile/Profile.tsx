@@ -34,7 +34,7 @@ const Profile = () => {
             <Link to={`/profile/${userProfile?.username}/update`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer">Edit Profile</Button>
             </Link>
-            <Link to={Routes.UploadProductPage}>
+            <Link to={`/${Routes.UploadProductPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer">Upload Artwork</Button>
             </Link>
           </div>

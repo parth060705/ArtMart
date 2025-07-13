@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../hooks/UseAuth';
+import { useAuth } from '@/hooks/UseAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Upload, ImagePlus, X } from 'lucide-react';
-import { useUploadProduct } from '@/query/hooks/useUploadProduct';
+import { useUploadProduct } from '@/hooks/useUploadProduct';
 import { uploadProductSchema } from '@/lib/validation-schemas';
 import type { z } from 'zod';
 
@@ -34,7 +34,7 @@ interface ProductFormData {
 type FormData = z.infer<typeof uploadProductSchema>;
 
 const UploadProduct = () => {
-  const { userProfile } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { mutate: uploadProduct, isPending: isUploading } = useUploadProduct();
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -56,25 +56,60 @@ const UploadProduct = () => {
     }
   });
 
+  // List of supported image MIME types
+  const SUPPORTED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/gif',
+    'image/avif'
+  ];
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     
-    // Filter only image files
-    const newImageFiles = files.filter((file): file is File => 
-      file instanceof File && file.type.startsWith('image/')
-    );
+    // Filter only image files and check supported types
+    const validImageFiles: File[] = [];
+    const invalidFiles: string[] = [];
     
-    if (newImageFiles.length === 0) return;
+    files.forEach(file => {
+      if (file instanceof File) {
+        if (file.type.startsWith('image/')) {
+          if (SUPPORTED_IMAGE_TYPES.includes(file.type)) {
+            validImageFiles.push(file);
+          } else {
+            invalidFiles.push(file.name);
+          }
+        }
+      }
+    });
+
+    // Show error for unsupported file types
+    if (invalidFiles.length > 0) {
+      toast.error(
+        `The following files are not supported: ${invalidFiles.join(', ')}. ` +
+        'Supported formats: JPG, PNG, WebP, GIF, AVIF'
+      );
+    }
+    
+    if (validImageFiles.length === 0) return;
+    
+    // Check total number of files won't exceed limit
+    const totalFiles = imageFiles.length + validImageFiles.length;
+    if (totalFiles > 5) {
+      toast.error('You can upload a maximum of 5 images');
+      return;
+    }
     
     // Create preview URLs
-    const newPreviewUrls = newImageFiles.map(file => URL.createObjectURL(file));
+    const newPreviewUrls = validImageFiles.map(file => URL.createObjectURL(file));
     
     // Update state
-    setImageFiles(prev => [...prev, ...newImageFiles]);
+    setImageFiles(prev => [...prev, ...validImageFiles]);
     setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
     
     // Update form values
-    setValue('images', [...imageFiles, ...newImageFiles].map(file => file.name), {
+    setValue('images', [...imageFiles, ...validImageFiles].map(file => file.name), {
       shouldValidate: true
     });
   };
@@ -102,46 +137,50 @@ const UploadProduct = () => {
     });
   };
 
-  const uploadImages = async (files: File[]): Promise<string[]> => {
-    // TODO: Replace with your actual image upload logic
-    // This is a placeholder that simulates an upload
-    const uploadPromises = files.map(async (file) => {
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // In a real app, you would upload the file to your server here
-      // and return the URL from the server response
-      return URL.createObjectURL(file);
-    });
-    
-    return Promise.all(uploadPromises);
-  };
-
   const onSubmit = async (data: FormData) => {
+    if (!isAuthenticated) {
+      toast.error('Please log in to upload artwork');
+      return;
+    }
+
+    if (imageFiles.length === 0) {
+      toast.error('Please upload at least one image');
+      return;
+    }
+
     try {
-      // First upload all images
-      const imageUrls = await uploadImages(imageFiles);
-      
-      // Then submit the product data with image URLs
-      uploadProduct({
-        ...data,
-        price: parseFloat(data.price),
-        images: imageUrls,
-      }, {
+      // Convert price to number before sending
+      const priceValue = parseFloat(data.price);
+      if (isNaN(priceValue) || priceValue <= 0) {
+        toast.error('Please enter a valid price');
+        return;
+      }
+
+      // Prepare product data to match the expected type in useUploadProduct
+      const productData = {
+        title: data.title,
+        description: data.description,
+        price: priceValue,
+        category: data.category,
+        files: imageFiles
+      };
+
+      // The hook will handle creating FormData and setting the correct headers
+      uploadProduct(productData, {
         onSuccess: () => {
-          // Reset form after successful submission
+          toast.success('Artwork uploaded successfully!');
           reset();
           setImageFiles([]);
           setPreviewUrls([]);
-          
-          toast.success('Your artwork has been uploaded successfully!');
         },
-        onError: () => {
+        onError: (error) => {
+          console.error('Error uploading artwork:', error);
           toast.error('Failed to upload artwork. Please try again.');
         }
       });
     } catch (error) {
-      console.error('Error uploading images:', error);
-      toast.error('Failed to upload images. Please try again.');
+      console.error('Error in form submission:', error);
+      toast.error('An unexpected error occurred');
     }
   };
 

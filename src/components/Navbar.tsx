@@ -32,14 +32,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
-}
+import { navbarRoutes } from "@/lib/routes";
+import { MenuItem } from "@/lib/types";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useProductSearch } from "@/context/ProductSearchContext";
 
 interface NavbarProps {
   logo?: {
@@ -47,8 +43,7 @@ interface NavbarProps {
     src: string;
     alt: string;
     title: string;
-  };
-  menu?: MenuItem[];
+  }
   auth?: {
     login: {
       title: string;
@@ -68,24 +63,17 @@ const Navbar = ({
     alt: "logo",
     title: "ArtMart",
   },
-  menu = [
-    { title: "Home", url: "/" },
-    {
-      title: "Products",
-      url: "/products",
-    },
-  ],
-  auth = {
-    login: { title: "Login", url: "/auth/login" },
-    signup: { title: "Sign up", url: "/auth/register" },
-  },
 }: NavbarProps) => {
   const { isAuthenticated, username } = useAuth();
+  const { data: userProfile } = useUserProfile();
+  const { setSearchQuery } = useProductSearch();
   // Search/filter state for Product Listing Page
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+
+  console.log(search)
 
   // Logout handler
   const handleLogout = () => {
@@ -112,7 +100,7 @@ const Navbar = ({
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
+                  {navbarRoutes.other.map((item) => renderMenuItem(item))}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -121,7 +109,7 @@ const Navbar = ({
           {/* Search and Filter for Product Listing Page */}
           {typeof window !== 'undefined' && window.location.pathname.includes('/products') && (
             <div className="flex items-center gap-3 mr-6">
-              <ProductSearchBar value={search} onChange={setSearch} />
+              <ProductSearchBar value={search} onChange={setSearchQuery} />
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="rounded-full px-6 font-semibold border-[var(--primary)] text-[var(--primary)] ml-2">
@@ -153,19 +141,19 @@ const Navbar = ({
                 ) : (
                   <div className="flex gap-2">
                     <Button asChild variant="outline">
-                      <a href={auth.login.url}>{auth.login.title}</a>
+                      <a href={navbarRoutes.auth.login.url}>{navbarRoutes.auth.login.title}</a>
                     </Button>
                     <Button asChild>
-                      <a href={auth.signup.url}>{auth.signup.title}</a>
+                      <a href={navbarRoutes.auth.signup.url}>{navbarRoutes.auth.signup.title}</a>
                     </Button>
                   </div>
                 )}
               </div>
               {/* User Avatar Link */}
-              {isAuthenticated && ( 
+              {isAuthenticated && (
                 <Link to={`/profile/${username}`} className="ml-2" aria-label="Go to profile">
                   <img
-                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    src={`${userProfile?.profileImage}`}
                     alt="Go to profile"
                     className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
                   />
@@ -202,7 +190,7 @@ const Navbar = ({
                     collapsible
                     className="flex w-full flex-col gap-4"
                   >
-                    {menu.map((item) => renderMobileMenuItem(item))}
+                    {navbarRoutes.other.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
@@ -211,10 +199,10 @@ const Navbar = ({
                     ) : (
                       <>
                         <Button asChild variant="outline">
-                          <a href={auth.login.url}>{auth.login.title}</a>
+                          <a href={navbarRoutes.auth.login.url}>{navbarRoutes.auth.login.title}</a>
                         </Button>
                         <Button asChild>
-                          <a href={auth.signup.url}>{auth.signup.title}</a>
+                          <a href={navbarRoutes.auth.signup.url}>{navbarRoutes.auth.signup.title}</a>
                         </Button>
                       </>
                     )}
@@ -222,7 +210,7 @@ const Navbar = ({
                     {isAuthenticated && (
                       <Link to={`/profile/${username}`} className="self-center mt-2" aria-label="Go to profile">
                         <img
-                          src="https://randomuser.me/api/portraits/men/32.jpg"
+                          src={`${userProfile?.profileImage}`}
                           alt="Go to profile"
                           className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
                         />
@@ -310,6 +298,6 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
       </div>
     </a>
   );
-};  
+};
 
 export default Navbar;

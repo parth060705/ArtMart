@@ -1,16 +1,8 @@
 import { Card } from "@/components/ui/card";
+import { Product } from "@/lib/types";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 
-type ProductCardProps = {
-    id: number;
-    images: string[];
-    title: string;
-    profileImage: string;
-    username: string;
-    description: string;
-    price: string;
-    likes: number;
-    comments: number;
+interface ProductCardProps extends Product {
     variant?: 'default' | 'gallery';
     onClick?: () => void;
 };

@@ -12,3 +12,12 @@ export type Product = {
     location: string;
     createdAt: string;
 }
+
+export interface MenuItem {
+    title: string;
+    url: string;
+    description?: string;
+    icon?: React.ReactNode;
+    items?: MenuItem[];
+  }
+  

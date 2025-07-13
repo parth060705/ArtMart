@@ -1,12 +1,42 @@
-# React + Vite
+# 🎨 ArtMart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ArtMart** is a modern eCommerce + social media hybrid platform for artists to showcase, sell, and promote handmade or digital art. Built for creators, it combines an artistic marketplace with social engagement features.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Features
 
-## Expanding the ESLint configuration
+- 🛍️ Upload and sell handcrafted art and digital creations
+- 👥 Public artist profiles with follower/following counters
+- 💬 User interactions: reviews, comments, and likes
+- 🔒 Secure user authentication with login/register/forgot password
+- 🛒 Add to cart and checkout experience (WIP)
+- 🎨 Upload product UI, update profile options, and explore artists
+- ⚡ TanStack Query for robust and scalable API fetching
+- 🌙 Theme support with dark/light/system options (via ShadCN)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧰 Tech Stack
+
+| Layer       | Tools                                       |
+|-------------|---------------------------------------------|
+| Frontend    | React + Vite + TailwindCSS + ShadCN         |
+| API         | FastAPI + SQLAlchemy + Alembic              |
+| Database    | MySQL (Aiven Cloud)                         |
+| State Mgmt  | TanStack Query                              |
+| Auth        | JWT-based system                            |
+| Deployment  | Vercel (frontend), Railway/Aiven (backend)  |
+
+---
+
+## 🚀 Getting Started
+
+### ✅ Prerequisites
+
+- Node.js ≥ 18.x
+- Python ≥ 3.9
+- MySQL running (locally or via Aiven)
+- Git installed
+
+---

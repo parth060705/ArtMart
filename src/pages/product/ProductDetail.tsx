@@ -7,7 +7,7 @@ import CommentCard from '@/components/CommentCard';
 import ProductCard from '@/components/ProductCard';
 import AvatarSlider from '@/components/AvatarSlider';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
-import { useProductDetails } from '@/query/hooks/useProductDetails';
+import { useProductDetails } from '@/hooks/useProductDetails';
 import { Product } from '@/lib/types';
 
 // --- Types ---

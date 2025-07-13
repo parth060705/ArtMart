@@ -1,4 +1,4 @@
-import { useProductsList } from "@/query/hooks/useProductsList";
+import { useProductsList } from "@/hooks/useProductsList";
 import ProductCard from "./ProductCard";
 import { Product } from "@/lib/types";
 

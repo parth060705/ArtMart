@@ -1,56 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
-import { useAuth } from '../hooks/UseAuth';
+import { useAuth } from '../../hooks/UseAuth';
 import { Link } from 'react-router-dom';
-import { useUserProfile } from '@/query/hooks/useUserProfile';
-import { useProductsList } from '@/query/hooks/useProductsList';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useProductsList } from '@/hooks/useProductsList';
+import { Product } from '@/lib/types';
 // import { useUserContext } from '../context/context';
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
-  const {data:products} = useProductsList()
-  console.log(products)
-
-  // Mock uploaded products
-  const uploadedProducts = [
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308',
-      caption: 'Sunset #nature #art',
-      name: 'Sunset',
-      profileImage: userProfile?.profileImage,
-      user: userProfile?.name || '',
-      description: 'A beautiful sunset.',
-      price: '$120',
-      likes: 12,
-      comments: 3,
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-      caption: 'Forest walk #green #relax',
-      name: 'Forest Walk',
-      profileImage: userProfile?.profileImage,
-      user: userProfile?.name || '',
-      description: 'A walk in the forest.',
-      price: '$90',
-      likes: 8,
-      comments: 1,
-    },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca',
-      caption: 'City lights #nightlife #urban',
-      name: 'City Lights',
-      profileImage: userProfile?.profileImage,
-      user: userProfile?.name || '',
-      description: 'Night cityscape.',
-      price: '$150',
-      likes: 20,
-      comments: 5,
-    },
-  ];
+  const { data: products } = useProductsList()
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -88,14 +48,14 @@ const Profile = () => {
       </div>
 
       {/* Uploaded Products Grid */}
-      {/* <div>
+      <div>
         <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'Poppins' }}>Uploaded Artworks</h3>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {uploadedProducts.map((product) => (
+          {products?.map((product: Product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

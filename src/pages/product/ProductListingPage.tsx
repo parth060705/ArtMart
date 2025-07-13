@@ -4,26 +4,27 @@ import FilterSidebar from '@/components/FilterSidebar';
 import ProductSearchBar from '@/components/ProductSearchBar';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
-import { useProductsList } from '@/query/hooks/useProductsList';
+import { useProductsList } from '@/hooks/useProductsList';
 import { Product } from '@/lib/types';
+import { useProductSearch } from '@/context/ProductSearchContext';
 
 const ProductListingPage = () => {
-  const {data:products} = useProductsList()
-  const [search, setSearch] = useState('');
+  const { searchQuery } = useProductSearch();
+  const { data: products } = useProductsList()
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const navigate = useNavigate();
 
   // Filter logic
-  const filteredProducts = products?.filter((prod:Product) => {
+  const filteredProducts = products?.filter((prod: Product) => {
     const matchesCategory = !selectedCategory || prod.category === selectedCategory;
     const matchesLocation = !selectedLocation || prod.location === selectedLocation;
     const matchesPrice = (!priceRange[0] || prod.price >= priceRange[0]) &&
       (!priceRange[1] || prod.price <= priceRange[1]);
-      const matchesSearch = prod.title.toLowerCase().includes(search.toLowerCase()) 
-        // prod.user.toLowerCase().includes(search.toLowerCase()) ||
-        // prod.caption.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = prod.title.toLowerCase().includes(searchQuery.toLowerCase())
+    // prod.user.toLowerCase().includes(search.toLowerCase()) ||
+    // prod.caption.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesLocation && matchesPrice && matchesSearch;
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -35,7 +36,7 @@ const ProductListingPage = () => {
           <div className="flex-1 flex flex-col gap-6">
             <div className="w-full">
               <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-6 [column-fill:_balance]"><div className="[&>*]:mb-6">
-                {filteredProducts?.length ? filteredProducts.map((prod:any) => (
+                {filteredProducts?.length ? filteredProducts.map((prod: any) => (
                   <div key={prod.id} className="break-inside-avoid">
                     <ProductCard
                       {...prod}
@@ -57,7 +58,7 @@ const ProductListingPage = () => {
                     onClick={() => setSidebarOpen(false)}
                     aria-label="Close filters"
                   >
-                   x
+                    x
                   </button>
                   <FilterSidebar
                     selectedCategory={selectedCategory}

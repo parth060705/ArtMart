@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { loginFormSchema } from '../../lib/validation-schemas';
-import { useLogin } from '@/query/hooks/useLogin';
+import { useLogin } from '@/hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/UseAuth';
 

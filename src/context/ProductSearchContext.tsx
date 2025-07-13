@@ -7,6 +7,8 @@ interface ProductSearchContextType {
   setSearchQuery: (query: string) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  selectedLocation: string;
+  setSelectedLocation: (location: string) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
   sortBy: SortOption;
@@ -28,6 +30,7 @@ export function ProductSearchProvider({ children }: ProductSearchProviderProps) 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [sortBy, setSortBy] = useState<SortOption>('recent');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLocation, setSelectedLocation] = useState('');
 
   const resetFilters = useCallback(() => {
     setSearchQuery('');
@@ -35,6 +38,7 @@ export function ProductSearchProvider({ children }: ProductSearchProviderProps) 
     setPriceRange([0, 10000]);
     setSortBy('recent');
     setCurrentPage(1);
+    setSelectedLocation('');
   }, []);
 
   const value: ProductSearchContextType = {
@@ -42,13 +46,15 @@ export function ProductSearchProvider({ children }: ProductSearchProviderProps) 
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
+    selectedLocation,
+    setSelectedLocation,
     priceRange,
     setPriceRange,
     sortBy,
     setSortBy,
     currentPage,
     setCurrentPage,
-    resetFilters,
+    resetFilters
   };
 
   return (

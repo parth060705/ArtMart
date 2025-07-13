@@ -19,9 +19,12 @@ import ProductListingPage from './pages/product/ProductListingPage';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/client';
 import Profile from './pages/profile/Profile';
+import ProfileUpdate from './pages/profile/ProfileUpdate';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import UploadProduct from './pages/product/UploadProduct';
 import { ProductSearchProvider } from './context/ProductSearchContext';
+import SearchProduct from './pages/product/SearchProduct';
+import { Routes as AppRoutes } from './lib/routes';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -32,26 +35,26 @@ function App() {
             <Routes>
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
-                <Route path="login" element={<Loginpage />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="reset-password" element={<ResetPasswordPage />} />
+                {/* <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} /> */}
+                <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
+                <Route path={AppRoutes.AuthForgotPasswordPage} element={<ForgotPasswordPage />} />
+                <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
               </Route>
-
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<Home />} />
-                <Route path="products" element={<ProductListingPage />} />
-                <Route path="product/:id" element={<ProductDetail />} />
-                <Route path="Cart" element={<Cart />} />
-                <Route path="profile/:username" element={<Profile />} />
-                <Route path="upload" element={<UploadProduct />} />
-                {/* <Route path="Artistdashboard" element={<ArtistDashboard />} /> */}
+                <Route path={AppRoutes.ProductsListingPage} element={<ProductListingPage />} />
+                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ProductDetail />} />
+                <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
+                <Route path={AppRoutes.CartPage} element={<Cart />} />
+                <Route path={AppRoutes.ProfilePage} element={<Profile />} />
+                <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
+                <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} /> 
                 <Route path="*" element={<NotFound />} />
 
                 {/* Protected Routes Group */}
                 {/* <Route element={<ProtectedRoute />}>
-            <Route path="Cart" element={<Cart />} />
-            <Route path="Profile" element={<Profile />} />
+            <Route path={AppRoutes.CartPage} element={<Cart />} />
+            <Route path={AppRoutes.ProfilePage} element={<Profile />} />
           </Route> */}
 
               </Route>

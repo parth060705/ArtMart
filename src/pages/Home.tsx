@@ -1,70 +1,11 @@
 // src/pages/Home.jsx
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import MasonrySocialFeed from '@/components/MasonrySocialFeed';
-
 import AvatarSlider from '@/components/AvatarSlider';
 import ModernHashtagSlider from '@/components/ModernHashtagSlider';
 import SocialTestimonial from '@/components/SocialTestimonial';
 import ProductCard from '@/components/ProductCard';
 import { Link } from 'react-router-dom';
-
-const products = [
-  {
-    image: "https://unsplash.com/photos/brown-and-black-bird-on-green-plant-YoK5pBcSY8s",
-    name: "Sunset Painting",
-    description: "Hand-painted acrylic on canvas",
-    price: "₹2,499",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    name: "Woolen Doll",
-    description: "Handmade with soft wool",
-    price: "₹799",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    name: "Clay Sculpture",
-    description: "Eco-friendly terracotta craft",
-    price: "₹1,299",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-    name: "Sunset Painting",
-    description: "Hand-painted acrylic on canvas",
-    price: "₹2,499",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80",
-    name: "Woolen Doll",
-    description: "Handmade with soft wool",
-    price: "₹799",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1424746219973-8fe3bd07d8e3?auto=format&fit=crop&w=400&q=80",
-    name: "Clay Sculpture",
-    description: "Eco-friendly terracotta craft",
-    price: "₹1,299",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80",
-    name: "Sunset Painting",
-    description: "Hand-painted acrylic on canvas",
-    price: "₹2,499",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400&q=80",
-    name: "Woolen Doll",
-    description: "Handmade with soft wool",
-    price: "₹799",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80",
-    name: "Clay Sculpture",
-    description: "Eco-friendly terracotta craft",
-    price: "₹1,299",
-  },
-];
+import MasonryFeed from '@/components/MasonryFeed';
 
 const Home = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -113,7 +54,7 @@ const Home = () => {
         <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{ fontFamily: 'Poppins' }}>
           Social Feed Highlights
         </h2>
-        <MasonrySocialFeed />
+        <MasonryFeed className="columns-1 sm:columns-2 md:columns-3 gap-4 w-full" />
       </section>
 
       {/* Testimonial Cards */}

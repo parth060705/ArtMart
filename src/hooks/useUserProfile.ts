@@ -1,18 +1,20 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 
-interface UserProfile {
+import { UserProfile } from '@/lib/types';
+
+interface UserProfileResponse {
   id: string;
   username: string;
   name: string;
   email: string;
   avatar?: string;
   bio?: string;
-  followers?: number;
-  following?: number;
+  followers: number;
+  following: number;
   profileImage: string;
-  images: string[];
-  title: string;
+  followersList: UserProfile[];
+  followingList: UserProfile[];
 }
 
 type UseUserProfileOptions = Omit<UseQueryOptions<UserProfile, Error, UserProfile, ["userProfile"]>, 'queryKey' | 'queryFn'>;
@@ -22,7 +24,12 @@ export const useUserProfile = (options: UseUserProfileOptions = {}) => {
     queryKey: ["userProfile"] as const,
     queryFn: async () => {
       const { data } = await axiosClient.get("/me");
-      return data;
+      // Transform the response to match our UserProfile interface
+      return {
+        ...data,
+        followersList: data.followersList || [],
+        followingList: data.followingList || []
+      };
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 1,

@@ -27,7 +27,7 @@ export default function ProductCard({
         <div
             key={id}
             className={
-                `group relative mb-6 break-inside-avoid rounded-3xl overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-[1.03] focus-within:scale-[1.03] bg-gray-100`
+                `group relative break-inside-avoid rounded-3xl overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-[1.03] focus-within:scale-[1.03] bg-gray-100`
             }
             tabIndex={onClick ? 0 : undefined}
             role={onClick ? 'button' : undefined}

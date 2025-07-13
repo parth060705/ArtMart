@@ -36,7 +36,7 @@ import { navbarRoutes } from "@/lib/routes";
 import { MenuItem } from "@/lib/types";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProductSearch } from "@/context/ProductSearchContext";
-
+import { Routes as AppRoutes } from "@/lib/routes";
 interface NavbarProps {
   logo?: {
     url: string;
@@ -107,7 +107,7 @@ const Navbar = ({
           </div>
 
           {/* Search and Filter for Product Listing Page */}
-          {typeof window !== 'undefined' && window.location.pathname.includes('/products') && (
+          {typeof window !== 'undefined' && window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage) && (
             <div className="flex items-center gap-3 mr-6">
               <ProductSearchBar value={search} onChange={setSearchQuery} />
               <Sheet>

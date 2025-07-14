@@ -6,10 +6,10 @@ export class Routes {
     static ProfileUpdatePage = "profile/:username/update"
     static UploadProductPage = "upload"
     static SearchProductPage = "search"
-    static AuthLoginPage = "login"
-    static AuthRegisterPage = "register"
-    static AuthForgotPasswordPage = "forgot-password"
-    static AuthResetPasswordPage = "reset-password"
+    static AuthLoginPage = "/auth/login"
+    static AuthRegisterPage = "/auth/register"
+    static AuthForgotPasswordPage = "/auth/forgot-password"
+    static AuthResetPasswordPage = "/auth/reset-password"
 }
 
 export const navbarRoutes = {

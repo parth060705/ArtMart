@@ -23,15 +23,19 @@ export interface UserProfile extends User {
 
 export type Product = {
     id: number;
-    images: string[];
     title: string;
-    profileImage: string;
-    username: string;
     description: string;
+    images: string[];
     price: number;
+    category: string;
+    artist:{
+        username: string,
+        profileImage: string
+    },
+    isSold:boolean,
+    artistid: string,
     likes: number;
     comments: number;
-    category: string;
     location: string;
     createdAt: string;
 }

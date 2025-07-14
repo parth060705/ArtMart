@@ -21,7 +21,7 @@ export const useUploadProduct = () => {
         if (key === 'files') {
           // Handle files array separately - use 'file' as field name to match backend
           productData.files.forEach((file) => {
-            formData.append('file', file);
+            formData.append('files', file);
           });
         } else {
           // Convert other values to string and append

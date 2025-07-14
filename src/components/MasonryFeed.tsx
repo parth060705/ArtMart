@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useProductSearch } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
 
-export default function MasonryFeed({className}: {className?: string}) {
+export default function MasonryFeed({className, length}: {className?: string, length?: number}) {
   const navigate = useNavigate();
   const { data: products } = useProductsList()
   const { searchQuery, selectedCategory, selectedLocation, priceRange, sortBy, currentPage } = useProductSearch();
@@ -19,9 +19,10 @@ export default function MasonryFeed({className}: {className?: string}) {
     // prod.caption.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesLocation && matchesPrice && matchesSearch;
   });
+  console.log(filteredProducts)
   return (
     <div className={className}>
-      {filteredProducts?.length ? filteredProducts.map((prod: any) => (
+      {filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product, index: number) => (
         <div key={prod.id} className="break-inside-avoid">
           <ProductCard
             {...prod}

@@ -1,35 +1,64 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+// src/hooks/useAdminUsers.ts (or userFetch.ts)
+
+import { useQuery, useMutation, useQueryClient, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 import { User } from "@/lib/types";
 
-interface UserProfileResponse {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  bio?: string;
-  followers: number;
-  following: number;
-  profileImage: string;
-  followersList: User[];
-  followingList: User[];
-}
-
-type UseUserProfileOptions = Omit<
-  UseQueryOptions<UserProfileResponse, Error, UserProfileResponse, ["User"]>,
+// ===== FETCH USERS =====
+type UseAdminUsersOptions = Omit<
+  UseQueryOptions<User[], Error>,
   "queryKey" | "queryFn"
 >;
 
-export const useUserProfile = (options: UseUserProfileOptions = {}) => {
-  return useQuery<UserProfileResponse, Error, UserProfileResponse, ["User"]>({
-    queryKey: ["User"],
+export const useAdminUsers = (
+  options: UseAdminUsersOptions = {}
+): UseQueryResult<User[], Error> => {
+  return useQuery<User[], Error>({
+    queryKey: ["admin", "users"],
     queryFn: async () => {
-      const { data } = await axiosClient.get<UserProfileResponse>("/api/admin/users");
+      const { data } = await axiosClient.get<User[]>("/api/admin/users");
       return data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
     retry: 1,
     ...options,
+  });
+};
+
+// ===== CREATE USER =====
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (newUser: Partial<User>) =>
+      axiosClient.post("/api/admin/users", newUser),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+  });
+};
+
+// ===== UPDATE USER =====
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, user }: { id: string; user: Partial<User> }) =>
+      axiosClient.put(`/api/admin/users/${id}`, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+  });
+};
+
+// ===== DELETE USER =====
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => axiosClient.delete(`/api/admin/users/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
   });
 };

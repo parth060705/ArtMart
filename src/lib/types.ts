@@ -29,11 +29,11 @@ export type Product = {
     images: string[];
     price: number;
     category: string;
-    artist:{
+    artist: {
         username: string,
         profileImage: string
     },
-    isSold:boolean,
+    isSold: boolean,
     artistid: string,
     likes: number;
     comments: number;
@@ -56,3 +56,16 @@ export interface MenuItem {
     icon?: React.ReactNode;
     items?: MenuItem[];
 }
+
+export type Artwork = {
+    id: number;
+    title: string;
+    description: string;
+    images: string[];
+    price: number;
+    category: string;
+    isSold: boolean,
+    artistId: number;
+    createdAt: Date;
+}
+

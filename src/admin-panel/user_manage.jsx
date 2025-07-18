@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { axiosClient as api } from '@/lib/axios';
-
+import {
+  useAdminUsers,
+  useCreateUser,
+  useUpdateUser,
+  useDeleteUser,
+} from '@/admin_hooks/userfetch'; 
 
 const emptyUser = {
   name: '',
@@ -11,48 +14,21 @@ const emptyUser = {
   gender: '',
   age: '',
   pincode: '',
-  role: 'User',
+  role: '',
 };
 
 const UserManage = () => {
-  const queryClient = useQueryClient();
   const [form, setForm] = useState(emptyUser);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Fetch users
-  const { data: users = [], isLoading } = useQuery(['users'], async () => {
-    const res = await api.get('/users');
-    return res.data;
-  });
+  // 🔄 Fetch users
+  const { data: users = [], isLoading } = useAdminUsers();
 
-  // Mutations
-  const createUser = useMutation(
-    (newUser) => api.post('/users', newUser),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['users']);
-        resetForm();
-      },
-    }
-  );
-
-  const updateUser = useMutation(
-    ({ id, user }) => api.put(`/users/${id}`, user),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['users']);
-        resetForm();
-      },
-    }
-  );
-
-  const deleteUser = useMutation(
-    (id) => api.delete(`/users/${id}`),
-    {
-      onSuccess: () => queryClient.invalidateQueries(['users']),
-    }
-  );
+  // 🔧 Mutations
+  const createUser = useCreateUser();
+  const updateUser = useUpdateUser();
+  const deleteUser = useDeleteUser();
 
   const resetForm = () => {
     setForm(emptyUser);
@@ -71,6 +47,7 @@ const UserManage = () => {
     } else {
       createUser.mutate(form);
     }
+    resetForm();
   };
 
   const handleEdit = (user) => {
@@ -86,25 +63,26 @@ const UserManage = () => {
     }
   };
 
-  const openCreateForm = () => {
-    setForm(emptyUser);
-    setEditingId(null);
-    setShowForm(true);
-  };
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">User Management</h1>
 
       <button
-        onClick={openCreateForm}
+        onClick={() => {
+          setForm(emptyUser);
+          setEditingId(null);
+          setShowForm(true);
+        }}
         className="mb-6 px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700"
       >
         + Add User
       </button>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-10 p-6 bg-white shadow rounded grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleSubmit}
+          className="mb-10 p-6 bg-white shadow rounded grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           {Object.keys(emptyUser).map((key) => (
             <div key={key}>
               <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
@@ -146,7 +124,6 @@ const UserManage = () => {
         </form>
       )}
 
-      {/* User Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         {isLoading ? (
           <div className="p-6 text-gray-500">Loading users...</div>

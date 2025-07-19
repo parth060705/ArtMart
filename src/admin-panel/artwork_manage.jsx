@@ -1,5 +1,11 @@
+// src/admin-panel/ArtworkManage.jsx
+
 import React, { useState } from "react";
-import { useAdminArtworks, useDeleteArtwork } from "@/admin_hooks/artworkfetch";
+import {
+  useAdminArtworks,
+  useDeleteArtwork,
+  useUpdateArtwork,
+} from "@/admin_hooks/artworkfetch";
 
 const emptyArtwork = {
   id: "",
@@ -21,6 +27,7 @@ const ArtworkManage = () => {
 
   const { data: artworks = [], isLoading, refetch } = useAdminArtworks();
   const deleteArtwork = useDeleteArtwork();
+  const updateArtwork = useUpdateArtwork();
 
   const handleEdit = (art) => {
     setForm({ ...emptyArtwork, ...art, isSold: Boolean(art.isSold), file: null });
@@ -57,11 +64,30 @@ const ArtworkManage = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted data:", form);
-    alert(editingId ? "Update Artwork" : "Create Artwork");
-    setShowForm(false);
-    setForm(emptyArtwork);
-    setEditingId(null);
+
+    if (editingId) {
+      const updatedData = { ...form };
+      delete updatedData.file; // omit file for now unless needed
+
+      updateArtwork.mutate(
+        { id: editingId, artwork: updatedData },
+        {
+          onSuccess: () => {
+            alert("Artwork updated successfully!");
+            setShowForm(false);
+            setForm(emptyArtwork);
+            setEditingId(null);
+            refetch();
+          },
+          onError: (err) => {
+            console.error("❌ Update failed:", err);
+            alert("Failed to update artwork.");
+          },
+        }
+      );
+    } else {
+      alert("🔧 Create functionality not implemented yet.");
+    }
   };
 
   return (

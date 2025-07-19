@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   useAdminUsers,
   useCreateUser,
   useUpdateUser,
   useDeleteUser,
-} from '@/admin_hooks/userfetch'; 
+} from "@/admin_hooks/userfetch";
 
 const emptyUser = {
-  name: '',
-  email: '',
-  username: '',
-  location: '',
-  gender: '',
-  age: '',
-  pincode: '',
-  role: '',
+  name: "",
+  email: "",
+  username: "",
+  location: "",
+  gender: "",
+  age: "",
+  pincode: "",
+  role: "",
+  phone: ""
 };
 
 const UserManage = () => {
@@ -22,10 +23,10 @@ const UserManage = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // 🔄 Fetch users
+  //  Fetch users
   const { data: users = [], isLoading } = useAdminUsers();
 
-  // 🔧 Mutations
+  //  Mutations
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
   const deleteUser = useDeleteUser();
@@ -37,16 +38,24 @@ const UserManage = () => {
   };
 
   const handleInputChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "number" ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (editingId) {
+      console.log("🔄 Updating:", editingId, form);
       updateUser.mutate({ id: editingId, user: form });
     } else {
+      console.log(" Creating:", form);
       createUser.mutate(form);
     }
+
     resetForm();
   };
 
@@ -58,10 +67,19 @@ const UserManage = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
+    if (window.confirm("Are you sure you want to delete this user?")) {
       deleteUser.mutate(id);
     }
   };
+
+  useEffect(() => {
+    if (updateUser.isError) {
+      alert("Update failed. Check console.");
+    }
+    if (updateUser.isSuccess) {
+      console.log(" Update success");
+    }
+  }, [updateUser.isError, updateUser.isSuccess]);
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -88,7 +106,7 @@ const UserManage = () => {
               <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
                 {key}
               </label>
-              {key === 'role' ? (
+              {key === "role" ? (
                 <select
                   name="role"
                   value={form.role}
@@ -100,7 +118,7 @@ const UserManage = () => {
                 </select>
               ) : (
                 <input
-                  type={key === 'age' ? 'number' : 'text'}
+                  type={key === "age" || key === "pincode" ? "number" : "text"}
                   name={key}
                   value={form[key]}
                   onChange={handleInputChange}
@@ -110,8 +128,11 @@ const UserManage = () => {
             </div>
           ))}
           <div className="col-span-full flex gap-4 justify-end">
-            <button type="submit" className="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              {editingId ? 'Update User' : 'Create User'}
+            <button
+              type="submit"
+              className="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {editingId ? "Update User" : "Create User"}
             </button>
             <button
               type="button"
@@ -139,6 +160,7 @@ const UserManage = () => {
                 <th className="p-4">Gender</th>
                 <th className="p-4">Age</th>
                 <th className="p-4">Pincode</th>
+                <th className="p-4">Phone</th>
                 <th className="p-4">Role</th>
                 <th className="p-4">Actions</th>
               </tr>
@@ -154,6 +176,7 @@ const UserManage = () => {
                   <td className="p-4">{user.gender}</td>
                   <td className="p-4">{user.age}</td>
                   <td className="p-4">{user.pincode}</td>
+                  <td className="p-4">{user.phone}</td>
                   <td className="p-4">{user.role}</td>
                   <td className="p-4">
                     <div className="flex gap-2">

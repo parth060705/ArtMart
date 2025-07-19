@@ -1,14 +1,9 @@
-// src/hooks/useAdminUsers.ts (or userFetch.ts)
-
 import { useQuery, useMutation, useQueryClient, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 import { User } from "@/lib/types";
 
-// ===== FETCH USERS =====
-type UseAdminUsersOptions = Omit<
-  UseQueryOptions<User[], Error>,
-  "queryKey" | "queryFn"
->;
+// FETCH USERS 
+type UseAdminUsersOptions = Omit<UseQueryOptions<User[], Error>, "queryKey" | "queryFn">;
 
 export const useAdminUsers = (
   options: UseAdminUsersOptions = {}
@@ -25,7 +20,7 @@ export const useAdminUsers = (
   });
 };
 
-// ===== CREATE USER =====
+//  CREATE USER
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
 
@@ -38,20 +33,26 @@ export const useCreateUser = () => {
   });
 };
 
-// ===== UPDATE USER =====
+//  UPDATE USER 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, user }: { id: string; user: Partial<User> }) =>
-      axiosClient.put(`/api/admin/users/${id}`, user),
+      axiosClient.patch(`/api/admin/update/users/${id}`, user),
+
     onSuccess: () => {
+      console.log("User updated successfully");
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+
+    onError: (error) => {
+      console.error("Update failed:", error);
     },
   });
 };
 
-// ===== DELETE USER =====
+// DELETE USER 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
 

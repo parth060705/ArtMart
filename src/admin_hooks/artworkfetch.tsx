@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 import { Artwork } from "@/lib/types";
 
+// FETCH ARTWORK
 export const useAdminArtworks = () =>
   useQuery<Artwork[], Error>({
     queryKey: ["admin", "artworks"],
@@ -13,6 +14,7 @@ export const useAdminArtworks = () =>
     staleTime: 1000 * 60 * 5,
   });
 
+// DELETE ARTWORK
 export const useDeleteArtwork = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -22,3 +24,19 @@ export const useDeleteArtwork = () => {
     },
   });
 };
+
+// UPDATE ARTWORK
+export const useUpdateArtwork = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, artwork }: { id: string; artwork: Partial<Artwork> }) =>
+      axiosClient.patch(`/api/admin/update/artworks/${id}`, artwork),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "artworks"] });
+    },
+    onError: (err) => {
+      console.error("Update artwork failed:", err);
+    },
+  });
+};
+

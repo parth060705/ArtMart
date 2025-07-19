@@ -39,7 +39,7 @@ export const useUpdateUser = () => {
 
   return useMutation({
     mutationFn: ({ id, user }: { id: string; user: Partial<User> }) =>
-      axiosClient.patch(`/api/admin/update/users/${id}`, user),
+      axiosClient.patch(`/admin/update/users/${id}`, user),
 
     onSuccess: () => {
       console.log("User updated successfully");

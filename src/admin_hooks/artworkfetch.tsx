@@ -8,7 +8,7 @@ export const useAdminArtworks = () =>
   useQuery<Artwork[], Error>({
     queryKey: ["admin", "artworks"],
     queryFn: async () => {
-      const { data } = await axiosClient.get("/api/admin/artworks");
+      const { data } = await axiosClient.get("/admin/artworks");
       return data;
     },
     staleTime: 1000 * 60 * 5,
@@ -18,19 +18,19 @@ export const useAdminArtworks = () =>
 export const useDeleteArtwork = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => axiosClient.delete(`/api/admin/artworks/${id}`),
+    mutationFn: (id: string) => axiosClient.delete(`/admin/artworks/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "artworks"] });
     },
   });
 };
 
-// UPDATE ARTWORK
+// UPDATE ARTWORKS
 export const useUpdateArtwork = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, artwork }: { id: string; artwork: Partial<Artwork> }) =>
-      axiosClient.patch(`/api/admin/update/artworks/${id}`, artwork),
+      axiosClient.patch(`/admin/update/artworks/${id}`, artwork),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "artworks"] });
     },

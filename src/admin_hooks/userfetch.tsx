@@ -11,7 +11,7 @@ export const useAdminUsers = (
   return useQuery<User[], Error>({
     queryKey: ["admin", "users"],
     queryFn: async () => {
-      const { data } = await axiosClient.get<User[]>("/api/admin/users");
+      const { data } = await axiosClient.get<User[]>("/admin/users");
       return data;
     },
     staleTime: 1000 * 60 * 5,
@@ -26,7 +26,7 @@ export const useCreateUser = () => {
 
   return useMutation({
     mutationFn: (newUser: Partial<User>) =>
-      axiosClient.post("/api/admin/users", newUser),
+      axiosClient.post("/admin/users", newUser),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
     },
@@ -57,7 +57,7 @@ export const useDeleteUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => axiosClient.delete(`/api/admin/users/${id}`),
+    mutationFn: (id: string) => axiosClient.delete(`/admin/users/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
     },

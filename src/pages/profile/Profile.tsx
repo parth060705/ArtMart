@@ -10,10 +10,11 @@ import FollowersAndFollowingPopup from '@/components/Followers&FollowingPopup';
 import { useUserFollowersList } from '@/hooks/useUserFollowersList';
 import { useUserFollowingList } from '@/hooks/useUserFollowingList';
 import { Routes } from '@/lib/routes';
+import MasonryFeed from '@/components/MasonryFeed';
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
-  const { data: products } = useProductsList();
+  const { data: products } = useProductsList("/auth/artworks/me");
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
@@ -23,7 +24,7 @@ const Profile = () => {
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
-          src={userProfile?.profileImage}
+          src={userProfile?.profileImageUrl}
           alt={userProfile?.name}
           className="w-32 h-32 rounded-full border-4 border-[var(--primary)] object-cover shadow-lg -mt-16 md:mt-0"
         />
@@ -64,11 +65,16 @@ const Profile = () => {
       {/* Uploaded Products Grid */}
       <div>
         <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'Poppins' }}>Uploaded Artworks</h3>
-        <div className="grid md:gap-8 gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3">
+        {/* <div className="grid md:gap-8 gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
           {products?.map((product: Product) => (
             <ProductCard key={product.id} {...product} />
           ))}
-        </div>
+        </div> */}
+        <MasonryFeed
+          length={products?.length}
+          url="/auth/artworks/me"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full"
+        />
       </div>
     </div>
   );

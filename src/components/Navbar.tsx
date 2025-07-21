@@ -61,7 +61,7 @@ const Navbar = ({
     url: "/",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
-    title: "ArtMart",
+    title: "Artmart",
   },
 }: NavbarProps) => {
   const { isAuthenticated, username } = useAuth();
@@ -92,8 +92,7 @@ const Navbar = ({
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="max-h-8" alt={logo.alt} />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {logo.title}
               </span>
             </a>

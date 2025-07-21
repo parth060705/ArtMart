@@ -58,8 +58,8 @@ export default function ProductCard({
                 <div className="flex items-end w-full justify-between mt-auto">
                     {/* Profile */}
                     <div className="flex items-center gap-2">
-                        <img src={artist.profileImage} alt={artist.username} className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow" />
-                        <span className="font-semibold text-white text-base drop-shadow" style={{ fontFamily: 'Poppins' }}>{artist.username}</span>
+                        <img src={artist?.profileImage} alt={artist?.username} className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow" />
+                        <span className="font-semibold text-white text-base drop-shadow" style={{ fontFamily: 'Poppins' }}>{artist?.username}</span>
                     </div>
                     {/* Social Actions */}
                     <div className="flex gap-3 ml-auto">

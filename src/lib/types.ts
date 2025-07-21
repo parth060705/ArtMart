@@ -28,11 +28,11 @@ export type Product = {
     images: string[];
     price: number;
     category: string;
-    artist:{
+    artist: {
         username: string,
         profileImage: string
     },
-    isSold:boolean,
+    isSold: boolean,
     artistid: string,
     likes: number;
     comments: number;

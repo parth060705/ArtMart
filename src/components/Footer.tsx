@@ -9,8 +9,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
         {/* Left: Logo & Name */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
-          <img src="/logo192.png" alt="ArtMart Logo" className="w-10 h-10 rounded-lg bg-[var(--primary)] p-1 shadow" />
-          <span className="text-2xl font-bold tracking-tight" style={{fontFamily:'Poppins'}}>ArtMart</span>
+          <a href='/' className="flex items-center gap-2">
+            <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Artmart
+            </span>
+          </a>
         </div>
         {/* Center: Social Media Icons */}
         <div className="flex gap-6 justify-center w-full md:w-auto">
@@ -37,7 +40,7 @@ export default function Footer() {
         </nav>
       </div>
       <div className="text-center text-xs text-muted-foreground py-3 bg-[var(--background)] border-t border-[var(--card)] opacity-80">
-        © {new Date().getFullYear()} ArtMart. All rights reserved.
+        © {new Date().getFullYear()} Artmart. All rights reserved.
       </div>
     </footer>
   );

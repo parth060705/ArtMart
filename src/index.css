@@ -1,6 +1,7 @@
+/* @import url('  https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -170,4 +171,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* .logo-font {
+  font-family: "Ma Shan Zheng", cursive;
+  font-size: 1.7rem;
+} */
+
+.logo-font {
+  font-family: "Sedgwick Ave Display", cursive;
+  font-size: 1.7rem;
 }

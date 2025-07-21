@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useProductSearch } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
 
-export default function MasonryFeed({className, length}: {className?: string, length?: number}) {
+export default function MasonryFeed({className, length, url}: {className?: string, length?: number, url?: string}) {
   const navigate = useNavigate();
-  const { data: products } = useProductsList()
+  const { data: products } = useProductsList(url || '/artworks')
   const { searchQuery, selectedCategory, selectedLocation, priceRange, sortBy, currentPage } = useProductSearch();
   const filteredProducts = products?.filter((prod: Product) => {
     const matchesCategory = !selectedCategory || prod.category === selectedCategory;

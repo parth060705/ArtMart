@@ -6,6 +6,11 @@ import { ThemeProvider } from './components/ui/theme-provider';
 import { Toaster } from 'sonner';
 import { useState, useEffect } from 'react';
 
+// ---------------------------------------------------------------
+import UserManage from './admin-panel/user_manage';
+import ArtworkManage from './admin-panel/artwork_manage';
+// ------------------------------------------------------------------
+
 import MainLayout from './Layout/Mainlayout';
 import Loginpage from './pages/auth/Loginpage';
 import Cart from './pages/Cart';
@@ -48,8 +53,11 @@ function App() {
                 <Route path={AppRoutes.CartPage} element={<Cart />} />
                 <Route path={AppRoutes.ProfilePage} element={<Profile />} />
                 <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
-                <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} /> 
+                <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
                 <Route path="*" element={<NotFound />} />
+
+                <Route path="/user_manage" element={<UserManage />} />
+                <Route path="/artwork_manage" element={<ArtworkManage />} />
 
                 {/* Protected Routes Group */}
                 {/* <Route element={<ProtectedRoute />}>

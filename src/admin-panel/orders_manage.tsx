@@ -13,7 +13,7 @@ const OrderManage = () => {
           refetch();
         },
         onError: (err) => {
-          console.error("❌ Failed to delete order:", err);
+          console.error("Failed to delete order:", err);
           alert("Failed to delete order.");
         },
       });
@@ -55,10 +55,10 @@ const OrderManage = () => {
                 orders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50 transition">
                     <td className="px-4 py-3">{order.id}</td>
-                    <td className="px-4 py-3">{order.artwork_id ?? "—"}</td>
+                    <td className="px-4 py-3">{order.artworkId ?? "—"}</td> {/* ✅ fixed casing */}
                     <td className="px-4 py-3">{order.buyerId}</td>
                     <td className="px-4 py-3 text-green-700 font-semibold">
-                      {order.totalAmount.toFixed(2)}
+                      ${order.totalAmount.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">
                       <span
@@ -78,7 +78,7 @@ const OrderManage = () => {
                     </td>
                     <td className="px-4 py-3">
                       <button
-                        onClick={() => handleDelete(order.id)}
+                        onClick={() => handleDelete(order.id.toString())}
                         disabled={deleteOrder.isPending}
                         className={`px-3 py-1 rounded text-xs text-white ${
                           deleteOrder.isPending

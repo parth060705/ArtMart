@@ -56,6 +56,7 @@ export interface MenuItem {
     items?: MenuItem[];
 }
 
+// ----------------------------------------------------
 export type Artwork = {
     id: number;
     title: string;
@@ -69,10 +70,12 @@ export type Artwork = {
 }
 
 export type Orders = {
-  id: string;
-  artwork_id: string | null;
+  id: number;
+  artworkId: number | null;
   totalAmount: number;
   paymentStatus: string;
   buyerId: string;
   createdAt: Date;
 };
+
+// -----------------------------------------------------

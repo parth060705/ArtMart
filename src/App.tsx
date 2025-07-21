@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 // ---------------------------------------------------------------
 import UserManage from './admin-panel/user_manage';
 import ArtworkManage from './admin-panel/artwork_manage';
+import OrderManage from './admin-panel/orders_manage';
 // ------------------------------------------------------------------
 
 import MainLayout from './Layout/Mainlayout';
@@ -56,11 +57,14 @@ function App() {
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
                 <Route path="*" element={<NotFound />} />
 
+{/* ------------------------------------------------------------------------------------------- */}
                 <Route path="/user_manage" element={<UserManage />} />
                 <Route path="/artwork_manage" element={<ArtworkManage />} />
+                <Route path="/orders_manage" element={<OrderManage />} />
+{/* ------------------------------------------------------------------------------------------- */}
 
                 {/* Protected Routes Group */}
-                {/* <Route element={<ProtectedRoute />}>
+                {/* <Route element={<ProtectedRoute />}>s
             <Route path={AppRoutes.CartPage} element={<Cart />} />
             <Route path={AppRoutes.ProfilePage} element={<Profile />} />
           </Route> */}

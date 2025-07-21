@@ -67,3 +67,12 @@ export type Artwork = {
     artistId: number;
     createdAt: Date;
 }
+
+export type Orders = {
+  id: string;
+  artwork_id: string | null;
+  totalAmount: number;
+  paymentStatus: string;
+  buyerId: string;
+  createdAt: Date;
+};

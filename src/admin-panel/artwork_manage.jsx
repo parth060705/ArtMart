@@ -1,5 +1,3 @@
-// src/admin-panel/ArtworkManage.jsx
-
 import React, { useState } from "react";
 import {
   useAdminArtworks,

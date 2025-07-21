@@ -23,7 +23,7 @@ export const useUserProfile = (options: UseUserProfileOptions = {}) => {
   return useQuery({
     queryKey: ["userProfile"] as const,
     queryFn: async () => {
-      const { data } = await axiosClient.get("/me");
+      const { data } = await axiosClient.get("/auth/me");
       // Transform the response to match our UserProfile interface
       return {
         ...data,

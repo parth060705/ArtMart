@@ -5,7 +5,7 @@ export const useUserFollowersList = () => {
   return useQuery({
     queryKey: ["user-followers"],
     queryFn: async () => {
-      const { data } = await axiosClient.get(`/users/me/followers`);
+      const { data } = await axiosClient.get(`/auth/me/followers`);
       return data;
     },
   });

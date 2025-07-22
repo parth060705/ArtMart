@@ -38,6 +38,7 @@ const OrderManage = () => {
                   "Artwork ID",
                   "Buyer Username",
                   "Buyer Name",
+                  "Location",
                   "Amount",
                   "Status",
                   "Date",
@@ -57,6 +58,7 @@ const OrderManage = () => {
                     <td className="px-4 py-3">{order.artworkId ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.username ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.name ?? "—"}</td>
+                    <td className="px-4 py-3">{order.buyer?.location ?? "—"}</td>
                     <td className="px-4 py-3 text-green-700 font-semibold">
                       {order.totalAmount.toFixed(2)}
                     </td>

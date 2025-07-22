@@ -76,6 +76,7 @@ export type Orders = {
   buyer: {
     username: string;
     name: string;
+    location:string | null;
   };
   paymentStatus: string;
   buyerId: string;

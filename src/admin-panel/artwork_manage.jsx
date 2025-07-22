@@ -36,9 +36,7 @@ const ArtworkManage = () => {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this artwork?")) {
       deleteArtwork.mutate(id, {
-        onSuccess: () => {
-          refetch();
-        },
+        onSuccess: () => refetch(),
       });
     }
   };
@@ -62,16 +60,14 @@ const ArtworkManage = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
     if (editingId) {
       const updatedData = { ...form };
-      delete updatedData.file; // omit file for now unless needed
-
+      delete updatedData.file;
       updateArtwork.mutate(
         { id: editingId, artwork: updatedData },
         {
           onSuccess: () => {
-            alert("Artwork updated successfully!");
+            alert("Artwork updated!");
             setShowForm(false);
             setForm(emptyArtwork);
             setEditingId(null);
@@ -100,90 +96,93 @@ const ArtworkManage = () => {
         </button>
       </div>
 
+      {/* Modal Form */}
       {showForm && (
-        <form
-          onSubmit={handleFormSubmit}
-          className="bg-white shadow p-6 mb-8 rounded-lg space-y-4"
-        >
-          <h2 className="text-xl font-semibold mb-2">
-            {editingId ? "Edit Artwork" : "Create New Artwork"}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              value={form.title}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
-            <input
-              type="text"
-              name="category"
-              placeholder="Category"
-              value={form.category}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={form.price}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              name="artistId"
-              placeholder="Artist ID"
-              value={form.artistId}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <div className="flex items-center space-x-2">
-              <label className="text-sm">Sold:</label>
-              <input
-                type="checkbox"
-                name="isSold"
-                checked={form.isSold}
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 relative">
+            <h2 className="text-xl font-semibold mb-4">
+              {editingId ? "Edit Artwork" : "Add Artwork"}
+            </h2>
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Title"
+                  value={form.title}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="Category"
+                  value={form.category}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full"
+                />
+                <input
+                  type="number"
+                  name="price"
+                  placeholder="Price"
+                  value={form.price}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full"
+                />
+                <input
+                  type="text"
+                  name="artistId"
+                  placeholder="Artist ID"
+                  value={form.artistId}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full"
+                />
+                <div className="flex items-center space-x-2 col-span-2">
+                  <label className="text-sm">Sold:</label>
+                  <input
+                    type="checkbox"
+                    name="isSold"
+                    checked={form.isSold}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full col-span-2"
+                />
+              </div>
+              <textarea
+                name="description"
+                rows={3}
+                placeholder="Description"
+                value={form.description}
                 onChange={handleInputChange}
-              />
-            </div>
-            <input
-              type="file"
-              name="file"
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
+                className="border p-2 rounded w-full"
+              ></textarea>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
+                >
+                  {editingId ? "Update" : "Create"}
+                </button>
+              </div>
+            </form>
           </div>
-          <textarea
-            name="description"
-            rows={3}
-            placeholder="Description"
-            value={form.description}
-            onChange={handleInputChange}
-            className="border p-2 rounded w-full"
-          ></textarea>
-          <div className="flex justify-end space-x-2">
-            <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
-            >
-              {editingId ? "Update" : "Create"}
-            </button>
-          </div>
-        </form>
+        </div>
       )}
 
+      {/* Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         {isLoading ? (
           <div className="p-6 text-gray-500 animate-pulse">Loading artworks...</div>

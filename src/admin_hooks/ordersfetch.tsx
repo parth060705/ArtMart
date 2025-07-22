@@ -2,7 +2,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 import { Orders } from "@/lib/types";
 
-
 // FETCH ORDERS
 export const useAdminOrders = () =>
   useQuery<Orders[], Error>({
@@ -14,7 +13,7 @@ export const useAdminOrders = () =>
     staleTime: 1000 * 60 * 5,
   });
 
-// DELETE ORDERS 
+// DELETE ORDER
 export const useDeleteOrders = () => {
   const queryClient = useQueryClient();
   return useMutation({

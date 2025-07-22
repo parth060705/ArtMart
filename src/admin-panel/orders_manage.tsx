@@ -9,9 +9,7 @@ const OrderManage = () => {
   const handleDelete = (id: string) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
       deleteOrder.mutate(id, {
-        onSuccess: () => {
-          refetch();
-        },
+        onSuccess: () => refetch(),
         onError: (err) => {
           console.error("Failed to delete order:", err);
           alert("Failed to delete order.");
@@ -38,7 +36,8 @@ const OrderManage = () => {
                 {[
                   "Order ID",
                   "Artwork ID",
-                  "Buyer ID",
+                  "Buyer Username",
+                  "Buyer Name",
                   "Amount",
                   "Status",
                   "Date",
@@ -55,20 +54,21 @@ const OrderManage = () => {
                 orders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50 transition">
                     <td className="px-4 py-3">{order.id}</td>
-                    <td className="px-4 py-3">{order.artworkId ?? "—"}</td> {/* ✅ fixed casing */}
-                    <td className="px-4 py-3">{order.buyerId}</td>
+                    <td className="px-4 py-3">{order.artworkId ?? "—"}</td>
+                    <td className="px-4 py-3">{order.buyer?.username ?? "—"}</td>
+                    <td className="px-4 py-3">{order.buyer?.name ?? "—"}</td>
                     <td className="px-4 py-3 text-green-700 font-semibold">
-                      ${order.totalAmount.toFixed(2)}
+                      {order.totalAmount.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          order.paymentStatus === "PAID"
+                          order.paymentStatus.toLowerCase() === "paid"
                             ? "bg-green-100 text-green-600"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {order.paymentStatus}
+                        {order.paymentStatus.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -93,7 +93,7 @@ const OrderManage = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-gray-400">
+                  <td colSpan={8} className="px-4 py-6 text-center text-gray-400">
                     No orders found.
                   </td>
                 </tr>

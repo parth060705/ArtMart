@@ -26,7 +26,7 @@ export const useCreateUser = () => {
 
   return useMutation({
     mutationFn: (newUser: Partial<User>) =>
-      axiosClient.post("/admin/users", newUser),
+      axiosClient.post("/admin/register", newUser),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
     },

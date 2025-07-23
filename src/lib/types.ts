@@ -66,6 +66,10 @@ export type Artwork = {
     category: string;
     isSold: boolean,
     artistId: number;
+    artist:{
+        username: string,
+        profileImage: string
+    },
     createdAt: Date;
 }
 

@@ -64,29 +64,27 @@ const OrderManage = () => {
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          order.paymentStatus.toLowerCase() === "paid"
-                            ? "bg-green-100 text-green-600"
-                            : "bg-yellow-100 text-yellow-700"
-                        }`}
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${order.paymentStatus.toLowerCase() === "paid"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-yellow-100 text-yellow-700"
+                          }`}
                       >
                         {order.paymentStatus.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       {order.createdAt
-                        ? format(new Date(order.createdAt), "PPPp")
+                        ? new Date(order.createdAt).toLocaleString()
                         : "—"}
                     </td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleDelete(order.id.toString())}
                         disabled={deleteOrder.isPending}
-                        className={`px-3 py-1 rounded text-xs text-white ${
-                          deleteOrder.isPending
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-red-500 hover:bg-red-600"
-                        }`}
+                        className={`px-3 py-1 rounded text-xs text-white ${deleteOrder.isPending
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600"
+                          }`}
                       >
                         Delete
                       </button>

@@ -15,6 +15,10 @@ const emptyArtwork = {
   images: [],
   file: null,
   artistId: "",
+  artist: {
+    username: "",
+    profileImage: "",
+  },
   createdAt: "",
 };
 
@@ -197,6 +201,8 @@ const ArtworkManage = () => {
                   "Price",
                   "Category",
                   "Sold",
+                  "Artist Name",
+                  "Artist Logo",
                   "Artist ID",
                   "Created At",
                   "Images",
@@ -225,6 +231,22 @@ const ArtworkManage = () => {
                       <span className="bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs font-semibold">
                         Available
                       </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">{art.artist?.username || "—"}</td>
+                  <td className="px-4 py-3">
+                    {art.artist?.profileImage ? (
+                      <img
+                        src={
+                          art.artist.profileImage.startsWith("http")
+                            ? art.artist.profileImage
+                            : `${import.meta.env.VITE_API_URL}/media/${art.artist.profileImage}`
+                        }
+                        alt="Artist"
+                        className="w-10 h-10 rounded-full object-cover border shadow"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-xs">No image</span>
                     )}
                   </td>
                   <td className="px-4 py-3">{art.artistId || "—"}</td>
@@ -274,7 +296,7 @@ const ArtworkManage = () => {
               ))}
               {artworks.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="px-4 py-6 text-center text-gray-400">
+                  <td colSpan={12} className="px-4 py-6 text-center text-gray-400">
                     No artworks found.
                   </td>
                 </tr>

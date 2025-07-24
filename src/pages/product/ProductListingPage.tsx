@@ -26,14 +26,16 @@ const ProductListingPage = () => {
                   >
                     x
                   </button>
-                  <FilterSidebar
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    selectedLocation={selectedLocation}
-                    setSelectedLocation={setSelectedLocation}
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                  />
+                  <div className="flex-1 flex flex-col">
+                    <FilterSidebar
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
+                      selectedLocation={selectedLocation}
+                      setSelectedLocation={setSelectedLocation}
+                      priceRange={priceRange}
+                      setPriceRange={setPriceRange}
+                    />
+                  </div>
                 </aside>
                 <style>{`
                   @keyframes slide-in-right {

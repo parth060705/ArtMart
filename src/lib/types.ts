@@ -41,11 +41,24 @@ export type Product = {
 }
 
 export type Comment = {
-    avatar: string;
-    name: string;
-    text: string;
-    media?: string;
-    date?: string;
+    id: string;
+    content: string;
+    createdAt?: string;
+    user: {
+        username:string;
+        profileImage: string
+    }
+};
+
+export type Review = {
+    id: string;
+    rating:number;
+    comment: string;
+    createdAt?: string;
+    reviewer: {
+        username:string;
+        profileImage: string
+    }
 };
 
 export interface MenuItem {

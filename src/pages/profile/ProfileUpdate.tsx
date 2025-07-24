@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/UseAuth';
-import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAuth } from '@/hooks/auth/UseAuth';
+import { useUserProfile } from '@/hooks/auth/useUserProfile';
 import { User } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

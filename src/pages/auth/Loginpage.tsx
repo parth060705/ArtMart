@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { z } from 'zod'
@@ -8,9 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { loginFormSchema } from '../../lib/validation-schemas';
-import { useLogin } from '@/hooks/useLogin';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/UseAuth';
+import { useAuth } from '@/hooks/auth/UseAuth';
+import { useLogin } from '@/hooks/auth/useLogin';
 
 const formSchema = loginFormSchema
 
@@ -46,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4">
-      <Card className="mx-auto w-[400px]">
+      <Card className="mx-auto w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>

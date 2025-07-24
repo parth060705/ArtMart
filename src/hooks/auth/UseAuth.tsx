@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import { decodeJWT } from '../utils/jwtDecode';
+import { decodeJWT } from '../../utils/jwtDecode';
 // import { useUserProfile } from '../query/hooks/useUserProfile';
 interface DecodedToken {
   sub?: string; // username
@@ -13,6 +13,7 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   userProfile: any;
+  setUserProfile: (userProfile: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
   login: () => { },
   logout: () => { },
   userProfile: undefined,
+  setUserProfile: () => { },
 });
 
 interface AuthProviderProps {
@@ -79,7 +81,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, login, logout, userProfile }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, login, logout, userProfile, setUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

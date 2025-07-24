@@ -1,14 +1,9 @@
-
-
-
-
 import { Menu } from "lucide-react";
-import { ThemeSwitcher } from "./ThemeSwitcher";
 import ProductSearchBar from "@/components/ProductSearchBar";
 import FilterSidebar from "@/components/FilterSidebar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/UseAuth";
+import { useAuth } from "@/hooks/auth/UseAuth";
 import { toast } from 'sonner';
 import {
   Accordion,
@@ -34,7 +29,6 @@ import {
 } from "@/components/ui/sheet";
 import { navbarRoutes } from "@/lib/routes";
 import { MenuItem } from "@/lib/types";
-import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProductSearch } from "@/context/ProductSearchContext";
 import { Routes as AppRoutes } from "@/lib/routes";
 interface NavbarProps {
@@ -64,8 +58,7 @@ const Navbar = ({
     title: "Artmart",
   },
 }: NavbarProps) => {
-  const { isAuthenticated, username } = useAuth();
-  const { data: userProfile } = useUserProfile();
+  const { isAuthenticated, username, userProfile } = useAuth();
   const { setSearchQuery } = useProductSearch();
   // Search/filter state for Product Listing Page
   const [search, setSearch] = useState("");
@@ -167,7 +160,9 @@ const Navbar = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="max-h-8" alt={logo.alt} />
+              <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                {logo.title}
+              </span>
             </a>
             <Sheet>
               <SheetTrigger asChild>

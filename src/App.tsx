@@ -6,7 +6,6 @@ import { ThemeProvider } from './components/ui/theme-provider';
 import { Toaster } from 'sonner';
 import { useState, useEffect } from 'react';
 
-import MainLayout from './Layout/Mainlayout';
 import Loginpage from './pages/auth/Loginpage';
 import Cart from './pages/Cart';
 import ProductDetail from './pages/product/ProductDetail';
@@ -25,6 +24,7 @@ import UploadProduct from './pages/product/UploadProduct';
 import { ProductSearchProvider } from './context/ProductSearchContext';
 import SearchProduct from './pages/product/SearchProduct';
 import { Routes as AppRoutes } from './lib/routes';
+import MainLayout from './Layout/Mainlayout';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">

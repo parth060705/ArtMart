@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
-import { useAuth } from '../../hooks/UseAuth';
+import { useAuth } from '../../hooks/auth/UseAuth';
 import { Link } from 'react-router-dom';
-import { useUserProfile } from '@/hooks/useUserProfile';
+import { useUserProfile } from '@/hooks/auth/useUserProfile';
 import { useProductsList } from '@/hooks/useProductsList';
 import { Product, User } from '@/lib/types';
 import FollowersAndFollowingPopup from '@/components/Followers&FollowingPopup';

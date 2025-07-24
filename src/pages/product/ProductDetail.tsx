@@ -10,12 +10,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
-// If '@lucide/react' is installed, use this import:
-// import { Heart, MessageCircle, Share2 } from '@lucide/react';
-import SocialTabs from '@/components/SocialTabs';
 import CommentCard from '@/components/CommentCard';
-import ProductCard from '@/components/ProductCard';
-import AvatarSlider from '@/components/AvatarSlider';
 import { Heart, MessageCircle, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useProductDetails } from '@/hooks/useProductDetails';
 import { Comment, Product, Review } from '@/lib/types';

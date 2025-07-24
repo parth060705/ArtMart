@@ -24,7 +24,7 @@ const Profile = () => {
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
-          src={userProfile?.profileImageUrl}
+          src={userProfile?.profileImage}
           alt={userProfile?.name}
           className="w-32 h-32 rounded-full border-4 border-[var(--primary)] object-cover shadow-lg -mt-16 md:mt-0"
         />

@@ -29,7 +29,7 @@ export const useUploadProduct = () => {
         }
       });
 
-      const { data } = await axiosClient.post("/artworks", formData, {
+      const { data } = await axiosClient.post("/auth/artworks", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

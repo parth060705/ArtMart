@@ -202,7 +202,7 @@ const ArtworkManage = () => {
                   "Category",
                   "Sold",
                   "Artist Name",
-                  "Artist Logo",
+                  // "Artist Logo",
                   "Artist ID",
                   "Created At",
                   "Images",
@@ -234,7 +234,7 @@ const ArtworkManage = () => {
                     )}
                   </td>
                   <td className="px-4 py-3">{art.artist?.username || "—"}</td>
-                  <td className="px-4 py-3">
+                  {/* <td className="px-4 py-3">
                     {art.artist?.profileImage ? (
                       <img
                         src={
@@ -248,7 +248,7 @@ const ArtworkManage = () => {
                     ) : (
                       <span className="text-gray-400 text-xs">No image</span>
                     )}
-                  </td>
+                  </td> */}
                   <td className="px-4 py-3">{art.artistId || "—"}</td>
                   <td className="px-4 py-3">
                     {art.createdAt ? new Date(art.createdAt).toLocaleDateString() : "—"}

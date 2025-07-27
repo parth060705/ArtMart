@@ -3,7 +3,7 @@ import ProductSearchBar from "@/components/ProductSearchBar";
 import FilterSidebar from "@/components/FilterSidebar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/auth/UseAuth";
+import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
 import {
   Accordion,
@@ -99,7 +99,7 @@ const Navbar = ({
           </div>
 
           {/* Search and Filter for Product Listing Page */}
-          {typeof window !== 'undefined' && window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage) && (
+          {typeof window !== 'undefined' && (window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
             <div className="flex items-center gap-3 mr-6">
               <ProductSearchBar value={search} onChange={setSearchQuery} />
               <Sheet>

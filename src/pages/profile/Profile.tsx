@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
-import { useAuth } from '../../hooks/auth/UseAuth';
+import { useAuth } from '../../hooks/user/auth/UseAuth';
 import { Link } from 'react-router-dom';
-import { useUserProfile } from '@/hooks/auth/useUserProfile';
+import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
 import { useProductsList } from '@/hooks/useProductsList';
 import { Product, User } from '@/lib/types';
 import FollowersAndFollowingPopup from '@/components/Followers&FollowingPopup';
-import { useUserFollowersList } from '@/hooks/useUserFollowersList';
-import { useUserFollowingList } from '@/hooks/useUserFollowingList';
+import { useUserFollowersList } from '@/hooks/user/useUserFollowersList';
+import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
 

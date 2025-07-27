@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import { decodeJWT } from '../../utils/jwtDecode';
+import { decodeJWT } from '../../../utils/jwtDecode';
 // import { useUserProfile } from '../query/hooks/useUserProfile';
 interface DecodedToken {
   sub?: string; // username

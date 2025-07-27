@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { useReviewsList } from '@/hooks/reviews/useReviewsLists';
 import { usePostReviews } from '@/hooks/reviews/usePostReviews';
 import ReviewCard from '@/components/ReviewCard';
-import { useAuth } from '@/hooks/auth/UseAuth';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { useLikeProduct } from '@/hooks/like_dislike/useLikeProduct';
 import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';

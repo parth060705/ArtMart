@@ -2,8 +2,8 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/hooks/auth/UseAuth';
-import { useUserProfile } from '@/hooks/auth/useUserProfile';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
+import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
 import { useEffect } from 'react';
 
 const MainLayout = () => {

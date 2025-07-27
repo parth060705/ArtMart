@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input'
 
 import { registerFormSchema } from '@/lib/validation-schemas'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRegister } from '@/hooks/auth/useRegister'
+import { useRegister } from '@/hooks/user/auth/useRegister'
 
 const formSchema = registerFormSchema
 

@@ -8,8 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { loginFormSchema } from '../../lib/validation-schemas';
-import { useAuth } from '@/hooks/auth/UseAuth';
-import { useLogin } from '@/hooks/auth/useLogin';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
+import { useLogin } from '@/hooks/user/auth/useLogin';
 
 const formSchema = loginFormSchema
 

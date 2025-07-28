@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "sonner";
 import {
   useAdminArtworks,
   useDeleteArtwork,
@@ -38,11 +39,40 @@ const ArtworkManage = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this artwork?")) {
-      deleteArtwork.mutate(id, {
-        onSuccess: () => refetch(),
-      });
-    }
+    toast(
+      (t) => (
+        <div>
+          <div className="mb-2 text-sm">Are you sure you want to delete this artwork?</div>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => {
+                deleteArtwork.mutate(id, {
+                  onSuccess: () => {
+                    toast.dismiss(t);
+                    toast.success("Artwork deleted!");
+                    refetch();
+                  },
+                  onError: () => {
+                    toast.dismiss(t);
+                    toast.error("Failed to delete artwork.");
+                  },
+                });
+              }}
+              className="bg-red-600 text-white text-xs px-3 py-1 rounded"
+            >
+              Yes, Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t)}
+              className="text-gray-500 hover:underline text-xs"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: 10000 }
+    );
   };
 
   const openCreateForm = () => {
@@ -71,7 +101,7 @@ const ArtworkManage = () => {
         { id: editingId, artwork: updatedData },
         {
           onSuccess: () => {
-            alert("Artwork updated!");
+            toast.success("Artwork updated successfully!");
             setShowForm(false);
             setForm(emptyArtwork);
             setEditingId(null);
@@ -79,12 +109,12 @@ const ArtworkManage = () => {
           },
           onError: (err) => {
             console.error("❌ Update failed:", err);
-            alert("Failed to update artwork.");
+            toast.error("Failed to update artwork.");
           },
         }
       );
     } else {
-      alert("🔧 Create functionality not implemented yet.");
+      toast.warning("Create functionality not implemented yet.");
     }
   };
 
@@ -202,7 +232,6 @@ const ArtworkManage = () => {
                   "Category",
                   "Sold",
                   "Artist Name",
-                  // "Artist Logo",
                   "Artist ID",
                   "Created At",
                   "Images",
@@ -234,21 +263,6 @@ const ArtworkManage = () => {
                     )}
                   </td>
                   <td className="px-4 py-3">{art.artist?.username || "—"}</td>
-                  {/* <td className="px-4 py-3">
-                    {art.artist?.profileImage ? (
-                      <img
-                        src={
-                          art.artist.profileImage.startsWith("http")
-                            ? art.artist.profileImage
-                            : `${import.meta.env.VITE_API_URL}/media/${art.artist.profileImage}`
-                        }
-                        alt="Artist"
-                        className="w-10 h-10 rounded-full object-cover border shadow"
-                      />
-                    ) : (
-                      <span className="text-gray-400 text-xs">No image</span>
-                    )}
-                  </td> */}
                   <td className="px-4 py-3">{art.artistId || "—"}</td>
                   <td className="px-4 py-3">
                     {art.createdAt ? new Date(art.createdAt).toLocaleDateString() : "—"}

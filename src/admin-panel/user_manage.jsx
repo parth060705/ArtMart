@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Toaster, toast } from "sonner";
 import {
   useAdminUsers,
   useCreateUser,
@@ -23,9 +24,10 @@ const UserManage = () => {
   const [form, setForm] = useState(emptyUser);
   const [editingId, setEditingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [error, setError] = useState(null);
 
-  const { data: users = [], isLoading } = useAdminUsers();
+  const { data: users = [], isLoading, refetch } = useAdminUsers();
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
   const deleteUser = useDeleteUser();
@@ -49,20 +51,24 @@ const UserManage = () => {
     e.preventDefault();
     setError(null);
     try {
-      const formData = { ...form };
+      const formData = { ...form, role: form.role.toLowerCase() };
       if (editingId) {
         delete formData.password;
         await updateUser.mutateAsync({ id: editingId, user: formData });
+        toast.success("User updated successfully!");
       } else {
         if (!form.password) {
           setError("Password is required for new users.");
           return;
         }
         await createUser.mutateAsync(formData);
+        toast.success("User created successfully!");
       }
       resetForm();
+      await refetch();
     } catch (err) {
       console.error(err);
+      toast.error("Failed to save user.");
       setError("Failed to save user. Please check your inputs.");
     }
   };
@@ -74,14 +80,21 @@ const UserManage = () => {
     setModalOpen(true);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      deleteUser.mutate(id);
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteUser.mutateAsync(confirmDeleteId);
+      toast.success("User deleted successfully!");
+      setConfirmDeleteId(null);
+      await refetch();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete user.");
     }
   };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      <Toaster richColors position="top-right" />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
         <button
@@ -146,7 +159,7 @@ const UserManage = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(user.id)}
+                        onClick={() => setConfirmDeleteId(user.id)}
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       >
                         Delete
@@ -167,7 +180,7 @@ const UserManage = () => {
         )}
       </div>
 
-      {/* Modal */}
+      {/* User Form Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
           <div className="bg-white p-6 w-full max-w-3xl rounded shadow-lg relative">
@@ -198,8 +211,8 @@ const UserManage = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                       >
                         <option value="">Select</option>
-                        <option value="User">User</option>
-                        <option value="Admin">Admin</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
                       </select>
                     ) : (
                       <input
@@ -235,6 +248,32 @@ const UserManage = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {confirmDeleteId && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
+            <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
+            <p className="mb-6 text-gray-700">
+              Are you sure you want to delete this user?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,21 +1,22 @@
 import React from "react";
 import { useAdminOrders, useDeleteOrders } from "@/admin_hooks/ordersfetch";
-import { format } from "date-fns";
+import { toast } from "sonner";
 
 const OrderManage = () => {
   const { data: orders, isLoading, isError, refetch } = useAdminOrders();
   const deleteOrder = useDeleteOrders();
 
   const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this order?")) {
-      deleteOrder.mutate(id, {
-        onSuccess: () => refetch(),
-        onError: (err) => {
-          console.error("Failed to delete order:", err);
-          alert("Failed to delete order.");
-        },
-      });
-    }
+    deleteOrder.mutate(id, {
+      onSuccess: () => {
+        toast.success("Order deleted successfully");
+        refetch();
+      },
+      onError: (err) => {
+        console.error("Failed to delete order:", err);
+        toast.error("Failed to delete order");
+      },
+    });
   };
 
   return (
@@ -54,22 +55,23 @@ const OrderManage = () => {
               {orders && orders.length > 0 ? (
                 orders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-3">{order.id}</td>
+                    <td className="px-4 py-3">{order.id ?? "—"}</td>
                     <td className="px-4 py-3">{order.artworkId ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.username ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.name ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.location ?? "—"}</td>
                     <td className="px-4 py-3 text-green-700 font-semibold">
-                      {order.totalAmount.toFixed(2)}
+                      {order.totalAmount?.toFixed(2) ?? "—"}
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${order.paymentStatus.toLowerCase() === "paid"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-yellow-100 text-yellow-700"
-                          }`}
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          order.paymentStatus?.toLowerCase() === "paid"
+                            ? "bg-green-100 text-green-600"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
                       >
-                        {order.paymentStatus.toUpperCase()}
+                        {order.paymentStatus?.toUpperCase() ?? "—"}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -79,12 +81,13 @@ const OrderManage = () => {
                     </td>
                     <td className="px-4 py-3">
                       <button
-                        onClick={() => handleDelete(order.id.toString())}
+                        onClick={() => order?.id && handleDelete(String(order.id))}
                         disabled={deleteOrder.isPending}
-                        className={`px-3 py-1 rounded text-xs text-white ${deleteOrder.isPending
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-red-500 hover:bg-red-600"
-                          }`}
+                        className={`px-3 py-1 rounded text-xs text-white ${
+                          deleteOrder.isPending
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-red-500 hover:bg-red-600"
+                        }`}
                       >
                         Delete
                       </button>
@@ -93,7 +96,7 @@ const OrderManage = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-gray-400">
+                  <td colSpan={9} className="px-4 py-6 text-center text-gray-400">
                     No orders found.
                   </td>
                 </tr>

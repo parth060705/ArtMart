@@ -33,46 +33,50 @@ const ArtworkManage = () => {
   const updateArtwork = useUpdateArtwork();
 
   const handleEdit = (art) => {
-    setForm({ ...emptyArtwork, ...art, isSold: Boolean(art.isSold), file: null });
+    setForm({
+      ...emptyArtwork,
+      ...art,
+      isSold: Boolean(art.isSold),
+      file: null,
+    });
     setEditingId(art.id);
     setShowForm(true);
   };
 
   const handleDelete = (id) => {
-    toast(
-      (t) => (
-        <div>
-          <div className="mb-2 text-sm">Are you sure you want to delete this artwork?</div>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => {
-                deleteArtwork.mutate(id, {
-                  onSuccess: () => {
-                    toast.dismiss(t);
-                    toast.success("Artwork deleted successfully!");
-                    refetch();
-                  },
-                  onError: () => {
-                    toast.dismiss(t);
-                    toast.error("Failed to delete artwork.");
-                  },
-                });
-              }}
-              className="bg-red-600 text-white text-xs px-3 py-1 rounded"
-            >
-              Yes, Delete
-            </button>
-            <button
-              onClick={() => toast.dismiss(t)}
-              className="text-gray-500 hover:underline text-xs"
-            >
-              Cancel
-            </button>
-          </div>
+    toast((t) => (
+      <div>
+        <div className="mb-2 text-sm">
+          Are you sure you want to delete this artwork?
         </div>
-      ),
-      { duration: 10000 }
-    );
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => {
+              deleteArtwork.mutate(id, {
+                onSuccess: () => {
+                  toast.dismiss(t);
+                  toast.success("Artwork deleted successfully!");
+                  refetch();
+                },
+                onError: () => {
+                  toast.dismiss(t);
+                  toast.error("Failed to delete artwork.");
+                },
+              });
+            }}
+            className="bg-red-600 text-white text-xs px-3 py-1 rounded"
+          >
+            Yes, Delete
+          </button>
+          <button
+            onClick={() => toast.dismiss(t)}
+            className="text-gray-500 hover:underline text-xs"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: 10000 });
   };
 
   const openCreateForm = () => {
@@ -86,7 +90,7 @@ const ArtworkManage = () => {
     if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
     } else if (type === "file") {
-      setForm({ ...form, file: files[0] });
+      setForm({ ...form, file: files[0] }); // single file
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -94,11 +98,19 @@ const ArtworkManage = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("category", form.category);
+    formData.append("price", form.price.toString());
+    formData.append("isSold", form.isSold.toString());
+    if (form.file) {
+      formData.append("files", form.file); // backend expects "files"
+    }
+
     if (editingId) {
-      const updatedData = { ...form };
-      delete updatedData.file;
       updateArtwork.mutate(
-        { id: editingId, artwork: updatedData },
+        { id: editingId, data: formData },
         {
           onSuccess: () => {
             toast.success("Artwork updated successfully!");
@@ -130,7 +142,6 @@ const ArtworkManage = () => {
         </button>
       </div>
 
-      {/* Modal Form */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center px-4">
           <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 relative">
@@ -216,7 +227,6 @@ const ArtworkManage = () => {
         </div>
       )}
 
-      {/* Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         {isLoading ? (
           <div className="p-6 text-gray-500 animate-pulse">Loading artworks...</div>
@@ -237,7 +247,10 @@ const ArtworkManage = () => {
                   "Images",
                   "Actions",
                 ].map((head) => (
-                  <th key={head} className="px-4 py-3 text-left whitespace-nowrap">
+                  <th
+                    key={head}
+                    className="px-4 py-3 text-left whitespace-nowrap"
+                  >
                     {head}
                   </th>
                 ))}
@@ -249,7 +262,9 @@ const ArtworkManage = () => {
                   <td className="px-4 py-3">{art.id}</td>
                   <td className="px-4 py-3 font-medium">{art.title}</td>
                   <td className="px-4 py-3 max-w-xs truncate">{art.description}</td>
-                  <td className="px-4 py-3 text-green-700 font-semibold">{art.price}</td>
+                  <td className="px-4 py-3 text-green-700 font-semibold">
+                    {art.price}
+                  </td>
                   <td className="px-4 py-3">{art.category}</td>
                   <td className="px-4 py-3">
                     {art.isSold ? (
@@ -265,7 +280,9 @@ const ArtworkManage = () => {
                   <td className="px-4 py-3">{art.artist?.username || "—"}</td>
                   <td className="px-4 py-3">{art.artistId || "—"}</td>
                   <td className="px-4 py-3">
-                    {art.createdAt ? new Date(art.createdAt).toLocaleDateString() : "—"}
+                    {art.createdAt
+                      ? new Date(art.createdAt).toLocaleDateString()
+                      : "—"}
                   </td>
                   <td className="px-4 py-3 max-w-[120px]">
                     {art.images?.length > 0 ? (
@@ -273,17 +290,15 @@ const ArtworkManage = () => {
                         {art.images.slice(0, 2).map((img, i) => (
                           <img
                             key={i}
-                            src={
-                              img.startsWith("http")
-                                ? img
-                                : `${import.meta.env.VITE_API_URL}/media/${img}`
-                            }
+                            src={img}
                             alt="Artwork"
                             className="w-10 h-10 object-cover rounded shadow-sm"
                           />
                         ))}
                         {art.images.length > 2 && (
-                          <span className="text-xs text-gray-500">+{art.images.length - 2}</span>
+                          <span className="text-xs text-gray-500">
+                            +{art.images.length - 2}
+                          </span>
                         )}
                       </div>
                     ) : (

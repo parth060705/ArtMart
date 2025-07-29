@@ -1,4 +1,3 @@
-// hooks/admin/useArtworks.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 import { Artwork } from "@/lib/types";
@@ -25,12 +24,22 @@ export const useDeleteArtwork = () => {
   });
 };
 
-// UPDATE ARTWORKS
+// ✅ UPDATE ARTWORKS with FormData for file upload
 export const useUpdateArtwork = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, artwork }: { id: string; artwork: Partial<Artwork> }) =>
-      axiosClient.patch(`/admin/update/artworks/${id}`, artwork),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: FormData;
+    }) =>
+      axiosClient.patch(`/admin/update/artworks/${id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "artworks"] });
     },
@@ -39,4 +48,3 @@ export const useUpdateArtwork = () => {
     },
   });
 };
-

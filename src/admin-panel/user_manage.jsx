@@ -7,6 +7,8 @@ import {
   useDeleteUser,
 } from "@/admin_hooks/userfetch";
 
+const DEFAULT_IMAGE = "https://example.com/default.jpg";
+
 const emptyUser = {
   name: "",
   email: "",
@@ -40,20 +42,26 @@ const UserManage = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === "number" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
     try {
-      const formData = { ...form, role: form.role.toLowerCase() };
+      const formData = {
+        ...form,
+        role: form.role.toLowerCase(),
+        profileImage: DEFAULT_IMAGE,
+      };
+
       if (editingId) {
-        delete formData.password;
+        delete formData.password; 
         await updateUser.mutateAsync({ id: editingId, user: formData });
         toast.success("User updated successfully!");
       } else {
@@ -64,6 +72,7 @@ const UserManage = () => {
         await createUser.mutateAsync(formData);
         toast.success("User created successfully!");
       }
+
       resetForm();
       await refetch();
     } catch (err) {
@@ -136,10 +145,7 @@ const UserManage = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr
-                  key={user.id}
-                  className="border-t hover:bg-gray-50 transition"
-                >
+                <tr key={user.id} className="border-t hover:bg-gray-50">
                   <td className="p-3 text-xs">{user.id}</td>
                   <td className="p-3">{user.name}</td>
                   <td className="p-3">{user.email}</td>
@@ -198,6 +204,7 @@ const UserManage = () => {
             >
               {Object.keys(emptyUser).map((key) => {
                 if (key === "password" && editingId) return null;
+
                 return (
                   <div key={key}>
                     <label className="block text-sm font-medium text-gray-700 capitalize">
@@ -214,15 +221,22 @@ const UserManage = () => {
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                       </select>
+                    ) : key === "gender" ? (
+                      <select
+                        name={key}
+                        value={form[key]}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      >
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                      </select>
                     ) : (
                       <input
-                        type={
-                          key === "age" || key === "pincode"
-                            ? "number"
-                            : key === "password"
-                            ? "password"
-                            : "text"
-                        }
+                        type={key === "password" ? "password" : "text"}
                         name={key}
                         value={form[key]}
                         onChange={handleInputChange}

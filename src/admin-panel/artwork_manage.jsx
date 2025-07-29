@@ -49,7 +49,7 @@ const ArtworkManage = () => {
                 deleteArtwork.mutate(id, {
                   onSuccess: () => {
                     toast.dismiss(t);
-                    toast.success("Artwork deleted!");
+                    toast.success("Artwork deleted successfully!");
                     refetch();
                   },
                   onError: () => {

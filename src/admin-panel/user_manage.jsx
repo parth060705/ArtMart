@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Toaster, toast } from "sonner";
 import {
   useAdminUsers,
@@ -106,7 +107,7 @@ const UserManage = () => {
       <Toaster richColors position="top-right" />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
-        <button
+        <Button
           onClick={() => {
             resetForm();
             setModalOpen(true);
@@ -114,7 +115,7 @@ const UserManage = () => {
           className="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700"
         >
           + Add User
-        </button>
+        </Button>
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto">
@@ -158,18 +159,18 @@ const UserManage = () => {
                   <td className="p-3">{user.role}</td>
                   <td className="p-3">
                     <div className="flex gap-2">
-                      <button
+                      <Button
                         onClick={() => handleEdit(user)}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                       >
                         Edit
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => setConfirmDeleteId(user.id)}
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       >
                         Delete
-                      </button>
+                      </Button>
                     </div>
                   </td>
                 </tr>
@@ -247,19 +248,19 @@ const UserManage = () => {
                 );
               })}
               <div className="col-span-full flex justify-end gap-4 mt-4">
-                <button
+                <Button
                   type="button"
                   onClick={resetForm}
                   className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
                   {editingId ? "Update" : "Create"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -268,25 +269,24 @@ const UserManage = () => {
 
       {/* Delete Confirmation Modal */}
       {confirmDeleteId && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md text-center">
             <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
             <p className="mb-6 text-gray-700">
               Are you sure you want to delete this user?
             </p>
             <div className="flex justify-center gap-4">
-              <button
+              <Button
                 onClick={() => setConfirmDeleteId(null)}
-                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
               >
                 Cancel
-              </button>
-              <button
-                onClick={handleDeleteConfirm}
+              </Button>
+              <Button onClick={handleDeleteConfirm}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
-                Yes, Delete
-              </button>
+                >
+                  Yes, Delete
+                </Button>
             </div>
           </div>
         </div>

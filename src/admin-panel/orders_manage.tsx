@@ -1,5 +1,6 @@
 import React from "react";
 import { useAdminOrders, useDeleteOrders } from "@/admin_hooks/ordersfetch";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const OrderManage = () => {
@@ -80,7 +81,7 @@ const OrderManage = () => {
                         : "—"}
                     </td>
                     <td className="px-4 py-3">
-                      <button
+                      <Button
                         onClick={() => order?.id && handleDelete(String(order.id))}
                         disabled={deleteOrder.isPending}
                         className={`px-3 py-1 rounded text-xs text-white ${
@@ -90,7 +91,7 @@ const OrderManage = () => {
                         }`}
                       >
                         Delete
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 ))

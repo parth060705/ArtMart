@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   useAdminArtworks,
   useDeleteArtwork,
@@ -50,7 +51,7 @@ const ArtworkManage = () => {
           Are you sure you want to delete this artwork?
         </div>
         <div className="flex justify-end gap-2">
-          <button
+          <Button
             onClick={() => {
               deleteArtwork.mutate(id, {
                 onSuccess: () => {
@@ -67,13 +68,13 @@ const ArtworkManage = () => {
             className="bg-red-600 text-white text-xs px-3 py-1 rounded"
           >
             Yes, Delete
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => toast.dismiss(t)}
             className="text-gray-500 hover:underline text-xs"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     ), { duration: 10000 });
@@ -134,12 +135,12 @@ const ArtworkManage = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Artwork Management</h1>
-        <button
+        <Button
           className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
           onClick={openCreateForm}
         >
           + Add Artwork
-        </button>
+        </Button>
       </div>
 
       {showForm && (
@@ -208,19 +209,19 @@ const ArtworkManage = () => {
                 className="border p-2 rounded w-full"
               ></textarea>
               <div className="flex justify-end gap-2">
-                <button
+                <Button
                   type="button"
                   onClick={() => setShowForm(false)}
                   className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
                 >
                   {editingId ? "Update" : "Create"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -307,18 +308,18 @@ const ArtworkManage = () => {
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <div className="flex flex-col sm:flex-row gap-2">
-                      <button
+                      <Button
                         onClick={() => handleEdit(art)}
                         className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs"
                       >
                         Edit
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         onClick={() => handleDelete(art.id)}
                         className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
                       >
                         Delete
-                      </button>
+                      </Button>
                     </div>
                   </td>
                 </tr>

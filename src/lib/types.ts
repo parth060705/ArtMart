@@ -56,21 +56,23 @@ export interface MenuItem {
     items?: MenuItem[];
 }
 
-// ----------------------------------------------------
+// ----------------------------------------------------FOR ADMIN PANEL TYPES
+
 export type Artwork = {
-    id: number;
+    id: string;
     title: string;
     description: string;
     images: string[];
     price: number;
     category: string;
     isSold: boolean,
-    artistId: number;
+    artistId: string;
+    file: File | File[];
     artist:{
         username: string,
         profileImage: string
     },
-    createdAt: Date;
+    createdAt:string;
 }
 
 export type Orders = {

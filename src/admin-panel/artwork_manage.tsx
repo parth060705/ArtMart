@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Artwork } from "@/lib/types";
+
 import {
   useAdminArtworks,
   useDeleteArtwork,
   useUpdateArtwork,
 } from "@/admin_hooks/artworkfetch";
 
-const emptyArtwork = {
+const emptyArtwork: Artwork = {
   id: "",
   title: "",
   description: "",
-  price: "",
+  price: 0,
   category: "",
   isSold: false,
   images: [],
-  file: null,
+  file: [],
   artistId: "",
   artist: {
     username: "",
@@ -26,27 +28,27 @@ const emptyArtwork = {
 
 const ArtworkManage = () => {
   const [form, setForm] = useState(emptyArtwork);
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
 
   const { data: artworks = [], isLoading, refetch } = useAdminArtworks();
   const deleteArtwork = useDeleteArtwork();
   const updateArtwork = useUpdateArtwork();
 
-  const handleEdit = (art) => {
+  const handleEdit = (art: Artwork) => {
     setForm({
       ...emptyArtwork,
       ...art,
       isSold: Boolean(art.isSold),
-      file: null,
+      file: [],
     });
     setEditingId(art.id);
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
-    toast((t) => (
-      <div>
+  const handleDelete = (id: string) => {
+    const toastId = toast.custom((t) => (
+      <div className="bg-white p-4 rounded shadow-lg">
         <div className="mb-2 text-sm">
           Are you sure you want to delete this artwork?
         </div>
@@ -55,12 +57,12 @@ const ArtworkManage = () => {
             onClick={() => {
               deleteArtwork.mutate(id, {
                 onSuccess: () => {
-                  toast.dismiss(t);
+                  toast.dismiss(toastId);
                   toast.success("Artwork deleted successfully!");
                   refetch();
                 },
                 onError: () => {
-                  toast.dismiss(t);
+                  toast.dismiss(toastId);
                   toast.error("Failed to delete artwork.");
                 },
               });
@@ -70,14 +72,15 @@ const ArtworkManage = () => {
             Yes, Delete
           </Button>
           <Button
-            onClick={() => toast.dismiss(t)}
+            onClick={() => toast.dismiss(toastId)}
             className="text-gray-500 hover:underline text-xs"
           >
             Cancel
           </Button>
         </div>
       </div>
-    ), { duration: 10000 });
+    ));
+
   };
 
   const openCreateForm = () => {
@@ -86,7 +89,7 @@ const ArtworkManage = () => {
     setShowForm(true);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const { name, value, type, checked, files } = e.target;
     if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
@@ -97,7 +100,7 @@ const ArtworkManage = () => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", form.title);
@@ -105,9 +108,13 @@ const ArtworkManage = () => {
     formData.append("category", form.category);
     formData.append("price", form.price.toString());
     formData.append("isSold", form.isSold.toString());
-    if (form.file) {
-      formData.append("files", form.file); // backend expects "files"
+    if (form.file && typeof form.file === "object" && "name" in form.file) {
+      formData.append("files", form.file as File);
     }
+    else if (form.file instanceof File) {
+      formData.append("files", form.file);
+    }
+
 
     if (editingId) {
       updateArtwork.mutate(
@@ -258,7 +265,7 @@ const ArtworkManage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {artworks.map((art) => (
+              {artworks.map((art: Artwork) => (
                 <tr key={art.id} className="hover:bg-gray-50 transition">
                   <td className="px-4 py-3">{art.id}</td>
                   <td className="px-4 py-3 font-medium">{art.title}</td>

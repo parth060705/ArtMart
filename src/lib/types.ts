@@ -84,6 +84,10 @@ export type Orders = {
     name: string;
     location:string | null;
   };
+  artwork: {
+    title: string;
+    price: number;
+  };
   paymentStatus: string;
   buyerId: string;
   createdAt: Date;

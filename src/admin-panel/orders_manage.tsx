@@ -38,6 +38,8 @@ const OrderManage = () => {
                 {[
                   "Order ID",
                   "Artwork ID",
+                  "Title",
+                  "Price",
                   "Buyer Username",
                   "Buyer Name",
                   "Location",
@@ -58,6 +60,8 @@ const OrderManage = () => {
                   <tr key={order.id} className="hover:bg-gray-50 transition">
                     <td className="px-4 py-3">{order.id ?? "—"}</td>
                     <td className="px-4 py-3">{order.artworkId ?? "—"}</td>
+                    <td className="px-4 py-3">{order.artwork?.title ?? "—"}</td>
+                    <td className="px-4 py-3">{order.artwork?.price ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.username ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.name ?? "—"}</td>
                     <td className="px-4 py-3">{order.buyer?.location ?? "—"}</td>

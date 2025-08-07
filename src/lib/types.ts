@@ -27,6 +27,7 @@ export type Product = {
     description: string;
     images: string[];
     price: number;
+    tags: string[];
     category: string;
     artist:{
         username: string,

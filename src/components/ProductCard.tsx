@@ -14,6 +14,7 @@ export default function ProductCard({
     description,
     artist,
     price,
+    tags,
     likes,
     comments,
     variant = 'default',
@@ -21,7 +22,16 @@ export default function ProductCard({
 }: ProductCardProps) {
     // Extract hashtags/tags from caption (simple demo)
     // const tags = caption.match(/#[\w]+/g) || [];
-    const tags = ['a', 'sdfa', 'fsa']
+    // const tags = []
+    const safeTags = Array.isArray(tags)
+        ? tags.flatMap(tagString =>
+            tagString
+                .split(',')
+                .map(tag => tag.trim())
+                .filter(Boolean)
+        )
+        : [];
+
     return (
         <div
             key={id}
@@ -48,7 +58,7 @@ export default function ProductCard({
             >
                 {/* Top: Tags */}
                 <div className="flex flex-wrap gap-2">
-                    {tags.map(tag => (
+                    {safeTags.map(tag => (
                         <span key={tag} className="bg-[var(--primary)]/80 text-[var(--primary-foreground)] px-2 py-1 rounded-full text-xs font-medium shadow">
                             {tag}
                         </span>

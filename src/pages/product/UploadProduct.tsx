@@ -42,7 +42,7 @@ const UploadProduct = () => {
   const { mutate: uploadProduct, isPending: isUploading } = useUploadProduct();
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  
+
   const {
     register,
     handleSubmit,
@@ -56,7 +56,8 @@ const UploadProduct = () => {
       description: '',
       price: '',
       category: '',
-      images: []
+      images: [],
+      tags: [],
     }
   });
 
@@ -71,11 +72,11 @@ const UploadProduct = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    
+
     // Filter only image files and check supported types
     const validImageFiles: File[] = [];
     const invalidFiles: string[] = [];
-    
+
     files.forEach(file => {
       if (file instanceof File) {
         if (file.type.startsWith('image/')) {
@@ -95,23 +96,23 @@ const UploadProduct = () => {
         'Supported formats: JPG, PNG, WebP, GIF, AVIF'
       );
     }
-    
+
     if (validImageFiles.length === 0) return;
-    
+
     // Check total number of files won't exceed limit
     const totalFiles = imageFiles.length + validImageFiles.length;
     if (totalFiles > 5) {
       toast.error('You can upload a maximum of 5 images');
       return;
     }
-    
+
     // Create preview URLs
     const newPreviewUrls = validImageFiles.map(file => URL.createObjectURL(file));
-    
+
     // Update state
     setImageFiles(prev => [...prev, ...validImageFiles]);
     setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
-    
+
     // Update form values
     setValue('images', [...imageFiles, ...validImageFiles].map(file => file.name), {
       shouldValidate: true
@@ -124,17 +125,17 @@ const UploadProduct = () => {
     if (urlToRevoke) {
       URL.revokeObjectURL(urlToRevoke);
     }
-    
+
     // Update states
     const newImageFiles = [...imageFiles];
     const newPreviewUrls = [...previewUrls];
-    
+
     newImageFiles.splice(index, 1);
     newPreviewUrls.splice(index, 1);
-    
+
     setImageFiles(newImageFiles);
     setPreviewUrls(newPreviewUrls);
-    
+
     // Update form values
     setValue('images', newImageFiles.map(file => file.name), {
       shouldValidate: true
@@ -165,6 +166,7 @@ const UploadProduct = () => {
         title: data.title,
         description: data.description,
         price: priceValue,
+        tags: data.tags,
         category: data.category,
         files: imageFiles
       };
@@ -237,7 +239,7 @@ const UploadProduct = () => {
                     </button>
                   </div>
                 ))}
-                
+
                 {/* Upload Button */}
                 {imageFiles.length < 5 && (
                   <label
@@ -311,7 +313,25 @@ const UploadProduct = () => {
                   <p className="text-sm text-red-500">{errors.price.message}</p>
                 )}
               </div>
+              {/* Tags */}
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags (comma separated)</Label>
+                <Input
+                  id="tags"
+                  placeholder="#abstract, #colorful"
+                  onChange={(e) => {
+                    const inputTags = e.target.value
+                      .split(',')
+                      .map(tag => tag.trim())
+                      .filter(tag => tag.length > 0);
 
+                    setValue('tags', inputTags, { shouldValidate: true });
+                  }}
+                />
+                {errors.tags && (
+                  <p className="text-sm text-red-500">{errors.tags.message}</p>
+                )}
+              </div>
               {/* Category */}
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
@@ -338,8 +358,8 @@ const UploadProduct = () => {
 
             {/* Submit Button */}
             <div className="pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full md:w-auto"
                 disabled={isUploading}
               >

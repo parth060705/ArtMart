@@ -1,0 +1,261 @@
+import React from 'react';
+import { useGetCartItems } from '@/hooks/useGetCartItems';
+import { useProductDetails } from '@/hooks/useProductDetails';
+import { Button } from '@/components/ui/button';
+import { Trash2, Plus, Minus, ArrowLeft, ShoppingCart, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Routes } from '@/lib/routes';
+import { Product } from '@/lib/types';
+
+const fallbackImage = 'https://via.placeholder.com/400x400?text=Artwork+Image';
+
+// Types
+type CartItem = {
+  userID: string;
+  artworkId: string;
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+  quantity: number;
+};
+
+type CartItemCardProps = {
+  itemId: string;
+  onRemove: (itemId: string) => void;
+  onIncreaseQuantity?: (itemId: string) => void;
+  onDecreaseQuantity?: (itemId: string) => void;
+};
+
+const CartItemCard = ({ itemId, onRemove, onIncreaseQuantity, onDecreaseQuantity }: CartItemCardProps) => {
+  const { data: product, isLoading, isError } = useProductDetails(itemId);
+  const quantity = 1
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8 bg-card rounded-lg border">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <span className="ml-2">Loading product details...</span>
+      </div>
+    );
+  }
+
+  if (isError || !product) {
+    return (
+      <div className="p-4 bg-card rounded-lg border text-destructive">
+        Failed to load product details. Please try again later.
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-card rounded-lg border">
+      <Link
+        to={`/products/${product.id}`}
+        className="w-full sm:w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-muted"
+      >
+        <img
+          src={product.images?.[0] || fallbackImage}
+          alt={product.title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = fallbackImage;
+          }}
+        />
+      </Link>
+
+      <div className="flex-1 flex flex-col">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-medium">
+              <Link to={`/products/${product.id}`} className="hover:underline">
+                {product.title}
+              </Link>
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              by {product.artist?.username || 'Unknown Artist'}
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            onClick={() => onRemove(itemId)}
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Remove item</span>
+          </Button>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={() => onDecreaseQuantity?.(itemId)}
+              disabled={quantity <= 1}
+            >
+              <Minus className="h-4 w-4" />
+              <span className="sr-only">Decrease quantity</span>
+            </Button>
+            <span className="w-8 text-center">{quantity}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={() => onIncreaseQuantity?.(itemId)}
+            >
+              <Plus className="h-4 w-4" />
+              <span className="sr-only">Increase quantity</span>
+            </Button>
+          </div>
+          <span className="font-medium">
+            ₹{(product.price * quantity).toFixed(2)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Cart = () => {
+  const { data: cartData, isLoading, isError } = useGetCartItems();
+  const cartItems = cartData || [];
+
+  // Calculate subtotal based on cart items with loaded product details
+  const subtotal = cartItems.reduce((sum: number, item: CartItem) => {
+    // This is a simplified calculation - in a real app, you'd want to use actual product prices
+    // from the useProductDetails hook in the CartItemCard component
+    return sum + (item.quantity * 100); // Placeholder calculation
+  }, 0);
+
+  const shipping = 0; // Free shipping for now
+  const total = subtotal + shipping;
+
+  const handleIncreaseQuantity = (itemId: string) => {
+    // TODO: Implement quantity increase
+    console.log('Increase quantity for', itemId);
+  };
+
+  const handleDecreaseQuantity = (itemId: string) => {
+    // TODO: Implement quantity decrease
+    console.log('Decrease quantity for', itemId);
+  };
+
+  const handleRemoveItem = (itemId: string) => {
+    // TODO: Implement remove item
+    console.log('Remove item', itemId);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex flex-col items-center justify-center min-h-[50vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+          <p className="mt-4 text-lg text-muted-foreground">Loading your cart...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-destructive">Error loading your cart</h2>
+          <p className="mt-2 text-muted-foreground">Please try again later</p>
+          <Button className="mt-4" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="w-24 h-24 mx-auto mb-6 text-muted-foreground">
+            <ShoppingCart className="w-full h-full opacity-50" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+          <p className="text-muted-foreground mb-8">
+            Looks like you haven't added any items to your cart yet.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild variant="outline" className="gap-2">
+              <Link to={`/${Routes.ProductsListingPage}`}>
+                <ArrowLeft className="w-4 h-4" />
+                Continue Shopping
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Your Cart</h1>
+          <p className="text-muted-foreground">Review and manage your items</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-6">
+            {cartItems.map((item: CartItem) => (
+              <CartItemCard
+                key={item.id}
+                itemId={item.artworkId}
+                onRemove={handleRemoveItem}
+                onIncreaseQuantity={handleIncreaseQuantity}
+                onDecreaseQuantity={handleDecreaseQuantity}
+              />
+            ))}
+          </div>
+
+          {/* Order Summary */}
+          <div className="lg:col-span-1">
+            <div className="bg-card p-6 rounded-lg border space-y-6 sticky top-8">
+              <h2 className="text-lg font-semibold">Order Summary</h2>
+
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Shipping</span>
+                  <span>₹{shipping === 0 ? 'Free' : Number(shipping).toFixed(2)}</span>
+                </div>
+                <div className="border-t pt-4 flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>₹{total.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <Button className="w-full" size="lg">
+                Proceed to Checkout
+              </Button>
+
+              <div className="text-center text-sm text-muted-foreground">
+                <p>or</p>
+                <Button variant="link" className="text-foreground" asChild>
+                  <Link to={`/${Routes.ProductsListingPage}`}>
+                    Continue Shopping
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Cart;

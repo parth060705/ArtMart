@@ -1,7 +1,6 @@
 export class Routes {
     static ProductsListingPage = "products"
     static ProductDetailPage = "product"
-    static CartPage = "cart"
     static ProfilePage = "profile/:username"
     static ProfileUpdatePage = "profile/:username/update"
     static UploadProductPage = "upload"
@@ -10,6 +9,7 @@ export class Routes {
     static AuthRegisterPage = "/auth/register"
     static AuthForgotPasswordPage = "/auth/forgot-password"
     static AuthResetPasswordPage = "/auth/reset-password"
+    static CartPage = "/auth/cart"
 }
 
 export const navbarRoutes = {
@@ -20,5 +20,6 @@ export const navbarRoutes = {
     auth: {
         login: { title: "Login", url: Routes.AuthLoginPage },
         signup: { title: "Sign up", url: Routes.AuthRegisterPage },
+        addtoCart: { title: "Add to Cart", url: Routes.CartPage },
     },
 }

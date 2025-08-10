@@ -1,16 +1,26 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 
-export const useUserSearch = () => {
-  const queryClient = useQueryClient();
+interface UserSearchResult {
+  id: string;
+  username: string;
+  profileImage?: string;
+  avatar?: string;
+}
 
-  return useMutation({
-    mutationFn: async (values: any) => {
-      const { data: searchData } = await axiosClient.get("/search/user", {params: values});
-      return searchData;
+export const useUserSearch = (searchTerm: string) => {
+  return useQuery({
+    queryKey: ["userSearch", searchTerm],
+    queryFn: async (): Promise<{ data: UserSearchResult[] }> => {
+      // Only make the API call if there's a search term
+      if (!searchTerm.trim()) {
+        return { data: [] }; // Return empty results for empty search
+      }
+      const { data } = await axiosClient.get(`/search/user?query=${encodeURIComponent(searchTerm)}`);
+      return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["search"] });
-    },
+    enabled: !!searchTerm.trim(), // Only enable the query when there's a search term
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 1,
   });
 };

@@ -28,7 +28,7 @@ import MainLayout from './Layout/Mainlayout';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
-      <ProductSearchProvider>
+      <ProductSearchProvider> 
         <QueryClientProvider client={queryClient}>
           <Toaster richColors position="top-center" />
           <BrowserRouter>

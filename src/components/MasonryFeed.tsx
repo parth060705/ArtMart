@@ -2,13 +2,13 @@ import { useProductsList } from "@/hooks/useProductsList";
 import ProductCard from "./ProductCard";
 import { Product } from "@/lib/types";
 import { useNavigate } from "react-router-dom";
-import { useProductSearch } from "@/context/ProductSearchContext";
+import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
 
 export default function MasonryFeed({className, length, url}: {className?: string, length?: number, url?: string}) {
   const navigate = useNavigate();
   const { data: products } = useProductsList(url || '/artworks')
-  const { searchQuery, selectedCategory, selectedLocation, priceRange, sortBy, currentPage } = useProductSearch();
+  const { searchQuery, selectedCategory, selectedLocation, priceRange } = useProductSearchContext();
   const filteredProducts = products?.filter((prod: Product) => {
     const matchesCategory = !selectedCategory || prod.category === selectedCategory;
     const matchesLocation = !selectedLocation || prod.location === selectedLocation;
@@ -19,7 +19,7 @@ export default function MasonryFeed({className, length, url}: {className?: strin
     // prod.caption.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesLocation && matchesPrice && matchesSearch;
   });
-  console.log(filteredProducts)
+  
   return (
     <div className={className}>
       {filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product, index: number) => (

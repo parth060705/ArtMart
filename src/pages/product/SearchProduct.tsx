@@ -1,67 +1,55 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductCard from "@/components/ProductCard";
-import { useProductSearch } from "@/context/ProductSearchContext";
+import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { useUserSearch } from "@/hooks/useUserSearch";
-import { useProductSearch as useProductSearchHook } from "@/hooks/useProductSearch";
 import { Skeleton } from "@/components/ui/skeleton";
-
-interface Product {
-  id: string;
-  title: string;
-  image: string;
-  price: number;
-}
+import { useProductSearch } from "@/hooks/useProductSearch";
+import { Link, useNavigate } from "react-router-dom";
+import { Product } from "@/lib/types";
+import { useDebounce } from "@/hooks/useDebounce";
+import { Routes } from "@/lib/routes";
 
 interface User {
   id: string;
   username: string;
-  profileImage: string;
+  profileImage?: string;
+  avatar?: string;
 }
 
 const SearchProduct = () => {
-  const { searchQuery } = useProductSearch();
-  const searchProducts = useProductSearchHook();
-  const searchUsers = useUserSearch();
+  const { searchQuery } = useProductSearchContext();
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  const navigate = useNavigate();
+  
+  const {
+    data: productsData,
+    isLoading: isLoadingProducts,
+    isError: hasProductsError,
+  } = useProductSearch(debouncedSearchQuery);
+  
+  const {
+    data: usersData,
+    isLoading: isLoadingUsers,
+    isError: hasUsersError,
+  } = useUserSearch(debouncedSearchQuery);
 
-  const [productResults, setProductResults] = useState<Product[]>([]);
-  const [userResults, setUserResults] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  console.log(productsData)
+  console.log(usersData)
 
-  useEffect(() => {
-    const search = async () => {
-      if (!searchQuery) {
-        setProductResults([]);
-        setUserResults([]);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // Search for products
-        const productsData = await searchProducts.mutateAsync(searchQuery);
-        setProductResults(productsData?.data || []);
-
-        // Search for users
-        const usersData = await searchUsers.mutateAsync(searchQuery);
-        setUserResults(usersData?.data || []);
-      } catch (err) {
-        console.error("Search failed:", err);
-        setError("Failed to fetch search results. Please try again.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const debounceTimer = setTimeout(() => {
-      search();
-    }, 500); // Debounce search by 500ms
-
-    return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
+  const isLoading = isLoadingProducts || isLoadingUsers;
+  const hasError = hasProductsError || hasUsersError;
+  const productResults: Product[] = productsData?.map((product: any) => ({
+    ...product,
+    id: String(product.id),
+    price: Number(product.price)
+  })) || [];
+  
+  const userResults: User[] = (usersData?.map((user: any) => ({
+    ...user,
+    id: String(user.id),
+    profileImage: user.profileImage || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`
+  })) || []);
 
   if (isLoading) {
     return (
@@ -79,10 +67,10 @@ const SearchProduct = () => {
     );
   }
 
-  if (error) {
+  if (hasError) {
     return (
       <div className="container mx-auto py-8 text-center text-red-500">
-        {error}
+        Failed to load search results. Please try again later.
       </div>
     );
   }
@@ -91,7 +79,7 @@ const SearchProduct = () => {
     <section className="container mx-auto py-6">
       <Tabs defaultValue="products" className="w-full">
         <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3 bg-[var(--muted)] rounded-xl p-1">
+          <TabsList className="grid w-max grid-cols-2 bg-[var(--muted)] rounded-xl p-1">
             <TabsTrigger
               value="products"
               className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[var(--primary)] rounded-lg text-sm font-medium transition-all"
@@ -99,10 +87,10 @@ const SearchProduct = () => {
               Products
             </TabsTrigger>
             <TabsTrigger
-              value="users"
+              value="artists"
               className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[var(--primary)] rounded-lg text-sm font-medium transition-all"
             >
-              Users
+              Artists
             </TabsTrigger>
           </TabsList>
         </div>
@@ -112,34 +100,67 @@ const SearchProduct = () => {
           {productResults.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {productResults.map((product: Product) => (
-                <ProductCard key={product.id} {...product} />
+                <ProductCard 
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  description={product.description}
+                  images={product.images}
+                  price={product.price}
+                  category={product.category}
+                  artist={{
+                    username: product.artist?.username || 'Unknown Artist',
+                    profileImage: product.artist?.profileImage || ''
+                  }}
+                  likes={product.likes || 0}
+                  comments={product.comments || 0}
+                  isSold={product.isSold || false}
+                  artistid={product.artistid || ''}
+                  location={product.location || ''}
+                  createdAt={product.createdAt || new Date().toISOString()}
+                  onClick={() => navigate(`/${Routes.ProductDetailPage}/${product.id}`)}
+                />
               ))}
             </div>
-          ) : (
+          ) : searchQuery ? (
             <p className="text-center text-muted-foreground">No products found.</p>
+          ) : (
+            <p className="text-center text-muted-foreground">Search for products by title or description</p>
           )}
         </TabsContent>
 
         {/* Users Tab */}
-        <TabsContent value="users" className="mt-6">
+        <TabsContent value="artists" className="space-y-4">
           {userResults.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {userResults.map((user) => (
-                <div
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {userResults.map((user: User) => (
+                <Link 
                   key={user.id}
-                  className="flex flex-col items-center gap-3 p-4 border rounded-lg hover:shadow-sm transition-shadow"
+                  to={`/profile/${user.username}`}
+                  className="flex flex-col items-center p-6 space-y-3 transition-colors border rounded-lg hover:bg-accent/50"
                 >
-                  <img
-                    src={user.profileImage}
-                    alt={user.username}
-                    className="w-20 h-20 rounded-full object-cover"
-                  />
-                  <span className="font-medium">{user.username}</span>
-                </div>
+                  <div className="relative w-20 h-20 overflow-hidden rounded-full bg-muted">
+                    <img
+                      src={user.profileImage}
+                      alt={user.username}
+                      className="object-cover w-full h-full"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random`;
+                      }}
+                    />
+                  </div>
+                  <div className="text-center">
+                    <h4 className="font-medium">{user.username}</h4>
+                    <p className="text-sm text-muted-foreground">View Profile</p>
+                  </div>
+                </Link>
               ))}
             </div>
+          ) : searchQuery ? (
+            <p className="text-center text-muted-foreground">No artists found.</p>
           ) : (
-            <p className="text-center text-muted-foreground">No users found.</p>
+            <p className="text-center text-muted-foreground">Search for artists by username</p>
           )}
         </TabsContent>
       </Tabs>

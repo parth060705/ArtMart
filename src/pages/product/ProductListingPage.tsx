@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import FilterSidebar from '@/components/FilterSidebar';
-import { useProductSearch } from '@/context/ProductSearchContext';
+import { useProductSearchContext } from '@/context/ProductSearchContext';
 import MasonryFeed from '@/components/MasonryFeed';
 
 const ProductListingPage = () => {
-  const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearch();
+  const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearchContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

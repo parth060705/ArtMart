@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import ProductSearchBar from "@/components/ProductSearchBar";
 import FilterSidebar from "@/components/FilterSidebar";
 import { useState } from "react";
@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/sheet";
 import { navbarRoutes } from "@/lib/routes";
 import { MenuItem } from "@/lib/types";
-import { useProductSearch } from "@/context/ProductSearchContext";
+import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes as AppRoutes } from "@/lib/routes";
 interface NavbarProps {
   logo?: {
@@ -59,14 +59,14 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const { isAuthenticated, username, userProfile } = useAuth();
-  const { setSearchQuery } = useProductSearch();
+  const { setSearchQuery, searchQuery } = useProductSearchContext();
   // Search/filter state for Product Listing Page
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
 
-  console.log(search)
+  console.log(searchQuery)
 
   // Logout handler
   const handleLogout = () => {
@@ -101,7 +101,7 @@ const Navbar = ({
           {/* Search and Filter for Product Listing Page */}
           {typeof window !== 'undefined' && (window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
             <div className="flex items-center gap-3 mr-6">
-              <ProductSearchBar value={search} onChange={setSearchQuery} />
+              <ProductSearchBar value={searchQuery} onChange={setSearchQuery} />
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="rounded-full px-6 font-semibold border-[var(--primary)] text-[var(--primary)] ml-2">
@@ -141,15 +141,28 @@ const Navbar = ({
                   </div>
                 )}
               </div>
-              {/* User Avatar Link */}
+              {/* Cart and User Avatar Links */}
               {isAuthenticated && (
-                <Link to={`/profile/${username}`} className="ml-2" aria-label="Go to profile">
-                  <img
-                    src={`${userProfile?.profileImage}`}
-                    alt="Go to profile"
-                    className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
-                  />
-                </Link>
+                <div className="flex items-center gap-3">
+                  <Link 
+                    to={navbarRoutes.auth.addtoCart.url} 
+                    className="p-2 rounded-full hover:bg-[var(--muted)] transition-colors relative"
+                    aria-label="View cart"
+                  >
+                    <ShoppingCart className="w-5 h-5 text-[var(--foreground)]" />
+                    {/* You can add a badge here for cart item count if needed */}
+                    {/* <span className="absolute -top-1 -right-1 bg-[var(--primary)] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      0
+                    </span> */}
+                  </Link>
+                  <Link to={`/profile/${username}`} aria-label="Go to profile">
+                    <img
+                      src={`${userProfile?.profileImage}`}
+                      alt="Go to profile"
+                      className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
+                    />
+                  </Link>
+                </div>
               )}
             </div>
           </div>

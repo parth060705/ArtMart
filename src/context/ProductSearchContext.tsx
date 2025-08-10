@@ -64,7 +64,7 @@ export function ProductSearchProvider({ children }: ProductSearchProviderProps) 
   );
 }
 
-export function useProductSearch() {
+export function useProductSearchContext() {
   const context = useContext(ProductSearchContext);
   if (context === undefined) {
     throw new Error('useProductSearch must be used within a ProductSearchProvider');

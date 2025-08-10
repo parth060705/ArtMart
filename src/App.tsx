@@ -58,9 +58,9 @@ function App() {
                 <Route path="*" element={<NotFound />} />
 
 {/* ------------------------------------------------------------------------------------------- */}
-                <Route path="/user_manage" element={<UserManage />} />
-                <Route path="/artwork_manage" element={<ArtworkManage />} />
-                <Route path="/orders_manage" element={<OrderManage />} />
+                <Route path="admin/user_manage" element={<UserManage />} />
+                <Route path="admin/artwork_manage" element={<ArtworkManage />} />
+                <Route path="admin/orders_manage" element={<OrderManage />} />
 {/* ------------------------------------------------------------------------------------------- */}
 
                 {/* Protected Routes Group */}

@@ -215,13 +215,22 @@ const Navbar = ({
                     )}
                     {/* User Avatar Link (Mobile) */}
                     {isAuthenticated && (
-                      <Link to={`/profile/${username}`} className="self-center mt-2" aria-label="Go to profile">
-                        <img
-                          src={`${userProfile?.profileImage}`}
-                          alt="Go to profile"
-                          className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
-                        />
-                      </Link>
+                      <>
+                        <Link 
+                          to={navbarRoutes.auth.addtoCart.url} 
+                          className="self-center p-2 rounded-full hover:bg-[var(--muted)] transition-colors" 
+                          aria-label="View cart"
+                        >
+                          <ShoppingCart className="w-5 h-5 text-[var(--foreground)]" />
+                        </Link>
+                        <Link to={`/profile/${username}`} className="self-center mt-2" aria-label="Go to profile">
+                          <img
+                            src={`${userProfile?.profileImage}`}
+                            alt="Go to profile"
+                            className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
+                          />
+                        </Link>
+                      </>
                     )}
                   </div>
                   {/* Theme Switcher Button (Mobile) */}

@@ -27,6 +27,7 @@ export type Product = {
     description: string;
     images: string[];
     price: number;
+    tags: string[];
     category: string;
     artist: {
         username: string,
@@ -68,3 +69,43 @@ export interface MenuItem {
     icon?: React.ReactNode;
     items?: MenuItem[];
 }
+
+// ----------------------------------------------------FOR ADMIN PANEL TYPES
+
+export type Artwork = {
+    id: string;
+    title: string;
+    description: string;
+    images: string[];
+    price: number;
+    category: string;
+    isSold: boolean,
+    artistId: string;
+    file: File | File[];
+    artist:{
+        username: string,
+        profileImage: string
+    },
+    createdAt:string;
+}
+
+export type Orders = {
+  id: number;
+  artworkId: number | null;
+  totalAmount: number;
+  buyer: {
+    username: string;
+    name: string;
+    location:string | null;
+  };
+  artwork: {
+    title: string;
+    price: number;
+  };
+  paymentStatus: string;
+  buyerId: string;
+  createdAt: Date;
+};
+
+
+// -----------------------------------------------------

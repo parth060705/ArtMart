@@ -35,4 +35,5 @@ export const uploadProductSchema = z.object({
     price: z.string().min(1, { message: 'Price is required' }),
     category: z.string().min(1, { message: 'Category is required' }),
     images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
+    tags: z.array(z.string()).min(1, { message: 'At least one tags for better search' }),
 });

@@ -38,7 +38,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
                     >
                       <img
-                        src={user.profileImageUrl}
+                        src={user.profileImage}
                         alt={user.username}
                         className="w-10 h-10 rounded-full object-cover"
                       />
@@ -62,7 +62,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
                     >
                       <img
-                        src={user.profileImageUrl}
+                        src={user.profileImage}
                         alt={user.username}
                         className="w-10 h-10 rounded-full object-cover"
                       />

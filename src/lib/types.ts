@@ -94,5 +94,21 @@ export type Orders = {
   createdAt: Date;
 };
 
+export type MessageBase = {
+  receiver_id: string;
+  content?: string;
+  action: "message" | "typing" | "read";
+};
+
+// The shape for creating messages (same as base here)
+export type MessageCreate = MessageBase;
+
+export type MessageOut = {
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  timestamp: string; 
+  is_read: boolean;
+};
 
 // -----------------------------------------------------

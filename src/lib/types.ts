@@ -65,6 +65,8 @@ export type Artwork = {
     description: string;
     images: string[];
     price: number;
+    tags: string[];
+    quantity: number;
     category: string;
     isSold: boolean,
     artistId: string;

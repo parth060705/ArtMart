@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/sheet";
 import { navbarRoutes } from "@/lib/routes";
 import { MenuItem } from "@/lib/types";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes as AppRoutes } from "@/lib/routes";
 interface NavbarProps {
@@ -124,7 +125,7 @@ const Navbar = ({
           <div className="flex gap-2">
             {/* Theme Switcher Button (Desktop) */}
             <div className="hidden lg:flex items-center ml-4">
-              {/* <ThemeSwitcher /> */}
+              <ThemeSwitcher />
             </div>
             <div className="flex items-center gap-4">
               <div className="flex flex-col gap-3">
@@ -170,6 +171,12 @@ const Navbar = ({
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
+        {/* Mobile Search Bar */}
+        {typeof window !== 'undefined' && (window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
+          <div className="mt-2 px-2 lg:hidden">
+            <ProductSearchBar value={searchQuery} onChange={setSearchQuery} />
+          </div>
+        )}
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
@@ -192,12 +199,27 @@ const Navbar = ({
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
+                    {typeof window !== 'undefined' && (window.location.pathname.includes(AppRoutes.ProductsListingPage) || window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
+                      <div className="flex flex-col gap-3">
+
+                        <FilterSidebar
+                          selectedCategory={selectedCategory}
+                          setSelectedCategory={setSelectedCategory}
+                          selectedLocation={selectedLocation}
+                          setSelectedLocation={setSelectedLocation}
+                          priceRange={priceRange}
+                          setPriceRange={setPriceRange}
+                        />
+                      </div>
+                    )}
+
                   <Accordion
                     type="single"
                     collapsible
                     className="flex w-full flex-col gap-4"
                   >
                     {navbarRoutes.other.map((item) => renderMobileMenuItem(item))}
+                    {renderMobileMenuItem({ title: 'Search', url: '/search' })}
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
@@ -234,7 +256,7 @@ const Navbar = ({
                     )}
                   </div>
                   {/* Theme Switcher Button (Mobile) */}
-                  {/* <ThemeSwitcher /> */}
+                  <ThemeSwitcher />
                 </div>
               </SheetContent>
             </Sheet>

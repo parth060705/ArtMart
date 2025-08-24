@@ -1,3 +1,4 @@
+
 export interface User {
     id: number;
     name: string;
@@ -28,12 +29,13 @@ export type Product = {
     images: string[];
     price: number;
     tags: string[];
+    quantity: number;
     category: string;
-    artist: {
+    artist:{
         username: string,
         profileImage: string
     },
-    isSold: boolean,
+    isSold:boolean,
     artistid: string,
     likes: number;
     comments: number;
@@ -42,24 +44,11 @@ export type Product = {
 }
 
 export type Comment = {
-    id: string;
-    content: string;
-    createdAt?: string;
-    user: {
-        username:string;
-        profileImage: string
-    }
-};
-
-export type Review = {
-    id: string;
-    rating:number;
-    comment: string;
-    createdAt?: string;
-    reviewer: {
-        username:string;
-        profileImage: string
-    }
+    avatar: string;
+    name: string;
+    text: string;
+    media?: string;
+    date?: string;
 };
 
 export interface MenuItem {
@@ -78,6 +67,8 @@ export type Artwork = {
     description: string;
     images: string[];
     price: number;
+    tags: string[];
+    quantity: number;
     category: string;
     isSold: boolean,
     artistId: string;
@@ -107,5 +98,21 @@ export type Orders = {
   createdAt: Date;
 };
 
+export type MessageBase = {
+  receiver_id: number;
+  content?: string;
+  action: "message" | "typing" | "read";
+};
+
+// The shape for creating messages (same as base here)
+export type MessageCreate = MessageBase;
+
+export type MessageOut = {
+  sender_id: number;
+  receiver_id: number;
+  content: string;
+  timestamp: string; 
+  is_read: boolean;
+};
 
 // -----------------------------------------------------

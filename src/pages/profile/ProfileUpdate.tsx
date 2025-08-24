@@ -233,7 +233,7 @@ const ProfileUpdate = () => {
           </Card>
 
           {/* Username */}
-          <div>
+          {/* <div>
             <Label htmlFor="username">Username</Label>
             <Input
               id="username"
@@ -243,10 +243,10 @@ const ProfileUpdate = () => {
               onChange={handleChange}
               placeholder="Enter username"
             />
-          </div>
+          </div> */}
 
           {/* Bio */}
-          <div>
+          {/* <div>
             <Label htmlFor="bio">Bio</Label>
             <Textarea
               id="bio"
@@ -256,7 +256,7 @@ const ProfileUpdate = () => {
               placeholder="Tell us about yourself"
               className="min-h-[100px]"
             />
-          </div>
+          </div> */}
 
           {/* Contact Information */}
           <Card>

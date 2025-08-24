@@ -22,17 +22,10 @@ const categories = [
   'Photography',
   'Sculpture',
   'Illustration',
+  'Sketch',
   'Other'
 ] as const;
 
-interface ProductFormData {
-  title: string;
-  description: string;
-  price: string;
-  category: string;
-  images: File[];
-  previewUrls: string[];
-}
 type FormData = z.infer<typeof uploadProductSchema>;
 
 const UploadProduct = () => {
@@ -57,11 +50,11 @@ const UploadProduct = () => {
       price: '',
       category: '',
       images: [],
+      quantity: '',
       tags: [],
     }
   });
 
-  // List of supported image MIME types
   const SUPPORTED_IMAGE_TYPES = [
     'image/jpeg',
     'image/png',
@@ -72,8 +65,6 @@ const UploadProduct = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-
-    // Filter only image files and check supported types
     const validImageFiles: File[] = [];
     const invalidFiles: string[] = [];
 
@@ -89,7 +80,6 @@ const UploadProduct = () => {
       }
     });
 
-    // Show error for unsupported file types
     if (invalidFiles.length > 0) {
       toast.error(
         `The following files are not supported: ${invalidFiles.join(', ')}. ` +
@@ -99,34 +89,28 @@ const UploadProduct = () => {
 
     if (validImageFiles.length === 0) return;
 
-    // Check total number of files won't exceed limit
     const totalFiles = imageFiles.length + validImageFiles.length;
     if (totalFiles > 5) {
       toast.error('You can upload a maximum of 5 images');
       return;
     }
 
-    // Create preview URLs
     const newPreviewUrls = validImageFiles.map(file => URL.createObjectURL(file));
 
-    // Update state
     setImageFiles(prev => [...prev, ...validImageFiles]);
     setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
 
-    // Update form values
     setValue('images', [...imageFiles, ...validImageFiles].map(file => file.name), {
       shouldValidate: true
     });
   };
 
   const removeImage = (index: number) => {
-    // Revoke the object URL to prevent memory leaks
     const urlToRevoke = previewUrls[index];
     if (urlToRevoke) {
       URL.revokeObjectURL(urlToRevoke);
     }
 
-    // Update states
     const newImageFiles = [...imageFiles];
     const newPreviewUrls = [...previewUrls];
 
@@ -136,7 +120,6 @@ const UploadProduct = () => {
     setImageFiles(newImageFiles);
     setPreviewUrls(newPreviewUrls);
 
-    // Update form values
     setValue('images', newImageFiles.map(file => file.name), {
       shouldValidate: true
     });
@@ -154,24 +137,28 @@ const UploadProduct = () => {
     }
 
     try {
-      // Convert price to number before sending
       const priceValue = parseFloat(data.price);
       if (isNaN(priceValue) || priceValue <= 0) {
         toast.error('Please enter a valid price');
         return;
       }
 
-      // Prepare product data to match the expected type in useUploadProduct
+      const quantityValue = parseInt(data.quantity, 10);
+      if (isNaN(quantityValue) || quantityValue <= 0) {
+        toast.error('Please enter a valid quantity');
+        return;
+      }
+
       const productData = {
         title: data.title,
         description: data.description,
         price: priceValue,
         tags: data.tags,
         category: data.category,
+        quantity: quantityValue,
         files: imageFiles
       };
 
-      // The hook will handle creating FormData and setting the correct headers
       uploadProduct(productData, {
         onSuccess: () => {
           toast.success('Artwork uploaded successfully!');
@@ -191,7 +178,6 @@ const UploadProduct = () => {
   };
 
   useEffect(() => {
-    // Redirect if user is not authenticated
     if (!isAuthenticated) {
       navigate(`/auth/${Routes.AuthLoginPage}`, {
         state: { from: location },
@@ -200,7 +186,6 @@ const UploadProduct = () => {
     }
   }, [isAuthenticated, navigate, location]);
 
-  // If user is not authenticated, return null (will be handled by useEffect)
   if (!isAuthenticated) return null;
 
   return (
@@ -221,7 +206,6 @@ const UploadProduct = () => {
             <div className="space-y-2">
               <Label htmlFor="images">Artwork Images *</Label>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {/* Image Previews */}
                 {previewUrls.map((url, index) => (
                   <div key={index} className="relative group">
                     <img
@@ -240,7 +224,6 @@ const UploadProduct = () => {
                   </div>
                 ))}
 
-                {/* Upload Button */}
                 {imageFiles.length < 5 && (
                   <label
                     htmlFor="image-upload"
@@ -313,6 +296,22 @@ const UploadProduct = () => {
                   <p className="text-sm text-red-500">{errors.price.message}</p>
                 )}
               </div>
+
+              {/* Quantity */}
+              <div className="space-y-2">
+                <Label htmlFor="quantity">Quantity *</Label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  min="1"
+                  placeholder="Enter quantity"
+                  {...register('quantity')}
+                />
+                {errors.quantity && (
+                  <p className="text-sm text-red-500">{errors.quantity.message}</p>
+                )}
+              </div>
+
               {/* Tags */}
               <div className="space-y-2">
                 <Label htmlFor="tags">Tags (comma separated)</Label>
@@ -332,6 +331,7 @@ const UploadProduct = () => {
                   <p className="text-sm text-red-500">{errors.tags.message}</p>
                 )}
               </div>
+
               {/* Category */}
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
@@ -356,7 +356,7 @@ const UploadProduct = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div className="pt-4">
               <Button
                 type="submit"

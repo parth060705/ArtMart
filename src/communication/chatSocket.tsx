@@ -1,12 +1,12 @@
 export interface MessageBase {
-  receiver_id: string;
+  receiver_id: number;
   content?: string;
   action: "message" | "typing" | "read";
 }
 
 export interface MessageOut {
-  sender_id: string;
-  receiver_id: string;
+  sender_id: number;
+  receiver_id: number;
   content: string;
   timestamp: string; // ISO from backend
   is_read: boolean;
@@ -16,9 +16,9 @@ class ChatSocket {
   private socket: WebSocket | null = null;
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: ((data: any) => void)[] = [];
-  private userId: string | null = null;
+  private userId: number | null = null;
 
-  connect(userId: string) {
+  connect(userId: number) {
     if (!userId) {
       console.error("❌ No userId provided for WebSocket connection");
       return;
@@ -59,13 +59,13 @@ class ChatSocket {
   private scheduleReconnect() {
     if (this.reconnectTimeout) return;
     this.reconnectTimeout = setTimeout(() => {
-      if (this.userId) {
+      if (this.userId !== null) {
         this.connect(this.userId);
       }
     }, 3000);
   }
 
-  sendMessage(receiverId: string, content: string) {
+  sendMessage(receiverId: number, content: string) {
     const msg: MessageBase = {
       receiver_id: receiverId,
       content,
@@ -74,7 +74,7 @@ class ChatSocket {
     this.send(msg);
   }
 
-  sendTyping(receiverId: string) {
+  sendTyping(receiverId: number) {
     const msg: MessageBase = {
       receiver_id: receiverId,
       action: "typing",
@@ -82,7 +82,7 @@ class ChatSocket {
     this.send(msg);
   }
 
-  sendRead(receiverId: string) {
+  sendRead(receiverId: number) {
     const msg: MessageBase = {
       receiver_id: receiverId,
       action: "read",

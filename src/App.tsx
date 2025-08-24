@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import UserManage from './admin-panel/user_manage';
 import ArtworkManage from './admin-panel/artwork_manage';
 import OrderManage from './admin-panel/orders_manage';
-import Chat from './components/Chat';
+import Chat from './pages/Chat';
 // ------------------------------------------------------------------
 
 import MainLayout from './Layout/Mainlayout';
@@ -63,7 +63,7 @@ function App() {
                 <Route path="admin/artwork_manage" element={<ArtworkManage />} />
                 <Route path="admin/orders_manage" element={<OrderManage />} />
                 {/* for personal chat */}
-                <Route path="/chat" element={<Chat />} />
+                {/* <Route path="/chat" element={<Chat />} /> */}
 {/* ------------------------------------------------------------------------------------------- */}
 
                 {/* Protected Routes Group */}

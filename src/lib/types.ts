@@ -28,6 +28,7 @@ export type Product = {
     images: string[];
     price: number;
     tags: string[];
+    quantity: number;
     category: string;
     artist:{
         username: string,
@@ -97,7 +98,7 @@ export type Orders = {
 };
 
 export type MessageBase = {
-  receiver_id: string;
+  receiver_id: number;
   content?: string;
   action: "message" | "typing" | "read";
 };
@@ -106,8 +107,8 @@ export type MessageBase = {
 export type MessageCreate = MessageBase;
 
 export type MessageOut = {
-  sender_id: string;
-  receiver_id: string;
+  sender_id: number;
+  receiver_id: number;
   content: string;
   timestamp: string; 
   is_read: boolean;

@@ -1,35 +1,33 @@
 import { useEffect, useState } from "react";
-import { chatSocket } from "@/communication/chatSocket";
+import { chatSocket, MessageOut } from "@/communication/chatSocket";
 
-interface MessageOut {
-  sender_id: string;
-  receiver_id: string;
-  content: string;
-  timestamp: string;
-  is_read: boolean;
-}
-
-export const useChat = (userId: string, peerId: string) => {
+export const useChat = (userId: number, peerId: number) => {
   const [messages, setMessages] = useState<MessageOut[]>([]);
 
   useEffect(() => {
     chatSocket.connect(userId);
 
-    const handleIncoming = (event: MessageEvent) => {
-      const data: MessageOut = JSON.parse(event.data);
-      setMessages((prev) => [...prev, data]);
-    };
-
-    if (chatSocket["socket"]) {
-      chatSocket["socket"].onmessage = handleIncoming;
-    }
-
-    return () => {
-      if (chatSocket["socket"]) {
-        chatSocket["socket"].onmessage = null;
+    const handleIncoming = (data: any) => {
+      try {
+        const msg: MessageOut = data;
+        // Only keep messages relevant to this chat
+        if (
+          (msg.sender_id === userId && msg.receiver_id === peerId) ||
+          (msg.sender_id === peerId && msg.receiver_id === userId)
+        ) {
+          setMessages((prev) => [...prev, msg]);
+        }
+      } catch (err) {
+        console.error("❌ Failed to handle incoming message:", err);
       }
     };
-  }, [userId]);
+
+    chatSocket.onMessage(handleIncoming);
+
+    return () => {
+      chatSocket.offMessage(handleIncoming);
+    };
+  }, [userId, peerId]);
 
   const sendMessage = (content: string) => {
     chatSocket.sendMessage(peerId, content);

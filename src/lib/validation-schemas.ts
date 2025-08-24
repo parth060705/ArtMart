@@ -36,4 +36,8 @@ export const uploadProductSchema = z.object({
     category: z.string().min(1, { message: 'Category is required' }),
     images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
     tags: z.array(z.string()).min(1, { message: 'At least one tags for better search' }),
+    quantity: z.string().min(1, "Quantity is required").refine(val => parseInt(val, 10) > 0, {
+        message: "Quantity must be greater than 0",
+    }),
+
 });

@@ -7,6 +7,7 @@ export interface ProductFormData {
   price: number;
   category: string;
   files: File[];
+  quantity: number;
 }
 
 export const useUploadProduct = () => {

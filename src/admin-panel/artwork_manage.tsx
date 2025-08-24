@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Artwork } from "@/lib/types";
-
 import {
   useAdminArtworks,
   useDeleteArtwork,
@@ -14,6 +13,8 @@ const emptyArtwork: Artwork = {
   title: "",
   description: "",
   price: 0,
+  tags: [],
+  quantity: 0,
   category: "",
   isSold: false,
   images: [],
@@ -26,10 +27,16 @@ const emptyArtwork: Artwork = {
   createdAt: "",
 };
 
+const normalizeTag = (tag: string) => {
+  let t = tag.trim().replace(/^#*/, ""); // remove extra #
+  return t ? `#${t}` : "";
+};
+
 const ArtworkManage = () => {
   const [form, setForm] = useState(emptyArtwork);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [tagInput, setTagInput] = useState("");
 
   const { data: artworks = [], isLoading, refetch } = useAdminArtworks();
   const deleteArtwork = useDeleteArtwork();
@@ -41,6 +48,7 @@ const ArtworkManage = () => {
       ...art,
       isSold: Boolean(art.isSold),
       file: [],
+      tags: (art.tags || []).map(normalizeTag),
     });
     setEditingId(art.id);
     setShowForm(true);
@@ -80,11 +88,11 @@ const ArtworkManage = () => {
         </div>
       </div>
     ));
-
   };
 
   const openCreateForm = () => {
     setForm(emptyArtwork);
+    setTagInput("");
     setEditingId(null);
     setShowForm(true);
   };
@@ -94,10 +102,18 @@ const ArtworkManage = () => {
     if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
     } else if (type === "file") {
-      setForm({ ...form, file: files[0] }); // single file
+      setForm({ ...form, file: files[0] });
     } else {
       setForm({ ...form, [name]: value });
     }
+  };
+
+  const addTagFromInput = () => {
+    const newTag = normalizeTag(tagInput);
+    if (newTag && !form.tags.includes(newTag)) {
+      setForm({ ...form, tags: [...form.tags, newTag] });
+    }
+    setTagInput("");
   };
 
   const handleFormSubmit = (e: any) => {
@@ -107,14 +123,13 @@ const ArtworkManage = () => {
     formData.append("description", form.description);
     formData.append("category", form.category);
     formData.append("price", form.price.toString());
+    formData.append("quantity", form.quantity.toString()); // ✅ Added quantity
+    formData.append("tags", form.tags.join(","));
     formData.append("isSold", form.isSold.toString());
-    if (form.file && typeof form.file === "object" && "name" in form.file) {
-      formData.append("files", form.file as File);
-    }
-    else if (form.file instanceof File) {
+
+    if (form.file && form.file instanceof File) {
       formData.append("files", form.file);
     }
-
 
     if (editingId) {
       updateArtwork.mutate(
@@ -125,6 +140,7 @@ const ArtworkManage = () => {
             setShowForm(false);
             setForm(emptyArtwork);
             setEditingId(null);
+            setTagInput("");
             refetch();
           },
           onError: (err) => {
@@ -184,6 +200,15 @@ const ArtworkManage = () => {
                   className="border p-2 rounded w-full"
                 />
                 <input
+                  type="number"
+                  name="quantity"
+                  placeholder="Quantity"
+                  value={form.quantity}
+                  onChange={handleInputChange}
+                  className="border p-2 rounded w-full"
+                  min={0}
+                />
+                <input
                   type="text"
                   name="artistId"
                   placeholder="Artist ID"
@@ -191,6 +216,46 @@ const ArtworkManage = () => {
                   onChange={handleInputChange}
                   className="border p-2 rounded w-full"
                 />
+
+                {/* Tags Input */}
+                <div className="col-span-2">
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {form.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs flex items-center gap-1"
+                      >
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm({
+                              ...form,
+                              tags: form.tags.filter((_, idx) => idx !== i),
+                            })
+                          }
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Type tag and press comma"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "," || e.key === "Enter") {
+                        e.preventDefault();
+                        addTagFromInput();
+                      }
+                    }}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+
                 <div className="flex items-center space-x-2 col-span-2">
                   <label className="text-sm">Sold:</label>
                   <input
@@ -235,9 +300,12 @@ const ArtworkManage = () => {
         </div>
       )}
 
+      {/* Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto">
         {isLoading ? (
-          <div className="p-6 text-gray-500 animate-pulse">Loading artworks...</div>
+          <div className="p-6 text-gray-500 animate-pulse">
+            Loading artworks...
+          </div>
         ) : (
           <table className="min-w-full text-sm">
             <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
@@ -247,6 +315,8 @@ const ArtworkManage = () => {
                   "Title",
                   "Description",
                   "Price",
+                  "Quantity", // ✅ Added Quantity column
+                  "Tags",
                   "Category",
                   "Sold",
                   "Artist Name",
@@ -269,9 +339,15 @@ const ArtworkManage = () => {
                 <tr key={art.id} className="hover:bg-gray-50 transition">
                   <td className="px-4 py-3">{art.id}</td>
                   <td className="px-4 py-3 font-medium">{art.title}</td>
-                  <td className="px-4 py-3 max-w-xs truncate">{art.description}</td>
+                  <td className="px-4 py-3 max-w-xs truncate">
+                    {art.description}
+                  </td>
                   <td className="px-4 py-3 text-green-700 font-semibold">
                     {art.price}
+                  </td>
+                  <td className="px-4 py-3">{art.quantity}</td>
+                  <td className="px-4 py-3">
+                    {(art.tags || []).map(normalizeTag).join(", ")}
                   </td>
                   <td className="px-4 py-3">{art.category}</td>
                   <td className="px-4 py-3">
@@ -333,7 +409,10 @@ const ArtworkManage = () => {
               ))}
               {artworks.length === 0 && (
                 <tr>
-                  <td colSpan={12} className="px-4 py-6 text-center text-gray-400">
+                  <td
+                    colSpan={13}
+                    className="px-4 py-6 text-center text-gray-400"
+                  >
                     No artworks found.
                   </td>
                 </tr>

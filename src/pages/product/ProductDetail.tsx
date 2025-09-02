@@ -259,7 +259,7 @@ const ProductDetail = () => {
                     <SwiperSlide key={index} className="flex justify-center items-center">
                       <div className="w-full h-full flex justify-center items-center">
                         <img
-                          src={image}
+                          src={image?.url}
                           alt={`${artwork.title} - ${index + 1}`}
                           className="w-full h-auto max-h-[50vh] md:max-h-[60vh] lg:max-h-[70vh] object-contain"
                           onError={e => {

@@ -22,11 +22,18 @@ export interface UserProfile extends User {
     products: Product[];
 }
 
+// IMAGE TYPE
+export type Image = {
+  id: string;
+  url: string;
+  public_id: string;
+};
+
 export type Product = {
     id: number;
     title: string;
     description: string;
-    images: string[];
+    images: Image[];
     price: number;
     tags: string[];
     quantity: number;

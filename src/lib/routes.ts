@@ -6,7 +6,7 @@ export class Routes {
     static UploadProductPage = "upload"
     static SearchProductPage = "search"
     static AuthLoginPage = "/auth/login"
-    static AuthRegisterPage = "/auth/register"
+    static AuthRegisterPage = "/auth/register"  
     static AuthForgotPasswordPage = "/auth/forgot-password"
     static AuthResetPasswordPage = "/auth/reset-password"
     static CartPage = "/auth/cart"

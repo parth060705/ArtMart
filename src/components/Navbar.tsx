@@ -67,8 +67,6 @@ const Navbar = ({
   const [selectedLocation, setSelectedLocation] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
 
-  console.log(searchQuery)
-
   // Logout handler
   const handleLogout = () => {
     localStorage.removeItem('token');

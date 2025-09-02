@@ -22,13 +22,12 @@ export default function ProductCard({
 }: ProductCardProps) {
   const safeTags = Array.isArray(tags)
     ? tags.flatMap((tagString) =>
-        tagString
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean)
-      )
+      tagString
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+    )
     : [];
-
   return (
     <div
       key={id}
@@ -67,20 +66,21 @@ export default function ProductCard({
         {/* Bottom: Actions + Profile */}
         <div className="flex items-end w-full justify-between mt-auto">
           {/* Profile */}
-          <div className="flex items-center gap-2">
-            <img
-              src={artist.profileImage || "/avatar-placeholder.png"}
-              alt={artist.username}
-              className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
-            />
-            <span
-              className="font-semibold text-white text-base drop-shadow"
-              style={{ fontFamily: "Poppins" }}
-            >
-              {artist.username}
-            </span>
-          </div>
-
+          {artist && (
+            <div className="flex items-center gap-2">
+              <img
+                src={artist.profileImage || "/avatar-placeholder.png"}
+                alt={artist.username}
+                className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+              />
+              <span
+                className="font-semibold text-white text-base drop-shadow"
+                style={{ fontFamily: "Poppins" }}
+              >
+                {artist.username}
+              </span>
+            </div>
+          )}
           {/* Social Actions */}
           <div className="flex gap-3 ml-auto">
             <button className="flex items-center gap-1 text-white/90 hover:text-[var(--primary)] transition-all">

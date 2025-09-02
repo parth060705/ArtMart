@@ -22,7 +22,7 @@ export default function MasonryFeed({className, length, url}: {className?: strin
   
   return (
     <div className={className}>
-      {filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product, index: number) => (
+      {filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product) => (
         <div key={prod.id} className="break-inside-avoid">
           <ProductCard
             {...prod}

@@ -123,7 +123,7 @@ const ArtworkManage = () => {
     formData.append("description", form.description);
     formData.append("category", form.category);
     formData.append("price", form.price.toString());
-    formData.append("quantity", form.quantity.toString()); // ✅ Added quantity
+    formData.append("quantity", form.quantity.toString());
     formData.append("tags", form.tags.join(","));
     formData.append("isSold", form.isSold.toString());
 
@@ -315,7 +315,7 @@ const ArtworkManage = () => {
                   "Title",
                   "Description",
                   "Price",
-                  "Quantity", // ✅ Added Quantity column
+                  "Quantity",
                   "Tags",
                   "Category",
                   "Sold",
@@ -373,9 +373,9 @@ const ArtworkManage = () => {
                       <div className="flex flex-wrap gap-2">
                         {art.images.slice(0, 2).map((img, i) => (
                           <img
-                            key={i}
-                            src={img}
-                            alt="Artwork"
+                            key={img.id || i}
+                            src={img.url}
+                            alt={art.title || "Artwork"}
                             className="w-10 h-10 object-cover rounded shadow-sm"
                           />
                         ))}

@@ -72,7 +72,7 @@ export type Artwork = {
     id: string;
     title: string;
     description: string;
-    images: string[];
+    images: Image[];
     price: number;
     tags: string[];
     quantity: number;

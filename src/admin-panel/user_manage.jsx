@@ -7,6 +7,7 @@ import {
   useUpdateUser,
   useDeleteUser,
 } from "@/admin_hooks/userfetch";
+import ProductSearchBar from "@/components/ProductSearchBar"; // ⬅️ adjust path if needed
 
 const DEFAULT_IMAGE = "https://example.com/default.jpg";
 
@@ -29,6 +30,7 @@ const UserManage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // search
 
   const { data: users = [], isLoading, refetch } = useAdminUsers();
   const createUser = useCreateUser();
@@ -62,7 +64,7 @@ const UserManage = () => {
       };
 
       if (editingId) {
-        delete formData.password; 
+        delete formData.password;
         await updateUser.mutateAsync({ id: editingId, user: formData });
         toast.success("User updated successfully!");
       } else {
@@ -102,20 +104,39 @@ const UserManage = () => {
     }
   };
 
+  // 🔍 Filter users by search
+  const filteredUsers = users.filter((u) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      u.name?.toLowerCase().includes(q) ||
+      u.email?.toLowerCase().includes(q) ||
+      u.username?.toLowerCase().includes(q) ||
+      u.location?.toLowerCase().includes(q) ||
+      u.role?.toLowerCase().includes(q) ||
+      u.phone?.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <Toaster richColors position="top-right" />
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
         <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
-        <Button
-          onClick={() => {
-            resetForm();
-            setModalOpen(true);
-          }}
-          className="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          + Add User
-        </Button>
+
+        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+          {/* Search Bar */}
+          <ProductSearchBar value={searchQuery} onChange={setSearchQuery} />
+
+          <Button
+            onClick={() => {
+              resetForm();
+              setModalOpen(true);
+            }}
+            className="px-1 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            + Add User
+          </Button>
+        </div>
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto">
@@ -145,7 +166,7 @@ const UserManage = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user.id} className="border-t hover:bg-gray-50">
                   <td className="p-3 text-xs">{user.id}</td>
                   <td className="p-3">{user.name}</td>
@@ -175,9 +196,9 @@ const UserManage = () => {
                   </td>
                 </tr>
               ))}
-              {users.length === 0 && (
+              {filteredUsers.length === 0 && (
                 <tr>
-                  <td colSpan="11" className="p-4 text-center text-gray-500">
+                  <td colSpan={11} className="p-4 text-center text-gray-500">
                     No users found.
                   </td>
                 </tr>
@@ -233,7 +254,9 @@ const UserManage = () => {
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
-                        <option value="Prefer not to say">Prefer not to say</option>
+                        <option value="Prefer not to say">
+                          Prefer not to say
+                        </option>
                       </select>
                     ) : (
                       <input
@@ -282,11 +305,12 @@ const UserManage = () => {
               >
                 Cancel
               </Button>
-              <Button onClick={handleDeleteConfirm}
+              <Button
+                onClick={handleDeleteConfirm}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                >
-                  Yes, Delete
-                </Button>
+              >
+                Yes, Delete
+              </Button>
             </div>
           </div>
         </div>

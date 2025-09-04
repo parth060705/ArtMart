@@ -38,9 +38,10 @@ export default function Footer() {
           <a href="/privacy" className="text-base hover:text-[var(--primary)] transition-colors font-medium">Privacy</a>
           <a href="/help" className="text-base hover:text-[var(--primary)] transition-colors font-medium">Help</a>
 
-          <a href="/admin/user_manage" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Users</a>
+          {/* <a href="/admin/user_manage" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Users</a>
           <a href="/admin/artwork_manage" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Artworks</a>
-          <a href="/admin/orders_manage" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Orders</a>
+          <a href="/admin/orders_manage" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Orders</a> */}
+          <a href="/admin/admin_dashboard" className="text-base text-purple-600 hover:text-[var(--primary)] transition-colors font-medium">Admin</a>
 
         </nav>
       </div>

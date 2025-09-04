@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import UserManage from './admin-panel/user_manage';
 import ArtworkManage from './admin-panel/artwork_manage';
 import OrderManage from './admin-panel/orders_manage';
+import AdminDashboardSkeleton from './admin-panel/admin_dashboard';
 // ------------------------------------------------------------------
 
 
@@ -62,6 +63,7 @@ function App() {
                 <Route path="/admin/user_manage" element={<UserManage />} />
                 <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
                 <Route path="/admin/orders_manage" element={<OrderManage />} />
+                <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
 {/* ------------------------------------------------------------------------------------------- */}
 
                 {/* Protected Routes Group */}

@@ -7,6 +7,7 @@ import {
   useDeleteArtwork,
   useUpdateArtwork,
 } from "@/admin_hooks/artworkfetch";
+import ProductSearchBar from "@/components/ProductSearchBar";
 
 const emptyArtwork: Artwork = {
   id: "",
@@ -37,6 +38,7 @@ const ArtworkManage = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { data: artworks = [], isLoading, refetch } = useAdminArtworks();
   const deleteArtwork = useDeleteArtwork();
@@ -154,16 +156,33 @@ const ArtworkManage = () => {
     }
   };
 
+  // 🔎 Filter artworks based on search query
+  const filteredArtworks = artworks.filter((art) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      art.title.toLowerCase().includes(query) ||
+      art.description.toLowerCase().includes(query) ||
+      art.category.toLowerCase().includes(query) ||
+      (art.artist?.username || "").toLowerCase().includes(query) ||
+      (art.tags || []).some((tag) => tag.toLowerCase().includes(query))
+    );
+  });
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Artwork Management</h1>
-        <Button
-          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
-          onClick={openCreateForm}
-        >
-          + Add Artwork
-        </Button>
+      <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Artwork Management
+        </h1>
+        <div className="flex gap-4 w-full md:w-auto">
+          <ProductSearchBar value={searchQuery} onChange={setSearchQuery} />
+          <Button
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
+            onClick={openCreateForm}
+          >
+            + Add Artwork
+          </Button>
+        </div>
       </div>
 
       {showForm && (
@@ -335,7 +354,7 @@ const ArtworkManage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {artworks.map((art: Artwork) => (
+              {filteredArtworks.map((art: Artwork) => (
                 <tr key={art.id} className="hover:bg-gray-50 transition">
                   <td className="px-4 py-3">{art.id}</td>
                   <td className="px-4 py-3 font-medium">{art.title}</td>
@@ -407,7 +426,7 @@ const ArtworkManage = () => {
                   </td>
                 </tr>
               ))}
-              {artworks.length === 0 && (
+              {filteredArtworks.length === 0 && (
                 <tr>
                   <td
                     colSpan={13}

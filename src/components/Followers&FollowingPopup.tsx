@@ -18,44 +18,44 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px] rounded-2xl shadow-lg bg-gradient-to-br from-purple-50 to-indigo-100">
+      <DialogContent className="sm:max-w-[450px] w-full rounded-3xl shadow-lg bg-gradient-to-r from-purple-100 via-white to-blue-100 text-[var(--foreground)] p-6 md:p-10">
         <div className="flex flex-col">
           {/* Tabs */}
           <Tabs defaultValue="followers" className="flex-1">
-            <TabsList className="grid w-full grid-cols-2 rounded-xl overflow-hidden bg-purple-200/50 p-1">
+            <TabsList className="grid w-full grid-cols-2 rounded-xl overflow-hidden bg-[var(--muted)] p-1">
               <TabsTrigger
                 value="followers"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all"
+                className="data-[state=active]:bg-[var(--primary)] data-[state=active]:text-white rounded-lg transition-all"
               >
                 Followers
               </TabsTrigger>
               <TabsTrigger
                 value="following"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white rounded-lg transition-all"
+                className="data-[state=active]:bg-[var(--primary)] data-[state=active]:text-white rounded-lg transition-all"
               >
                 Following
               </TabsTrigger>
             </TabsList>
 
             {/* Followers List */}
-            <TabsContent value="followers" className="p-4">
+            <TabsContent value="followers" className="p-4 max-h-[60vh] overflow-y-auto">
               {followers.length === 0 ? (
-                <p className="text-center text-gray-800">No followers yet</p>
+                <p className="text-center text-[var(--muted-foreground)]">No followers yet</p>
               ) : (
                 <div className="space-y-3">
                   {followers.map((user) => (
                     <div
                       key={user.id}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 backdrop-blur-md border border-purple-200 shadow-sm hover:shadow-md transition-all"
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border border-[var(--muted)] shadow-sm hover:shadow-md transition-all backdrop-blur-sm"
                     >
                       <img
                         src={user.profileImage}
                         alt={user.username}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-purple-700"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--primary)]"
                       />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">{user.name}</h3>
-                        <p className="text-sm text-gray-500">@{user.username}</p>
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold text-[var(--foreground)]">{user.name}</h3>
+                        <p className="text-sm text-[var(--muted-foreground)]">@{user.username}</p>
                       </div>
                     </div>
                   ))}
@@ -64,30 +64,31 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
             </TabsContent>
 
             {/* Following List */}
-            <TabsContent value="following" className="p-4">
+            <TabsContent value="following" className="p-4 max-h-[60vh] overflow-y-auto">
               {following.length === 0 ? (
-                <p className="text-center text-gray-800">No following yet</p>
+                <p className="text-center text-[var(--muted-foreground)]">No following yet</p>
               ) : (
                 <div className="space-y-3">
                   {following.map((user) => (
                     <div
                       key={user.id}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 backdrop-blur-md border border-purple-200 shadow-sm hover:shadow-md transition-all"
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border border-[var(--muted)] shadow-sm hover:shadow-md transition-all backdrop-blur-sm"
                     >
                       <img
                         src={user.profileImage}
                         alt={user.username}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-purple-400"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--primary)]"
                       />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">{user.name}</h3>
-                        <p className="text-sm text-gray-500">@{user.username}</p>
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold text-[var(--foreground)]">{user.name}</h3>
+                        <p className="text-sm text-[var(--muted-foreground)]">@{user.username}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
             </TabsContent>
+
           </Tabs>
         </div>
       </DialogContent>

@@ -216,7 +216,7 @@ const ProductDetail = () => {
               <div className="mt-3 text-sm text-[var(--muted-foreground)]">
                 {artwork.tags.map((tag: string, idx: number) => (
                   <span key={idx} className="text-[var(--primary)] font-medium">
-                    #{tag}{idx < artwork.tags.length - 1 && <span className="text-[var(--muted-foreground)]">, </span>}
+                    {tag}{idx < artwork.tags.length - 1 && <span className="text-[var(--muted-foreground)]">, </span>}
                   </span>
                 ))}
               </div>
@@ -314,37 +314,32 @@ const ProductDetail = () => {
               </div>
 
               {/* Comments List */}
-             {/* Comments List */}
-<div className="flex-1 overflow-y-auto space-y-4 pr-1">
-  {comments.length > 0 ? (
-    comments.map((comment: any) => (
-      <div key={comment.id} className="flex items-start gap-3">
-        {/* Avatar */}
-        <img
-          src={comment.user?.profileImage || "/default-avatar.png"}
-          alt={comment.user?.username || "user"}
-          className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
-        />
-        {/* Username above Comment */}
-        <div className="flex flex-col">
-          <span className="font-semibold text-sm">{comment.user?.username}</span>
-          <p className="text-sm text-[var(--foreground)]">{comment.content}</p>
-          {/* Optional timestamp */}
-          {/* <span className="text-xs text-[var(--muted-foreground)] mt-1">
-            {new Date(comment.createdAt).toLocaleDateString()}
-          </span> */}
-        </div>
-      </div>
-    ))
-  ) : (
-    <p className="text-sm text-[var(--muted-foreground)]">
-      No comments yet — be the first one!
-    </p>
-  )}
-</div>
-
+              <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+                {comments.length > 0 ? (
+                  comments.map((comment: any) => (
+                    <div key={comment.id} className="flex items-start gap-3">
+                      <img
+                        src={comment.user?.profileImage || "/default-avatar.png"}
+                        alt={comment.user?.username || "user"}
+                        className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+                      />
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-sm">{comment.user?.username}</span>
+                        <p className="text-sm text-[var(--foreground)]">{comment.content}</p>
+                        {/* Optional timestamp */}
+                        {/* <span className="text-xs text-[var(--muted-foreground)] mt-1">
+                            {new Date(comment.createdAt).toLocaleDateString()}
+                            </span> */}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    No comments yet — be the first one!
+                  </p>
+                )}
+              </div>
             </TabsContent>
-
 
             {/* Reviews */}
             <TabsContent value="reviews">

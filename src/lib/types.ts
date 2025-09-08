@@ -1,91 +1,119 @@
+// ------------------ USERS ------------------
 
 export interface User {
-    id: number;
-    name: string;
-    username: string;
-    profileImage: string;
-    bio: string;
-    location: string;
-    gender: string;
-    age: number;
-    pincode: number;
-    phone: number;
-    createdAt: string;
-    updatedAt: string;
-    followers: number;
-    following: number;
+  id: number;
+  name: string;
+  username: string;
+  profileImage: string;
+  bio: string;
+  location: string;
+  gender: string;
+  age: number;
+  pincode: number;
+  phone: number;
+  createdAt: string;
+  updatedAt: string;
+  followers: number;
+  following: number;
 }
 
 export interface UserProfile extends User {
-    followersList: User[];
-    followingList: User[];
-    products: Product[];
+  followersList: User[];
+  followingList: User[];
+  products: Product[];
 }
 
-// IMAGE TYPE
+// ------------------ IMAGE ------------------
+
 export type Image = {
   id: string;
   url: string;
   public_id: string;
 };
 
-export type Product = {
-    id: number;
-    title: string;
-    description: string;
-    images: Image[];
-    price: number;
-    tags: string[];
-    quantity: number;
-    category: string;
-    artist:{
-        username: string,
-        profileImage: string
-    },
-    isSold:boolean,
-    artistid: string,
-    likes: number;
-    comments: number;
-    location: string;
-    createdAt: string;
-}
+// ------------------ PRODUCT ------------------
 
-export type Comment = {
-    avatar: string;
-    name: string;
-    text: string;
-    media?: string;
-    date?: string;
+export type Product = {
+  id: number;
+  title: string;
+  description: string;
+  images: Image[];
+  price: number;
+  tags: string[];
+  quantity: number;
+  category: string;
+  artist: {
+    username: string;
+    profileImage: string;
+  };
+  isSold: boolean;
+  artistid: string;
+  likes: number;
+  comments: number;
+  location: string;
+  createdAt: string;
 };
 
+// ------------------ COMMENT ------------------
+
+export type Comment = {
+  id: string;              // ✅ unique identifier
+  text: string;            // ✅ comment text
+  avatar: string;          // ✅ author avatar
+  name: string;            // ✅ author name
+  date?: string;           // ✅ optional timestamp
+  media?: string;          // ✅ optional attachment
+
+  replies?: Comment[];     // ✅ nested replies
+  parentId?: string;       // ✅ for threaded structure
+};
+
+// ------------------ REVIEW ------------------
+
+export type Review = {
+  id: string;
+  rating: number;
+  comment: string;
+  author: {
+    id: string;
+    username: string;
+    profileImage?: string;
+  };
+  createdAt: string;
+  artworkId: string;
+  artistId: string;
+};
+
+// ------------------ MENU ------------------
+
 export interface MenuItem {
-    title: string;
-    url: string;
-    description?: string;
-    icon?: React.ReactNode;
-    items?: MenuItem[];
+  title: string;
+  url: string;
+  description?: string;
+  icon?: React.ReactNode;
+  items?: MenuItem[];
 }
 
-// ----------------------------------------------------FOR ADMIN PANEL TYPES
+// ------------------ ADMIN ------------------
 
 export type Artwork = {
-    id: string;
-    title: string;
-    description: string;
-    images: Image[];
-    price: number;
-    tags: string[];
-    quantity: number;
-    category: string;
-    isSold: boolean,
-    artistId: string;
-    file: File | File[];
-    artist:{
-        username: string,
-        profileImage: string
-    },
-    createdAt:string;
-}
+  id: string;
+  title: string;
+  description: string;
+  images: Image[];
+  price: number;
+  tags: string[];
+  quantity: number;
+  category: string;
+  isSold: boolean;
+  artistId: string;
+  file: File | File[];
+  artist: {
+    username: string;
+    profileImage: string;
+  };
+  createdAt: string;
+};
 
 export type Orders = {
   id: number;
@@ -94,7 +122,7 @@ export type Orders = {
   buyer: {
     username: string;
     name: string;
-    location:string | null;
+    location: string | null;
   };
   artwork: {
     title: string;
@@ -105,21 +133,20 @@ export type Orders = {
   createdAt: Date;
 };
 
+// ------------------ MESSAGES ------------------
+
 export type MessageBase = {
   receiver_id: number;
   content?: string;
   action: "message" | "typing" | "read";
 };
 
-// The shape for creating messages (same as base here)
 export type MessageCreate = MessageBase;
 
 export type MessageOut = {
   sender_id: number;
   receiver_id: number;
   content: string;
-  timestamp: string; 
+  timestamp: string;
   is_read: boolean;
 };
-
-// -----------------------------------------------------

@@ -6,10 +6,8 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import CommentCard from '@/components/CommentCard';
 import { Heart } from 'lucide-react';
 import { useProductDetails } from '@/hooks/useProductDetails';
-import { Comment, Review } from '@/lib/types';
 import { useCommentsList } from '@/hooks/comments/useCommentsList';
 import { usePostComment } from '@/hooks/comments/usePostComment';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,17 +23,16 @@ import { useAddToCart } from '@/hooks/useAddToCart';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
-  const [commentText, setCommentText] = useState<string>('');
-  const [reviewText, setReviewText] = useState<string>('');
-  const [rating, setRating] = useState<number>(0);
-  const [hoverRating, setHoverRating] = useState<number>(0);
-  const [localLikeCount, setLocalLikeCount] = useState<number>(0);
-  const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
+  const [likeAnimating, setLikeAnimating] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [commentText, setCommentText] = useState('');
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [localLikeCount, setLocalLikeCount] = useState(0);
+  const [isLocalLiked, setIsLocalLiked] = useState(false);
   const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
 
-  const swiperRef = useRef<any>(null);
   const queryClient = useQueryClient();
   const { userProfile } = useAuth();
 
@@ -141,41 +138,37 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen w-full bg-[var(--background)] text-[var(--foreground)]">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 px-4 sm:px-6 py-6 sm:py-10">
 
-        {/* Left Pane (2/3) */}
-        <div className="lg:col-span-2 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-8 space-y-6">
+        {/* Left Pane */}
+        <div className="lg:col-span-2 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+
           {/* Artist */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <img
-                  src={artwork.artist.profileImage}
-                  alt={artwork.artist.username}
-                  className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover shadow"
-                />
-                <div className="ml-3">
-                  <p className="font-semibold text-lg">{artwork.artist.username}</p>
-                  <p className="text-sm text-[var(--muted-foreground)]">
-                    {new Date(artwork.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
+            <div className="flex items-center gap-3">
+              <img
+                src={artwork.artist.profileImage}
+                alt={artwork.artist.username}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+              />
+              <div>
+                <p className="font-semibold text-lg">{artwork.artist.username}</p>
+                <p className="text-sm text-[var(--muted-foreground)]">{new Date(artwork.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
-
             <button
               onClick={() => setIsFollowing(f => !f)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium ${isFollowing
                 ? "bg-[var(--primary)] text-white"
                 : "bg-[var(--muted)] hover:bg-[var(--muted)]/80"
-                }`}
+              }`}
             >
               {isFollowing ? "Following" : "Follow"}
             </button>
           </div>
 
-          {/* Image */}
-          <div className="rounded-xl overflow-hidden">
+          {/* Swiper */}
+          <div className="rounded-2xl overflow-hidden shadow-lg">
             <Swiper
               spaceBetween={10}
               slidesPerView={1}
@@ -191,74 +184,49 @@ const ProductDetail = () => {
                   <img
                     src={img?.url || img}
                     alt={`${artwork.title}-${idx}`}
-                    className="w-full h-auto max-h-[500px] object-contain"
+                    className="w-full h-auto max-h-[400px] sm:max-h-[500px] md:max-h-[600px] object-contain rounded-2xl"
                   />
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
 
-          {/* Title + Price */}
-          <div className="flex justify-between items-start border-b pb-4">
+          {/* Title & Price */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4">
             <div>
               <h1 className="text-2xl font-bold">{artwork.title}</h1>
-              <p className="mt-1 text-base text-[var(--muted-foreground)]">
-                {artwork.description}
-              </p>
+              <p className="mt-1 text-base text-[var(--muted-foreground)]">{artwork.description}</p>
             </div>
-            <div className="text-2xl font-extrabold text-[var(--primary)]">
+            <div className="text-2xl font-extrabold text-[var(--primary)] mt-2 sm:mt-0">
               ₹{artwork.price}
             </div>
           </div>
-          <div>
-            {/* Tags Section */}
-            {artwork?.tags && artwork.tags.length > 0 && (
-              <div className="mt-3 text-sm text-[var(--muted-foreground)]">
-                {artwork.tags.map((tag: string, idx: number) => (
-                  <span key={idx} className="text-[var(--primary)] font-medium">
-                    #{tag}{idx < artwork.tags.length - 1 && <span className="text-[var(--muted-foreground)]">, </span>}
-                  </span>
-                ))}
-              </div>
-            )}
 
+          {/* Tags */}
+          {artwork?.tags && artwork.tags.length > 0 && (
+            <div className="mt-2 text-sm text-[var(--muted-foreground)] flex flex-wrap gap-2">
+              {artwork.tags.map((tag: string, idx: number) => (
+                <span key={idx} className="text-[var(--primary)] font-medium">#{tag}</span>
+              ))}
+            </div>
+          )}
 
-          </div>
-
-          {/* Like + Save */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={handleLikeButtonClick}
-              className="flex items-center gap-2"
-            >
-              <Heart
-                className={`w-7 h-7 ${isLocalLiked
-                  ? "fill-red-500 text-red-500"
-                  : "text-[var(--muted-foreground)]"
-                  }`}
-              />
+          {/* Likes & Save */}
+          <div className="flex items-center gap-6 mt-2">
+            <button onClick={handleLikeButtonClick} className="flex items-center gap-2">
+              <Heart className={`w-7 h-7 ${isLocalLiked ? "fill-red-500 text-red-500" : "text-[var(--muted-foreground)]"}`} />
               <span className="text-lg">{localLikeCount}</span>
             </button>
             <button className="flex items-center gap-2 text-[var(--muted-foreground)]">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 5h14v16l-7-3.5L5 21z"
-                />
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5h14v16l-7-3.5L5 21z" />
               </svg>
               Save
             </button>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <button
               onClick={() => addToCart(artwork.id)}
               disabled={isAddingToCart}
@@ -275,23 +243,21 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Right Pane (1/3) */}
-        <div className="lg:col-span-1 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-6">
+        {/* Right Pane */}
+        <div className="lg:col-span-1 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-4 sm:p-6 md:p-6 mt-6 lg:mt-0">
           <Tabs defaultValue="comments">
-            <TabsList className="grid grid-cols-2 mb-4">
+            <TabsList className="grid grid-cols-2 mb-4 text-sm sm:text-base">
               <TabsTrigger value="comments">Comments</TabsTrigger>
               <TabsTrigger value="reviews">Reviews</TabsTrigger>
             </TabsList>
 
             {/* Comments */}
-            <TabsContent value="comments" className="h-full flex flex-col">
-              {/* Add Comment Input (on top) */}
+            <TabsContent value="comments" className="flex flex-col h-full space-y-4">
               <div className="border-b mb-3 pb-3 flex items-center gap-3">
                 <img
                   src={userProfile?.profileImage || "/default-avatar.png"}
                   alt="me"
-                  className="w-11 h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
-
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
                 />
                 <div className="flex-1 flex items-center rounded-full border px-2 py-2 bg-[var(--background)]">
                   <input
@@ -303,17 +269,13 @@ const ProductDetail = () => {
                   <button
                     onClick={handlePostComment}
                     disabled={isPosting || !commentText.trim()}
-                    className={`ml-2 text-sm font-semibold ${commentText.trim()
-                      ? "text-[var(--primary)] hover:opacity-80"
-                      : "text-gray-400"
-                      }`}
+                    className={`ml-2 text-sm font-semibold ${commentText.trim() ? "text-[var(--primary)] hover:opacity-80" : "text-gray-400"}`}
                   >
                     {isPosting ? "Posting..." : "Post"}
                   </button>
                 </div>
               </div>
 
-              {/* Comments List */}
               <div className="flex-1 overflow-y-auto space-y-4 pr-2">
                 {comments.length > 0 ? (
                   comments.map((comment: any) => (
@@ -321,28 +283,21 @@ const ProductDetail = () => {
                       <img
                         src={comment.user?.profileImage || "/default-avatar.png"}
                         alt={comment.user?.username || "user"}
-                        className="w-11 h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
-
+                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
                       />
                       <div className="flex-1">
                         <p className="text-sm leading-snug">
                           <span className="font-semibold mr-2">{comment.user?.username}</span>
                           {comment.content}
                         </p>
-                        {/* <p className="text-xs text-gray-500 mt-1">
-                          {new Date(comment.createdAt).toLocaleDateString()}
-                        </p> */}
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-[var(--muted-foreground)]">
-                    No comments yet — be the first one!
-                  </p>
+                  <p className="text-sm text-[var(--muted-foreground)]">No comments yet — be the first one!</p>
                 )}
               </div>
             </TabsContent>
-
 
             {/* Reviews */}
             <TabsContent value="reviews">

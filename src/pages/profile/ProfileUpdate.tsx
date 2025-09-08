@@ -105,7 +105,7 @@ const ProfileUpdate = () => {
                   <img
                     src={formData.profileImage || '/default-avatar.png'}
                     alt="Profile"
-                    className="w-full h-full rounded-full object-cover border-2 border-white shadow-lg"
+                    className="w-full h-full rounded-full object-cover border-3 border-[var(--primary)]"
                   />
                   <div className="absolute bottom-0 right-0 bg-white/90 rounded-full p-1 shadow">
                     <label className="cursor-pointer">

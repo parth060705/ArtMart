@@ -19,7 +19,7 @@ type ProductDetails = {
   id: string;
   title: string;
   price: number;
-  images: string[];
+  images: Image[];
   artist: {
     username: string;
     profileImage?: string;

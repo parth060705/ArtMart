@@ -96,7 +96,7 @@ const Navbar = ({
                   <ProductSearchBar
                     value={searchQuery}
                     onChange={setSearchQuery}
-                    className="pr-10"
+                    // className="pr-10"
                   />
                   <button
                     onClick={() => setOpenFilter(true)}

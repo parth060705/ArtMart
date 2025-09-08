@@ -96,7 +96,6 @@ const Navbar = ({
                   <ProductSearchBar
                     value={searchQuery}
                     onChange={setSearchQuery}
-                    // className="pr-10"
                   />
                   <button
                     onClick={() => setOpenFilter(true)}
@@ -105,28 +104,6 @@ const Navbar = ({
                     <Sliders className="w-5 h-5" />
                   </button>
                 </div>
-
-                {/* Filter Sheet */}
-                <Sheet open={openFilter} onOpenChange={setOpenFilter}>
-                  <SheetTrigger asChild>
-                    {/* <Button
-                      variant="outline"
-                      className="rounded-full px-6 font-semibold border-[var(--primary)] text-[var(--primary)] hidden lg:flex"
-                    >
-                      Filters
-                    </Button> */}
-                  </SheetTrigger>
-                  <SheetContent side="right" className="max-w-xs w-full">
-                    <FilterSidebar
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                      selectedLocation={selectedLocation}
-                      setSelectedLocation={setSelectedLocation}
-                      priceRange={priceRange}
-                      setPriceRange={setPriceRange}
-                    />
-                  </SheetContent>
-                </Sheet>
               </div>
             )}
 
@@ -174,40 +151,7 @@ const Navbar = ({
 
         {/* Mobile Menu */}
         <div className="block lg:hidden">
-          {/* Mobile Search Bar */}
-          {typeof window !== 'undefined' &&
-            (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||
-              window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
-              <div className="mt-2 px-2">
-                <div className="relative w-full">
-                  <ProductSearchBar
-                    value={searchQuery}
-                    onChange={setSearchQuery}
-                    // className="pr-10"
-                  />
-                  <button
-                    onClick={() => setOpenFilter(true)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--primary)]"
-                  >
-                    <Sliders className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <Sheet open={openFilter} onOpenChange={setOpenFilter}>
-                  <SheetContent side="right" className="max-w-xs w-full">
-                    <FilterSidebar
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                      selectedLocation={selectedLocation}
-                      setSelectedLocation={setSelectedLocation}
-                      priceRange={priceRange}
-                      setPriceRange={setPriceRange}
-                    />
-                  </SheetContent>
-                </Sheet>
-              </div>
-            )}
-
+          {/* Top Row: Logo + Burger */}
           <div className="flex items-center justify-between mt-2 px-2">
             <a href={logo.url} className="flex items-center gap-2">
               <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -269,11 +213,44 @@ const Navbar = ({
               </SheetContent>
             </Sheet>
           </div>
+
+          {/* Search Bar BELOW logo + burger */}
+          {typeof window !== 'undefined' &&
+            (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||
+              window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
+              <div className="mt-3 px-2">
+                <div className="relative w-full">
+                  <ProductSearchBar
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                  />
+                  <button
+                    onClick={() => setOpenFilter(true)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--primary)]"
+                  >
+                    <Sliders className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <Sheet open={openFilter} onOpenChange={setOpenFilter}>
+                  <SheetContent side="right" className="max-w-xs w-full">
+                    <FilterSidebar
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
+                      selectedLocation={selectedLocation}
+                      setSelectedLocation={setSelectedLocation}
+                      priceRange={priceRange}
+                      setPriceRange={setPriceRange}
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
+            )}
         </div>
       </div>
     </section>
   );
-}
+};
 
 // Navigation helpers
 const renderMenuItem = (item: MenuItem) => {

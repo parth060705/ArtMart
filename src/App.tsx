@@ -22,6 +22,8 @@ import RegisterPage from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import Home from './pages/Home';
+             // chat
+import ChatWrapper from "@/pages/chat/chatWrapper";
 import ProductListingPage from './pages/product/ProductListingPage';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/client';
@@ -57,6 +59,8 @@ function App() {
                 <Route path={AppRoutes.ProfilePage} element={<Profile />} />
                 <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
+                {/* chat */}
+                <Route path="/chat/:peerId" element={<ChatWrapper />} />
                 <Route path="*" element={<NotFound />} />
 
 {/* ------------------------------------------------------------------------------------------- */}

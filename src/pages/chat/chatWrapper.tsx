@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UserProfile } from "@/lib/types";
-import Chat from "./uiChat"; // ✅ matches Chat.tsx
+import Chat from "./uiChat";
 
 const ChatWrapper = () => {
   const { peerId } = useParams<{ peerId: string }>();

@@ -87,6 +87,24 @@ const Navbar = ({
             </div>
           </div>
 
+          <button
+            // onClick={onClick}
+            className="
+    flex items-center gap-2 px-3.5 py-2
+    bg-gradient-to-r from-primary to-accent
+    text-white
+    font-semibold text-lg
+    rounded-full
+    shadow-md
+    transition-transform transform hover:scale-105 hover:shadow-xl
+    active:scale-95
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+  "
+          >
+            <span className="text-lg font-bold">+</span>
+            Create
+          </button>
+
           {/* Search + Filter */}
           {typeof window !== 'undefined' &&
             (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||

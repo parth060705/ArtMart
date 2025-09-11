@@ -352,7 +352,7 @@ const Navbar = ({
                   <img
                     src={userProfile.profileImage}
                     alt="Profile"
-                    className="w-6 h-6 rounded-full border-4 border-[var(--primary)] object-cover mb-1"
+                    className="w-6 h-6 rounded-full border-1 border-[var(--primary)] object-cover mb-1"
                   />
                 ) : (
                   <User className="w-6 h-6 mb-1" />

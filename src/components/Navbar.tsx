@@ -130,7 +130,7 @@ const Navbar = ({
           {/* Auth / Cart / Theme */}
           <div className="flex gap-2 items-center">
             <div className="hidden lg:flex items-center ml-4">
-              <ThemeSwitcher />
+              {/* <ThemeSwitcher /> */}
             </div>
             <div className="flex items-center gap-4">
               <div className="flex flex-col gap-3">
@@ -351,7 +351,7 @@ const Navbar = ({
                   <img
                     src={userProfile.profileImage}
                     alt="Profile"
-                    className="w-6 h-6 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
+                    className="w-7 h-7 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
                   />
                 ) : (
                   <User className="w-6 h-6 mb-1" />

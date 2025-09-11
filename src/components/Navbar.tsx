@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
+import { Routes } from '@/lib/routes';
 import {
   Accordion,
   AccordionContent,
@@ -87,23 +88,24 @@ const Navbar = ({
             </div>
           </div>
 
-          <button
-            // onClick={onClick}
-            className="
-    flex items-center gap-2 px-3.5 py-2
-    bg-gradient-to-r from-primary to-accent
-    text-white
-    font-semibold text-lg
-    rounded-full
-    shadow-md
-    transition-transform transform hover:scale-105 hover:shadow-xl
-    active:scale-95
-    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-  "
-          >
-            <span className="text-lg font-bold">+</span>
-            Create
-          </button>
+          <Link to={`/${Routes.UploadProductPage}`}>
+            <Button variant="default" className="
+    flex items-center justify-center gap-2 px-3.5 py-2
+      bg-gradient-to-r from-primary to-accent
+      text-white
+      font-semibold text-lg
+      rounded-full
+      shadow-md
+      transition-transform transform hover:scale-105 hover:shadow-xl
+      active:scale-95
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+      w-full sm:w-auto
+      z-10
+      ">
+              <span className="text-lg font-bold">+</span>
+              Create
+            </Button>
+          </Link>
 
           {/* Search + Filter */}
           {typeof window !== 'undefined' &&
@@ -209,6 +211,24 @@ const Navbar = ({
                     )}
                     {isAuthenticated && (
                       <>
+                        <Link to={`/${Routes.UploadProductPage}`}>
+                          <Button variant="default" className="
+    flex items-center justify-center gap-2 px-3.5 py-2
+      bg-gradient-to-r from-primary to-accent
+      text-white
+      font-semibold text-lg
+      rounded-full
+      shadow-md
+      transition-transform transform hover:scale-105 hover:shadow-xl
+      active:scale-95
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+      w-full sm:w-auto
+      z-10
+      ">
+                            <span className="text-lg font-bold">+</span>
+                            Create
+                          </Button>
+                        </Link>
                         <Link
                           to={navbarRoutes.auth.addtoCart.url}
                           className="self-center p-2 rounded-full hover:bg-[var(--muted)] transition-colors"

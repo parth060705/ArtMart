@@ -11,6 +11,8 @@ import { useUserFollowersList } from '@/hooks/user/useUserFollowersList';
 import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
@@ -38,6 +40,8 @@ const Profile = () => {
             <Link to={`/${Routes.UploadProductPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer">Upload Artwork</Button>
             </Link>
+            <ThemeSwitcher />
+
           </div>
         </div>
       </div>

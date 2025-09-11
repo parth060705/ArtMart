@@ -247,7 +247,6 @@ const Navbar = ({
                       </>
                     )}
                   </div>
-                  <ThemeSwitcher />
                 </div>
               </SheetContent>
             </Sheet>
@@ -270,7 +269,7 @@ const Navbar = ({
                   </button>
                 </div>
 
-                <Sheet open={openFilter} onOpenChange={setOpenFilter}>
+                {/* <Sheet open={openFilter} onOpenChange={setOpenFilter}>
                   <SheetContent side="right" className="max-w-xs w-full">
                     <FilterSidebar
                       selectedCategory={selectedCategory}
@@ -281,7 +280,7 @@ const Navbar = ({
                       setPriceRange={setPriceRange}
                     />
                   </SheetContent>
-                </Sheet>
+                </Sheet> */}
               </div>
             )}
         </div>
@@ -352,7 +351,7 @@ const Navbar = ({
                   <img
                     src={userProfile.profileImage}
                     alt="Profile"
-                    className="w-6 h-6 rounded-full border-1 border-[var(--primary)] object-cover mb-1"
+                    className="w-6 h-6 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
                   />
                 ) : (
                   <User className="w-6 h-6 mb-1" />

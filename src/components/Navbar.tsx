@@ -1,4 +1,4 @@
-import { Menu, ShoppingCart, Sliders } from "lucide-react";
+import { User, Box, Home, Menu, ShoppingCart, Sliders } from "lucide-react";
 import ProductSearchBar from "@/components/ProductSearchBar";
 import FilterSidebar from "@/components/FilterSidebar";
 import { useState } from "react";
@@ -170,8 +170,8 @@ const Navbar = ({
         </nav>
 
         {/* Mobile Menu */}
+        {/* Top Row: Logo + Burger */}
         <div className="block lg:hidden">
-          {/* Top Row: Logo + Burger */}
           <div className="flex items-center justify-between mt-2 px-2">
             <a href={logo.url} className="flex items-center gap-2">
               <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -211,7 +211,7 @@ const Navbar = ({
                     )}
                     {isAuthenticated && (
                       <>
-                        <Link to={`/${Routes.UploadProductPage}`}>
+                        {/* <Link to={`/${Routes.UploadProductPage}`}>
                           <Button variant="default" className="
     flex items-center justify-center gap-2 px-3.5 py-2
       bg-gradient-to-r from-primary to-accent
@@ -228,21 +228,22 @@ const Navbar = ({
                             <span className="text-lg font-bold">+</span>
                             Create
                           </Button>
-                        </Link>
-                        <Link
+                        </Link> */}
+
+                        {/* <Link
                           to={navbarRoutes.auth.addtoCart.url}
                           className="self-center p-2 rounded-full hover:bg-[var(--muted)] transition-colors"
                           aria-label="View cart"
                         >
                           <ShoppingCart className="w-5 h-5 text-[var(--foreground)]" />
-                        </Link>
-                        <Link to={`/profile/${username}`} className="self-center mt-2">
+                        </Link> */}
+                        {/* <Link to={`/profile/${username}`} className="self-center mt-2">
                           <img
                             src={`${userProfile?.profileImage}`}
                             alt="Go to profile"
                             className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
                           />
-                        </Link>
+                        </Link> */}
                       </>
                     )}
                   </div>
@@ -252,7 +253,6 @@ const Navbar = ({
             </Sheet>
           </div>
 
-          {/* Search Bar BELOW logo + burger */}
           {typeof window !== 'undefined' &&
             (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||
               window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
@@ -285,6 +285,101 @@ const Navbar = ({
               </div>
             )}
         </div>
+        {/* --------------------------------------------------- */}
+        {/* Mobile Bottom Navigation */}
+        <div className="block lg:hidden">
+          {/* Optional search bar above bottom nav */}
+          {typeof window !== 'undefined' &&
+            (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||
+              window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
+              <div className="mt-3 px-4">
+                {/* <ProductSearchBar
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                /> */}
+              </div>
+            )}
+
+          {/* Bottom nav bar */}
+          <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md">
+            <div className="flex justify-between items-center px-6 py-2 relative">
+
+              {/* Home */}
+              <Link
+                to={navbarRoutes.other?.home?.url || '/'}
+                className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground'
+                  }`}
+              >
+                <Home className="w-6 h-6 mb-1" />
+                Home
+              </Link>
+
+              {/* Products */}
+              <Link
+                to={navbarRoutes.other.ProductsListingPage?.url || '/products'}
+                className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-primary' : 'text-foreground'}`}
+              >
+                <Box className="w-6 h-6 mb-1" />
+                Products
+              </Link>
+
+
+              {/* Cart */}
+              <Link
+                to={navbarRoutes.auth.addtoCart.url}
+                className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground"
+              >
+                <ShoppingCart className="w-6 h-6 mb-1" />
+                Cart
+              </Link>
+
+              {/* Create Button */}
+              <Link
+                to={`/${Routes.UploadProductPage}`}
+                className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg text-xl font-bold"
+              >
+                +
+              </Link>
+
+              {/* Profile */}
+              <Link
+                to={isAuthenticated ? `/profile/${username}` : '/login'}
+                className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-primary' : 'text-foreground'
+                  }`}
+              >
+                {isAuthenticated && userProfile?.profileImage ? (
+                  <img
+                    src={userProfile.profileImage}
+                    alt="Profile"
+                    className="w-6 h-6 rounded-full object-cover mb-1"
+                  />
+                ) : (
+                  <User className="w-6 h-6 mb-1" />
+                )}
+                Profile
+              </Link>
+            </div>
+          </div>
+
+          {/* Padding so content isn't hidden behind bottom nav */}
+          <div className="h-16"></div>
+
+          {/* Filter Sidebar Drawer */}
+          <Sheet open={openFilter} onOpenChange={setOpenFilter}>
+            <SheetContent side="right" className="max-w-xs w-full">
+              <FilterSidebar
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+              />
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* --------------------------------------------------- */}
       </div>
     </section>
   );

@@ -32,18 +32,36 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
         <div className="flex flex-col">
           <Tabs defaultValue="followers" className="flex-1">
             <TabsList className="grid w-full grid-cols-2 rounded-xl overflow-hidden bg-[var(--muted)] p-1">
-              <TabsTrigger value="followers">Followers</TabsTrigger>
-              <TabsTrigger value="following">Following</TabsTrigger>
+              <TabsTrigger
+                value="followers"
+                className="data-[state=active]:bg-purple-500 data-[state=active]:text-white"
+              >
+                Followers
+              </TabsTrigger>
+              <TabsTrigger
+                value="following"
+                className="data-[state=active]:bg-purple-500 data-[state=active]:text-white"
+              >
+                Following
+              </TabsTrigger>
             </TabsList>
 
             {/* Followers */}
-            <TabsContent value="followers" className="p-4 max-h-[60vh] overflow-y-auto">
+            <TabsContent
+              value="followers"
+              className="p-4 max-h-[60vh] overflow-y-auto"
+            >
               {followers.length === 0 ? (
-                <p className="text-center text-[var(--muted-foreground)]">No followers yet</p>
+                <p className="text-center text-[var(--muted-foreground)]">
+                  No followers yet
+                </p>
               ) : (
                 <div className="space-y-3">
                   {followers.map((user) => (
-                    <div key={user.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border shadow-sm">
+                    <div
+                      key={user.id}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border shadow-sm"
+                    >
                       <img
                         src={user.profileImage}
                         alt={user.username}
@@ -51,12 +69,13 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       />
                       <div className="flex flex-col">
                         <h3 className="font-semibold">{user.name}</h3>
-                        <p className="text-sm text-gray-500">@{user.username}</p>
+                        <p className="text-sm text-gray-500">
+                          @{user.username}
+                        </p>
                       </div>
                       <Button
-                        variant="outline"
                         size="sm"
-                        className="flex items-center gap-1 ml-auto"
+                        className="flex items-center gap-1 ml-auto bg-blue-400 text-white hover:bg-blue-600"
                         onClick={() => handleChat(user.id)}
                       >
                         <MessageSquare className="w-4 h-4" /> Chat
@@ -68,13 +87,19 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
             </TabsContent>
 
             {/* Following */}
-            <TabsContent value="following" className="p-4 max-h-[60vh] overflow-y-auto">
+            <TabsContent
+              value="following"
+              className="p-4 max-h-[60vh] overflow-y-auto"
+            >
               {following.length === 0 ? (
                 <p className="text-center text-gray-500">No following yet</p>
               ) : (
                 <div className="space-y-3">
                   {following.map((user) => (
-                    <div key={user.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border shadow-sm">
+                    <div
+                      key={user.id}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/70 border shadow-sm"
+                    >
                       <img
                         src={user.profileImage}
                         alt={user.username}
@@ -82,12 +107,13 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       />
                       <div className="flex flex-col">
                         <h3 className="font-semibold">{user.name}</h3>
-                        <p className="text-sm text-gray-500">@{user.username}</p>
+                        <p className="text-sm text-gray-500">
+                          @{user.username}
+                        </p>
                       </div>
                       <Button
-                        variant="outline"
                         size="sm"
-                        className="flex items-center gap-1 ml-auto"
+                        className="flex items-center gap-1 ml-auto bg-blue-500 text-white hover:bg-blue-600"
                         onClick={() => handleChat(user.id)}
                       >
                         <MessageSquare className="w-4 h-4" /> Chat

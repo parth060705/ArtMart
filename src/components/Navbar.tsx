@@ -68,7 +68,7 @@ const Navbar = ({
   };
 
   return (
-    <section className="p-3 bg-background shadow-sm sticky top-0 z-50 border-b border-gray-50">
+    <section className="p-3 bg-background shadow-sm top-0 z-50 border-b border-gray-50">
       <div className="container mx-auto">
         {/* Desktop Menu */}
         <nav className="hidden lg:flex justify-between items-center">

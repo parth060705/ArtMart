@@ -361,9 +361,6 @@ const Navbar = ({
             </div>
           </div>
 
-          {/* Padding so content isn't hidden behind bottom nav */}
-          <div className="h-16"></div>
-
           {/* Filter Sidebar Drawer */}
           <Sheet open={openFilter} onOpenChange={setOpenFilter}>
             <SheetContent side="right" className="max-w-xs w-full">

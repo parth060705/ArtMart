@@ -144,7 +144,7 @@ const ProductDetail = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
 
         {/* Left Pane (2/3) */}
-        <div className="lg:col-span-2 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-8 space-y-6">
+        <div className="lg:col-span-2 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-8 space-y-6">
           {/* Artist */}
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-between">
@@ -276,7 +276,7 @@ const ProductDetail = () => {
         </div>
 
         {/* Right Pane (1/3) */}
-        <div className="lg:col-span-1 bg-white dark:bg-[var(--card)] rounded-2xl shadow p-6">
+        <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6">
           <Tabs defaultValue="comments">
             <TabsList className="grid grid-cols-2 mb-4">
               <TabsTrigger value="comments">Comments</TabsTrigger>

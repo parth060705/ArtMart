@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { chatSocket, MessageOut } from "@/communication/chatSocket";
 
-export const useChat = (userId: number, peerId: number) => {
+export const useChat = (userId: string, peerId: string) => {
   const [messages, setMessages] = useState<MessageOut[]>([]);
   const [isTyping, setIsTyping] = useState(false);
 

@@ -1,13 +1,13 @@
 // src/communication/chatSocket.ts
 export interface MessageBase {
-  receiver_id: number;
+  receiver_id: string;
   content?: string;
   action: "message" | "typing" | "read";
 }
 
 export interface MessageOut {
-  sender_id: number;
-  receiver_id: number;
+  sender_id: string;
+  receiver_id: string;
   content: string;
   timestamp: string;
   is_read: boolean;
@@ -17,9 +17,9 @@ class ChatSocket {
   private socket: WebSocket | null = null;
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: ((data: any) => void)[] = [];
-  private userId: number | null = null;
+  private userId: string | null = null;
 
-  connect(userId: number) {
+  connect(userId: string) {
     if (!userId || this.socket) return; // prevent duplicate connections
     this.userId = userId;
     // const baseUrl = `ws://localhost:8000/api/auth/chat/ws/${userId}`;
@@ -61,15 +61,15 @@ class ChatSocket {
     }, 3000);
   }
 
-  sendMessage(receiverId: number, content: string) {
+  sendMessage(receiverId: string, content: string) {
     this.send({ receiver_id: receiverId, content, action: "message" });
   }
 
-  sendTyping(receiverId: number) {
+  sendTyping(receiverId: string) {
     this.send({ receiver_id: receiverId, action: "typing" });
   }
 
-  sendRead(receiverId: number) {
+  sendRead(receiverId: string) {
     this.send({ receiver_id: receiverId, action: "read" });
   }
 

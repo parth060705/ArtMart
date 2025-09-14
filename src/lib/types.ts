@@ -135,18 +135,21 @@ export type Orders = {
 
 // ------------------ MESSAGES ------------------
 
-export type MessageBase = {
-  receiver_id: number;
-  content?: string;
-  action: "message" | "typing" | "read";
-};
-
-export type MessageCreate = MessageBase;
-
-export type MessageOut = {
-  sender_id: number;
-  receiver_id: number;
+export type chatMessage = {
+  receiver_id: string;
+  sender_id: string;
   content: string;
   timestamp: string;
   is_read: boolean;
+  action: "message" | "typing" | "read";
+  message_type: "text" | "image" | "video" | "file";
 };
+
+// export type MessageOut = {
+//   sender_id: string;
+//   receiver_id: string;
+//   content: string;
+//   timestamp: string;
+//   is_read: boolean;
+//   message_type: "text" | "image" | "video" | "file";
+// };

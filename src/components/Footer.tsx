@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
           <a href='/' className="flex items-center gap-2">
             <span className="text-xl logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Artmart
+              Auroraa
             </span>
           </a>
         </div>
@@ -46,7 +46,7 @@ export default function Footer() {
         </nav>
       </div>
       <div className="text-center text-xs text-muted-foreground py-3 bg-[var(--background)] border-t border-[var(--card)] opacity-80">
-        © {new Date().getFullYear()} Artmart. All rights reserved.
+        © {new Date().getFullYear()} Auroraa. All rights reserved.
       </div>
     </footer>
   );

@@ -6,13 +6,13 @@ import Chat from "./Chat";
 import { useGetChatHistory } from "@/hooks/chat/useGetChatHistory";
 
 const ChatWrapper = () => {
-  const { peerId } = useParams<{ peerId: string }>();
+  const { peerId } = useParams<{ peerId: string}>();
   const [peer, setPeer] = useState<UserProfile | null>(null);
-  const { data: peerData } = useGetChatHistory(peerId || "");
+  const { data: chatHistory } = useGetChatHistory(peerId || "");
 
-  if (!peerData) return <div>Loading chat...</div>;
+  if (!chatHistory || !peerId) return <div>Loading chat...</div>;
 
-  return <Chat chatUserId={peerId} messages={peerData} chatUserAvatar={peer} chatUserStatus="Active now" />;
+  return <Chat chatUserId={peerId} messages={chatHistory} chatUserAvatar={peer} chatUserStatus="Active now" />;
   
 };
 

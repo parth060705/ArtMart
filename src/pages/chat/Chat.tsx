@@ -1,120 +1,284 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useChat } from "@/hooks/chat/use_chat";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useChat } from "@/hooks/chat/useChat";
 import { useUserProfile } from "@/hooks/user/auth/useUserProfile";
-import { chatMessage, UserProfile } from "@/lib/types";
+import { UserProfile } from "@/lib/types";
+import { MessageOut } from "@/communication/chatSocket";
+import { useGetUserProfilePublic } from "@/hooks/user/useUserProfilePublic";
+
+// Define a complete message type that includes all necessary fields
+type ChatMessage = {
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  timestamp: string;
+  status?: 'sending' | 'sent' | 'failed';
+  id?: string; // Optional ID for tracking messages
+};
+import { FiPaperclip, FiSend, FiSmile, FiImage } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ChatProps {
   chatUserId: string;
   chatUserAvatar?: UserProfile | null;
   chatUserStatus?: string;
-  messages: chatMessage[];
+  messages: ChatMessage[];
 }
 
 const Chat: React.FC<ChatProps> = ({
   chatUserId,
   chatUserAvatar,
   chatUserStatus = "Active now",
-  messages,
+  messages: initialMessages,
 }) => {
   const { data: currentUser } = useUserProfile();
-  const currentUserId = '6f1e0446-2681-49a2-8020-4323f4ac1f0f'
-
-  const { messages: chatMessages, isTyping, sendMessage, sendTyping } = useChat(
-    currentUserId || 0,
-    chatUserId
-  );
-
+  const { data: peerData } = useGetUserProfilePublic(chatUserId);
+  console.log(peerData)
+  const currentUserId = '6f1e0446-2681-49a2-8020-4323f4ac1f0f';
+  const accessToken = localStorage.getItem('token') || '';
   const [input, setInput] = useState("");
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { messages: realtimeMessages = [], isTyping, sendMessage, sendTyping, isConnected } = useChat({
+    accessToken,
+    peerId: chatUserId,
+    userId: currentUserId
+  });
+
+  // Combine chat history with real-time messages
+  const [combinedMessages, setCombinedMessages] = useState<ChatMessage[]>(initialMessages || []);
+
+  // Update combined messages when any source changes
+  useEffect(() => {
+    // Create a map to track unique messages by a composite key
+    const messageMap = new Map<string, ChatMessage>();
+
+    // Helper function to add a message to the map
+    const addMessageToMap = (msg: ChatMessage | MessageOut) => {
+      const message: ChatMessage = {
+        ...msg,
+        timestamp: 'timestamp' in msg ? msg.timestamp : new Date().toISOString(),
+        status: 'status' in msg ? msg.status : 'sent'
+      };
+
+      const key = `${message.sender_id}-${message.timestamp}-${String(message.content || '').substring(0, 20)}`;
+      if (key) {
+        messageMap.set(key, message);
+      }
+    };
+
+    // Add all historical messages
+    initialMessages.forEach(addMessageToMap);
+
+    // Add real-time messages (these will overwrite any messages with the same key)
+    realtimeMessages.forEach(addMessageToMap);
+
+    // Convert to array and sort by timestamp
+    const sortedMessages = Array.from(messageMap.values()).sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+
+    setCombinedMessages(sortedMessages);
+  }, [initialMessages, realtimeMessages]);
+
+  const scrollToBottom = useCallback(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    scrollToBottom();
+  }, [combinedMessages, scrollToBottom]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const messageContent = input.trim();
+    if (messageContent) {
+      const tempMessage: ChatMessage = {
+        sender_id: currentUserId,
+        receiver_id: chatUserId,
+        content: messageContent,
+        timestamp: new Date().toISOString(),
+        status: 'sending',
+        id: `temp-${Date.now()}`
+      };
+
+      // Add the temporary message to the combined messages
+      setCombinedMessages(prev => [...prev, tempMessage]);
+
+      // Clear input and send the message
+      setInput("");
+      sendMessage(messageContent);
+
+      // Scroll to bottom to show the new message
+      setTimeout(scrollToBottom, 100);
+    }
+  };
 
   const handleTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
     sendTyping();
   };
 
-  if (!currentUserId) return <div>Loading your profile...</div>;
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as any);
+    }
+  };
+
+  if (!currentUserId || !accessToken) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div className="text-center p-6 max-w-sm w-full">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your chat...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="w-full max-w-md h-[90vh] flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
+      <div className="w-full max-w-2xl h-[85vh] flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300">
         {/* Header */}
-        <div className="flex flex-col items-center p-6 border-b">
-          <img
-            src={chatUserAvatar?.profileImage || "https://via.placeholder.com/80"}
-            alt={chatUserAvatar?.username || "user"}
-            className="w-16 h-16 rounded-full object-cover"
-          />
-          <div className="mt-3 text-lg font-semibold text-gray-900">
-            {chatUserAvatar?.name || chatUserAvatar?.username || `User ${chatUserId}`}
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <img
+                src={peerData?.profileImage || "/default-avatar.png"}
+                alt={peerData?.username || "user"}
+                className="w-12 h-12 rounded-full object-cover border-2 border-white shadow"
+              />
+              <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${isConnected ? 'bg-green-400' : 'bg-gray-400'} border-2 border-white`}></span>
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold">
+                {peerData?.name}
+              </h2>
+              <p className="text-sm text-indigo-100">
+                {isTyping ? 'typing...' : chatUserStatus}
+              </p>
+            </div>
           </div>
-          <div className="text-sm text-gray-500">{chatUserStatus}</div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {messages.map((msg:chatMessage) => {
-            const isMine = msg.sender_id === currentUserId;
-            return (
-              <div
-                key={`${msg.sender_id}-${msg.timestamp}`}
-                className={`flex ${isMine ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`px-4 py-2 rounded-2xl max-w-xs shadow-sm ${isMine
-                      ? "bg-green-500 text-white rounded-br-none"
-                      : "bg-gray-100 text-gray-800 rounded-bl-none"
-                    }`}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <AnimatePresence>
+            {combinedMessages.map((msg) => {
+              const isMine = msg.sender_id === currentUserId;
+              return (
+                <motion.div
+                  key={`${msg.sender_id}-${msg.timestamp}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div>{msg.content}</div>
-                  <div className="text-[10px] text-gray-400 mt-1 flex justify-end">
-                    {new Date(msg.timestamp).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                  <div
+                    className={`relative max-w-xs lg:max-w-md px-4 py-2 rounded-2xl shadow-sm ${isMine
+                      ? 'bg-indigo-600 text-white rounded-br-none'
+                      : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
+                      }`}
+                  >
+                    <div className="text-sm">{msg.content}</div>
+                    <div className={`text-xs mt-1 flex ${isMine ? 'text-indigo-200' : 'text-gray-500'} justify-end`}>
+                      {new Date(msg.timestamp).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
 
           {isTyping && (
-            <div className="flex justify-start">
-              <div className="bg-gray-200 text-gray-600 px-3 py-2 rounded-2xl text-sm animate-pulse">
-                ● ● ●
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center space-x-1 px-4 py-2 bg-white rounded-full w-20 shadow-sm"
+            >
+              <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </motion.div>
           )}
 
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input */}
-        <div className="p-4 border-t">
-          <div className="flex items-center bg-gray-100 rounded-full px-3 py-2">
-            <button className="text-gray-500 text-xl">＋</button>
+        {/* Input Area */}
+        <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
+          <div className="relative flex items-center">
+            <div className="flex space-x-2 mr-2">
+              <button
+                type="button"
+                className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              >
+                <FiSmile className="w-5 h-5" />
+              </button>
+              {/* <button
+                type="button"
+                className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
+                onClick={() => inputRef.current?.focus()}
+              >
+                <FiPaperclip className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
+                onClick={() => inputRef.current?.focus()}
+              >
+                <FiImage className="w-5 h-5" />
+              </button> */}
+            </div>
             <input
+              ref={inputRef}
               type="text"
-              placeholder="Type a message..."
-              className="flex-1 bg-transparent px-3 focus:outline-none text-gray-700"
               value={input}
               onChange={handleTyping}
-              onKeyDown={(e) => e.key === "Enter" && (sendMessage(input), setInput(""))}
+              onKeyDown={handleKeyDown}
+              placeholder="Type a message..."
+              className="flex-1 py-2 px-4 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
             />
             <button
-              onClick={() => {
-                sendMessage(input);
-                setInput("");
-              }}
-              className="bg-green-600 hover:bg-green-700 text-white rounded-full p-2"
+              type="submit"
+              disabled={!input.trim()}
+              className="ml-2 p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Send
+              <FiSend className="w-5 h-5" />
             </button>
           </div>
-        </div>
+
+          {/* Emoji Picker */}
+          {showEmojiPicker && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="absolute bottom-20 left-0 w-full bg-white rounded-lg shadow-lg p-4 border border-gray-200"
+            >
+              <div className="grid grid-cols-8 gap-2">
+                {['😀', '😊', '😂', '❤️', '👍', '👋', '🎨', '👀'].map((emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => {
+                      setInput(prev => prev + emoji);
+                      setShowEmojiPicker(false);
+                    }}
+                    className="text-2xl p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </form>
       </div>
     </div>
   );

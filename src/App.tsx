@@ -23,7 +23,6 @@ import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import Home from './pages/Home';
              // chat
-import ChatWrapper from "@/pages/chat/chatWrapper";
 import ProductListingPage from './pages/product/ProductListingPage';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/client';
@@ -35,6 +34,7 @@ import { ProductSearchProvider } from './context/ProductSearchContext';
 import SearchProduct from './pages/product/SearchProduct';
 import { Routes as AppRoutes } from './lib/routes';
 import MainLayout from './Layout/Mainlayout';
+import ChatWrapper from './pages/chat/chatWrapper';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">

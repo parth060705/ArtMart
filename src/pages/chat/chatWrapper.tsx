@@ -1,24 +1,19 @@
 // src/pages/chat/ChatWrapper.tsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { UserProfile } from "@/lib/types";
-import Chat from "./uiChat";
+import { chatMessage, UserProfile } from "@/lib/types";
+import Chat from "./Chat";
+import { useGetChatHistory } from "@/hooks/chat/useGetChatHistory";
 
 const ChatWrapper = () => {
-  const { peerId } = useParams<{ peerId: string }>();
+  const { peerId } = useParams<{ peerId: string}>();
   const [peer, setPeer] = useState<UserProfile | null>(null);
+  const { data: chatHistory } = useGetChatHistory(peerId || "");
 
-  useEffect(() => {
-    if (!peerId) return;
-    fetch(`/api/users/${peerId}`)
-      .then((res) => res.json())
-      .then(setPeer)
-      .catch(console.error);
-  }, [peerId]);
+  if (!chatHistory || !peerId) return <div>Loading chat...</div>;
 
-  if (!peerId || !peer) return <div>Loading chat...</div>;
-
-  return <Chat chatUserId={Number(peerId)} chatUserAvatar={peer} chatUserStatus="Active now" />;
+  return <Chat chatUserId={peerId} messages={chatHistory} chatUserAvatar={peer} chatUserStatus="Active now" />;
+  
 };
 
 export default ChatWrapper;

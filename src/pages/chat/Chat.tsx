@@ -32,8 +32,7 @@ const Chat: React.FC<ChatProps> = ({
 }) => {
   const { data: currentUser } = useUserProfile();
   const { data: peerData } = useGetUserProfilePublic(chatUserId);
-  console.log(peerData)
-  const currentUserId = '6f1e0446-2681-49a2-8020-4323f4ac1f0f';
+  const currentUserId: string = currentUser?.id.toString() || '';
   const accessToken = localStorage.getItem('token') || '';
   const [input, setInput] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);

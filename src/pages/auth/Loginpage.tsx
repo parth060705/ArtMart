@@ -35,7 +35,7 @@ const LoginPage = () => {
         if (data?.access_token) {
           login(data.access_token);
         }
-        setTimeout(() => navigate('/products'), 500);
+        setTimeout(() => navigate('/'), 500);
       },
       onError: (error: any) => {
         toast.error(error?.response?.data?.message || 'Login failed');

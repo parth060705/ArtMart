@@ -13,7 +13,6 @@ const ChatWrapper = () => {
   if (!chatHistory || !peerId) return <div>Loading chat...</div>;
 
   return <Chat chatUserId={peerId} messages={chatHistory} chatUserAvatar={peer} chatUserStatus="Active now" />;
-  
 };
 
 export default ChatWrapper;

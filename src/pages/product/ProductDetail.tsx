@@ -24,6 +24,7 @@ import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';
 import { useAddToCart } from '@/hooks/useAddToCart';
 import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
+import CircularLoader from '@/components/CircularLoader';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -131,7 +132,7 @@ const ProductDetail = () => {
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+        <CircularLoader />
       </div>
     );
   }

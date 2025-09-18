@@ -17,7 +17,7 @@ interface UserProfileResponse {
   followingList: UserProfile[];
 }
 
-type UseUserProfileOptions = Omit<UseQueryOptions<UserProfileResponse, Error, UserProfile, ["userProfile"]>, 'queryKey' | 'queryFn'>;
+type UseUserProfileOptions = Omit<UseQueryOptions<UserProfile, Error, UserProfile, ["userProfile"]>, 'queryKey' | 'queryFn'>;
 
 export const useUserProfile = (options: UseUserProfileOptions = {}) => {
   return useQuery({

@@ -4,10 +4,11 @@ import { Product } from "@/lib/types";
 import { useNavigate } from "react-router-dom";
 import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
+import CircularLoader from "./CircularLoader";
 
-export default function MasonryFeed({className, length, url}: {className?: string, length?: number, url?: string}) {
+export default function MasonryFeed({ className, length, url }: { className?: string, length?: number, url?: string }) {
   const navigate = useNavigate();
-  const { data: products } = useProductsList(url || '/artworks')
+  const { data: products, isLoading } = useProductsList(url || '/artworks')
   const { searchQuery, selectedCategory, selectedLocation, priceRange } = useProductSearchContext();
   const filteredProducts = products?.filter((prod: Product) => {
     const matchesCategory = !selectedCategory || prod.category === selectedCategory;
@@ -19,10 +20,10 @@ export default function MasonryFeed({className, length, url}: {className?: strin
     // prod.caption.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesLocation && matchesPrice && matchesSearch;
   });
-  
+
   return (
     <div className={className}>
-      {filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product) => (
+      {isLoading ? <div className="min-h-[30vh] w-[calc(100vw-4rem)] flex items-center justify-center"><CircularLoader /></div> : filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product) => (
         <div key={prod.id} className="break-inside-avoid">
           <ProductCard
             {...prod}

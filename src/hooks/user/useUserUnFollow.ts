@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 
-export const useUserUnFollow = () => {
+export const useUserUnFollow = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (userId: string) => {
+    mutationFn: async () => {
       const { data } = await axiosClient.delete(`/auth/${userId}/unfollow`);
       return data;
     },

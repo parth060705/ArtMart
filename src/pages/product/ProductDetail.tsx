@@ -22,11 +22,14 @@ import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { useLikeProduct } from '@/hooks/like_dislike/useLikeProduct';
 import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';
 import { useAddToCart } from '@/hooks/useAddToCart';
+import { useUserFollow } from '@/hooks/user/usesUserFollow';
+import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
@@ -40,6 +43,8 @@ const ProductDetail = () => {
   const { userProfile } = useAuth();
 
   const { data: artwork, isLoading, error } = useProductDetails(id || '');
+  const { mutate: followUser } = useUserFollow(artwork?.artistId);
+  const { mutate: unfollowUser } = useUserUnFollow(artwork?.artistId);
   const { data: likeStatus } = useUserLikeStatus(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
@@ -164,13 +169,27 @@ const ProductDetail = () => {
             </div>
 
             <button
-              onClick={() => setIsFollowing(f => !f)}
+              onClick={() => {
+                if (isFollowLoading) return;
+                setIsFollowLoading(true);
+                const action = isFollowing ? unfollowUser : followUser;
+                action(artwork.artist.id, {
+                  onSuccess: () => {
+                    setIsFollowing(!isFollowing);
+                    setIsFollowLoading(false);
+                  },
+                  onError: () => {
+                    setIsFollowLoading(false);
+                  }
+                });
+              }}
+              disabled={isFollowLoading}
               className={`px-4 py-1.5 rounded-full text-sm font-medium ${isFollowing
                 ? "bg-[var(--primary)] text-white"
                 : "bg-[var(--muted)] hover:bg-[var(--muted)]/80"
-                }`}
+                } ${isFollowLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              {isFollowing ? "Following" : "Follow"}
+              {isFollowLoading ? '...' : isFollowing ? "Following" : "Follow"}
             </button>
           </div>
 

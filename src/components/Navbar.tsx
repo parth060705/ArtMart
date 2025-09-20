@@ -294,7 +294,7 @@ const Navbar = ({
 
               {/* Profile */}
               <Link
-                to={isAuthenticated ? `/profile/${username}` : '/login'}
+                to={isAuthenticated ? `/me/profile/${username}` : '/login'}
                 className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-primary' : 'text-foreground'
                   }`}
               >

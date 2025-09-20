@@ -1,4 +1,4 @@
-import { User, Box, Home, Menu, ShoppingCart, Sliders } from "lucide-react";
+import { User, Box, Home, Menu, ShoppingCart, Sliders, BookMarked, Bookmark } from "lucide-react";
 import ProductSearchBar from "@/components/ProductSearchBar";
 import FilterSidebar from "@/components/FilterSidebar";
 import { useState } from "react";
@@ -156,7 +156,7 @@ const Navbar = ({
                   >
                     <ShoppingCart className="w-5 h-5 text-[var(--foreground)]" />
                   </Link>
-                  <Link to={`/profile/${username}`} aria-label="Go to profile">
+                  <Link to={`/me/profile/${username}`} aria-label="Go to profile">
                     <img
                       src={`${userProfile?.profileImage}`}
                       alt="Go to profile"
@@ -209,43 +209,6 @@ const Navbar = ({
                         </Button>
                       </>
                     )}
-                    {isAuthenticated && (
-                      <>
-                        {/* <Link to={`/${Routes.UploadProductPage}`}>
-                          <Button variant="default" className="
-    flex items-center justify-center gap-2 px-3.5 py-2
-      bg-gradient-to-r from-primary to-accent
-      text-white
-      font-semibold text-lg
-      rounded-full
-      shadow-md
-      transition-transform transform hover:scale-105 hover:shadow-xl
-      active:scale-95
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-      w-full sm:w-auto
-      z-10
-      ">
-                            <span className="text-lg font-bold">+</span>
-                            Create
-                          </Button>
-                        </Link> */}
-
-                        {/* <Link
-                          to={navbarRoutes.auth.addtoCart.url}
-                          className="self-center p-2 rounded-full hover:bg-[var(--muted)] transition-colors"
-                          aria-label="View cart"
-                        >
-                          <ShoppingCart className="w-5 h-5 text-[var(--foreground)]" />
-                        </Link> */}
-                        {/* <Link to={`/profile/${username}`} className="self-center mt-2">
-                          <img
-                            src={`${userProfile?.profileImage}`}
-                            alt="Go to profile"
-                            className="w-12 h-12 rounded-full border-2 border-[var(--primary)] object-cover shadow hover:scale-105 transition-transform"
-                          />
-                        </Link> */}
-                      </>
-                    )}
                   </div>
                 </div>
               </SheetContent>
@@ -284,23 +247,11 @@ const Navbar = ({
               </div>
             )}
         </div>
-        
+
         {/* --------------------------------------------------- */}
         {/* Mobile Bottom Navigation */}
         <div className="block lg:hidden">
-          {/* Optional search bar above bottom nav */}
-          {typeof window !== 'undefined' &&
-            (window.location.pathname.includes(AppRoutes.ProductsListingPage) ||
-              window.location.pathname.includes(AppRoutes.SearchProductPage)) && (
-              <div className="mt-3 px-4">
-                {/* <ProductSearchBar
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                /> */}
-              </div>
-            )}
-
-          {/* Bottom nav bar */}
+          {/* Bottom nav bar for mobile */}
           <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md">
             <div className="flex justify-between items-center px-6 py-2 relative">
 
@@ -320,17 +271,17 @@ const Navbar = ({
                 className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-primary' : 'text-foreground'}`}
               >
                 <Box className="w-6 h-6 mb-1" />
-                Artworks
+                Discover
               </Link>
 
 
               {/* Cart */}
               <Link
-                to={navbarRoutes.auth.addtoCart.url}
+                to={navbarRoutes.auth.wishlist.url}
                 className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground"
               >
-                <ShoppingCart className="w-6 h-6 mb-1" />
-                Cart
+                <Bookmark className="w-6 h-6 mb-1" />
+                Saved
               </Link>
 
               {/* Create Button */}
@@ -362,7 +313,7 @@ const Navbar = ({
           </div>
 
           {/* Filter Sidebar Drawer */}
-          <Sheet open={openFilter} onOpenChange={setOpenFilter}>
+          {/* <Sheet open={openFilter} onOpenChange={setOpenFilter}>
             <SheetContent side="right" className="max-w-xs w-full">
               <FilterSidebar
                 selectedCategory={selectedCategory}
@@ -373,7 +324,7 @@ const Navbar = ({
                 setPriceRange={setPriceRange}
               />
             </SheetContent>
-          </Sheet>
+          </Sheet> */}
         </div>
 
         {/* --------------------------------------------------- */}

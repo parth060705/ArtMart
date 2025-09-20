@@ -6,11 +6,19 @@ import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
 import CircularLoader from "./CircularLoader";
 
-export default function MasonryFeed({ className, length, url }: { className?: string, length?: number, url?: string }) {
+interface IMasonaryFeed {
+  className?: string;
+  length?: number;
+  url?: string;
+  data?: Product[];
+  isLoading?: boolean;
+}
+
+export default function MasonryFeed({ className, length, url, data, isLoading }: IMasonaryFeed) {
   const navigate = useNavigate();
-  const { data: products, isLoading } = useProductsList(url || '/artworks')
+  // const { data: products, isLoading } = useProductsList(url || '/artworks')
   const { searchQuery, selectedCategory, selectedLocation, priceRange } = useProductSearchContext();
-  const filteredProducts = products?.filter((prod: Product) => {
+  const filteredProducts = data?.filter((prod: Product) => {
     const matchesCategory = !selectedCategory || prod.category === selectedCategory;
     const matchesLocation = !selectedLocation || prod.location === selectedLocation;
     const matchesPrice = (!priceRange[0] || prod.price >= priceRange[0]) &&

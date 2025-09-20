@@ -34,6 +34,7 @@ import { Routes as AppRoutes } from './lib/routes';
 import MainLayout from './Layout/Mainlayout';
 import ChatWrapper from './pages/chat/chatWrapper';
 import ArtworksListingPage from './pages/product/ArtworksListingPage';
+import WishList from './pages/product/WishList';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -58,6 +59,7 @@ function App() {
                 <Route path={AppRoutes.ProfilePage} element={<Profile />} />
                 <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
+                <Route path={AppRoutes.WishListPage} element={<WishList />} />
 
                 {/* chat */}
                 <Route path="/chat/:peerId" element={<ChatWrapper />} />

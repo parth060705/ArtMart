@@ -1,8 +1,9 @@
 export class Routes {
     static ProductsListingPage = "products"
     static ProductDetailPage = "product"
-    static ProfilePage = "profile/:username"
-    static ProfileUpdatePage = "profile/:username/update"
+    static ProfilePage = "/me/profile/:username"
+    static ProfilePublicPage = "/me/profile/:username"
+    static ProfileUpdatePage = "/me/profile/:username/update"
     static UploadProductPage = "upload"
     static SearchProductPage = "search"
     static AuthLoginPage = "/auth/login"
@@ -10,16 +11,18 @@ export class Routes {
     static AuthForgotPasswordPage = "/auth/forgot-password"
     static AuthResetPasswordPage = "/auth/reset-password"
     static CartPage = "/auth/cart"
+    static WishListPage = "/auth/wishlist"
 }
 
 export const navbarRoutes = {
     other:[
         { title: "Home", url: "/" },
-        { title: "Artworks", url: Routes.ProductsListingPage },
+        { title: "Discover", url: Routes.ProductsListingPage },
     ],
     auth: {
         login: { title: "Login", url: Routes.AuthLoginPage },
         signup: { title: "Sign up", url: Routes.AuthRegisterPage },
         addtoCart: { title: "Add to Cart", url: Routes.CartPage },
+        wishlist: { title: "Wishlist", url: Routes.WishListPage },
     },
 }

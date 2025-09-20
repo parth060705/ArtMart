@@ -12,17 +12,18 @@ import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { Edit, Plus, ShoppingCart, Upload } from 'lucide-react';
 
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
-  const { data: products } = useProductsList("/auth/artworks/me");
+  const { data: products, isLoading } = useProductsList("/auth/artworks/me");
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto p-1 pt-8 md:px-4 md:py-8">
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
@@ -35,10 +36,13 @@ const Profile = () => {
           <p className="text-gray-600 text-center md:text-left mb-3">{userProfile?.bio}</p>
           <div className='flex gap-2'>
             <Link to={`/profile/${userProfile?.username}/update`}>
-              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer">Edit Profile</Button>
+              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Edit /></Button>
             </Link>
             <Link to={`/${Routes.UploadProductPage}`}>
-              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer">Upload Artwork</Button>
+              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Plus /></Button>
+            </Link>
+            <Link to={`/${Routes.CartPage}`}>
+              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><ShoppingCart /></Button>
             </Link>
             <ThemeSwitcher />
 
@@ -76,9 +80,11 @@ const Profile = () => {
         </div> */}
         <MasonryFeed
           length={products?.length}
+          data={products}
+          isLoading={isLoading}
           url="/auth/artworks/me"
           // className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full"
-          className="grid grid-cols-3 md:grid-cols-4 gap-1 w-full"
+          className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full"
         />
       </div>
     </div>

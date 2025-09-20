@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Heart, MessageCircle, Bookmark, MoreHorizontal, Send } from 'lucide-react';
 import { Product } from '@/lib/types';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "@/lib/routes";
 import { useLikeProduct } from '@/hooks/like_dislike/useLikeProduct';
 import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';
@@ -91,7 +91,7 @@ const ArtworkCard = ({
                             className="w-full h-full object-cover rounded-full"
                         />
                     </div>
-                    <span className="font-semibold text-gray-800">{artist.username}</span>
+                    <Link to={`${Routes.ProfilePublicPage}/${artist.id}`} className="font-semibold text-gray-800">{artist.username}</Link>
                 </div>
                 {/* <button className="text-gray-500 hover:text-gray-800">
                     <MoreHorizontal size={20} />

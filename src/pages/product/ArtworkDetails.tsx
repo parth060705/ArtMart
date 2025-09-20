@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -26,10 +26,13 @@ import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
 import CircularLoader from '@/components/CircularLoader';
 import { useAddToWishList } from '@/hooks/useAddToWishList';
+import { Button } from '@/components/ui/button';
+import { Routes } from '@/lib/routes';
+import placeholderProfileImage from '@/assets/placeholder-profile-image.jpg';
 
 const ArtworkDetail = () => {
   const queryClient = useQueryClient();
-  const { userProfile } = useAuth();
+  const { isAuthenticated, userProfile } = useAuth();
   const { id } = useParams<{ id: string }>();
 
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
@@ -133,6 +136,10 @@ const ArtworkDetail = () => {
     setLikeAnimating(false);
   };
 
+  console.log(artwork?.artist?.id)
+  console.log(userProfile?.id)
+  console.log(artwork?.artist?.id === userProfile?.id)
+
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
@@ -158,44 +165,46 @@ const ArtworkDetail = () => {
           {/* Artist */}
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
+              <Link to={artwork.artist.id !== userProfile?.id ? `${Routes.ProfilePublicPage}/${artwork.artist.id}` : `/me/profile/${artwork.artist.username}`} className="font-semibold text-gray-800 flex items-center">
                 <img
                   src={artwork.artist.profileImage}
                   alt={artwork.artist.username}
                   className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover shadow"
                 />
                 <div className="ml-3">
-                  <p className="font-semibold text-lg">{artwork.artist.username}</p>
+                  {artwork.artist.id === userProfile?.id ? 'You' : <p className="font-semibold text-lg">{artwork.artist.username}</p>}
                   <p className="text-sm text-[var(--muted-foreground)]">
                     {new Date(artwork.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-              </div>
+              </Link>
             </div>
 
-            <button
+            {artwork.artist.id !== userProfile?.id && <Button
+              className='px-4 py-1.5 rounded-full text-sm font-medium'
               onClick={() => {
+                if (!isAuthenticated) {
+                  toast.error('Please log in to follow users');
+                  return;
+                }
                 if (isFollowLoading) return;
                 setIsFollowLoading(true);
                 const action = isFollowing ? unfollowUser : followUser;
-                action(artwork.artist.id, {
+                action(undefined, {
                   onSuccess: () => {
                     setIsFollowing(!isFollowing);
                     setIsFollowLoading(false);
                   },
                   onError: () => {
                     setIsFollowLoading(false);
+                    toast.error('Failed to update follow status');
                   }
                 });
               }}
               disabled={isFollowLoading}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium ${isFollowing
-                ? "bg-[var(--primary)] text-white"
-                : "bg-[var(--muted)] hover:bg-[var(--muted)]/80"
-                } ${isFollowLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              {isFollowLoading ? '...' : isFollowing ? "Following" : "Follow"}
-            </button>
+              {isFollowing ? 'Following' : 'Follow'}
+            </Button>}
           </div>
 
           {/* Image */}
@@ -275,20 +284,22 @@ const ArtworkDetail = () => {
           </div>
 
           {/* Action Buttons */}
-          {artwork.forSale && <div className="flex gap-4">
-            {!artwork.isSold ? <button
-              onClick={() => addToCart(artwork.id)}
-              disabled={isAddingToCart}
-              className="flex-1 bg-[var(--primary)] text-white font-medium py-3 rounded-full text-lg"
-            >
-              {isAddingToCart ? "Adding..." : "Add to Cart"}
-            </button> : <button
-              disabled={artwork.isSold}
-              className="flex-1 border border-[var(--primary)] text-[var(--primary)] font-medium py-3 rounded-full text-lg"
-            >
-              {artwork.isSold ? "Sold Out" : "Buy Now"}
-            </button>}
-          </div>}
+          {
+            artwork?.artist?.id !== userProfile?.id ? <>{artwork.forSale && <div className="flex gap-4">
+              {!artwork.isSold ? <button
+                onClick={() => addToCart(artwork.id)}
+                disabled={isAddingToCart}
+                className="flex-1 bg-[var(--primary)] text-white font-medium py-3 rounded-full text-lg"
+              >
+                {isAddingToCart ? "Adding..." : "Add to Cart"}
+              </button> : <button
+                disabled={artwork.isSold}
+                className="flex-1 border border-[var(--primary)] text-[var(--primary)] font-medium py-3 rounded-full text-lg"
+              >
+                {artwork.isSold ? "Sold Out" : "Buy Now"}
+              </button>}
+            </div>}</> : <></>
+          }
         </div>
 
         {/* Right Pane (1/3) */}
@@ -304,7 +315,7 @@ const ArtworkDetail = () => {
               {/* Add Comment Input (on top) */}
               <div className="border-b mb-3 pb-3 flex items-center gap-3">
                 <img
-                  src={userProfile?.profileImage || "/default-avatar.png"}
+                  src={userProfile?.profileImage || placeholderProfileImage}
                   alt="me"
                   className="w-11 h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
 
@@ -335,7 +346,7 @@ const ArtworkDetail = () => {
                   comments.map((comment: any) => (
                     <div key={comment.id} className="flex items-start gap-3">
                       <img
-                        src={comment.user?.profileImage || "/default-avatar.png"}
+                        src={comment.user?.profileImage || placeholderProfileImage}
                         alt={comment.user?.username || "user"}
                         className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
                       />

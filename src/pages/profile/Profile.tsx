@@ -73,11 +73,6 @@ const Profile = () => {
       {/* Uploaded Products Grid */}
       <div>
         <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'Poppins' }}>Uploaded Artworks</h3>
-        {/* <div className="grid md:gap-8 gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
-          {products?.map((product: Product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
-        </div> */}
         <MasonryFeed
           length={products?.length}
           data={products}

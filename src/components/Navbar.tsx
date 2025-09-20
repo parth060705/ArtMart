@@ -281,7 +281,7 @@ const Navbar = ({
                 className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground"
               >
                 <Bookmark className="w-6 h-6 mb-1" />
-                Saved
+                Artists
               </Link>
 
               {/* Create Button */}
@@ -294,7 +294,7 @@ const Navbar = ({
 
               {/* Profile */}
               <Link
-                to={isAuthenticated ? `/me/profile/${username}` : '/login'}
+                to={isAuthenticated ? `/me/profile/${username}` : Routes.AuthLoginPage}
                 className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-primary' : 'text-foreground'
                   }`}
               >

@@ -44,6 +44,7 @@ export type Product = {
   category: string;
   isInCart: boolean;
   artist: {
+    id: string;
     username: string;
     profileImage: string;
   };

@@ -35,11 +35,12 @@ import MainLayout from './Layout/Mainlayout';
 import ChatWrapper from './pages/chat/chatWrapper';
 import ArtworksListingPage from './pages/product/ArtworksListingPage';
 import WishList from './pages/product/WishList';
+import PublicProfile from './pages/profile/PublicProfile';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
-      <ProductSearchProvider> 
-        <QueryClientProvider client={queryClient}>
+      <ProductSearchProvider>
+        <QueryClientProvider client={queryClient} >
           <Toaster richColors position="top-center" />
           <BrowserRouter>
             <Routes>
@@ -56,21 +57,22 @@ function App() {
                 <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
                 <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
                 <Route path={AppRoutes.CartPage} element={<Cart />} />
-                <Route path={AppRoutes.ProfilePage} element={<Profile />} />
+                <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
                 <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
                 <Route path={AppRoutes.WishListPage} element={<WishList />} />
+                <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
 
                 {/* chat */}
                 <Route path="/chat/:peerId" element={<ChatWrapper />} />
                 <Route path="*" element={<NotFound />} />
 
-{/* ------------------------------------------------------------------------------------------- */}
+                {/* ------------------------------------------------------------------------------------------- */}
                 <Route path="/admin/user_manage" element={<UserManage />} />
                 <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
                 <Route path="/admin/orders_manage" element={<OrderManage />} />
                 <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
-{/* ------------------------------------------------------------------------------------------- */}
+                {/* ------------------------------------------------------------------------------------------- */}
 
                 {/* Protected Routes Group */}
                 {/* <Route element={<ProtectedRoute />}>s

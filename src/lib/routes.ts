@@ -1,9 +1,9 @@
 export class Routes {
     static ProductsListingPage = "products"
     static ProductDetailPage = "product"
-    static ProfilePage = "/me/profile/:username"
-    static ProfilePublicPage = "/me/profile/:username"
+    static ProfilePage = "/me/profile"
     static ProfileUpdatePage = "/me/profile/:username/update"
+    static ProfilePublicPage = "/profile"
     static UploadProductPage = "upload"
     static SearchProductPage = "search"
     static AuthLoginPage = "/auth/login"

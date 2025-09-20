@@ -9,6 +9,8 @@ import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
+import { useAddToWishList } from '@/hooks/useAddToWishList';
 
 
 const ArtworkCard = ({
@@ -26,6 +28,7 @@ const ArtworkCard = ({
 }: Product) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
     // likes
     const [likeAnimating, setLikeAnimating] = useState(false);
     const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
@@ -35,6 +38,7 @@ const ArtworkCard = ({
     const { mutate: likeProduct } = useLikeProduct(id || '');
     const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
 
+    const { mutateAsync: addToWishList, isPending: isWishListPending } = useAddToWishList(id || '');
 
     useEffect(() => {
         if (!justOptimisticallyLiked) {
@@ -46,6 +50,11 @@ const ArtworkCard = ({
     }, [likeStatus, how_many_like, justOptimisticallyLiked]);
 
     const handleLikeButtonClick = () => {
+        if (!isAuthenticated) {
+            toast.error('Please login to like this product');
+            return;
+        }
+
         if (likeAnimating) return;
         setLikeAnimating(true);
         setJustOptimisticallyLiked(true);
@@ -79,6 +88,14 @@ const ArtworkCard = ({
         setLikeAnimating(false);
     };
 
+    const handleSaveButtonClick = () => {
+        if (!isAuthenticated) {
+            toast.error('Please login to save this product');
+            return;
+        }
+        addToWishList()
+    }
+
     return (
         <div className="md:bg-white md:rounded-xl mb-8  overflow-hidden min-w-full md:min-w-[500px] md:max-w-[500px]">
             {/* Header with profile and options */}
@@ -91,7 +108,7 @@ const ArtworkCard = ({
                             className="w-full h-full object-cover rounded-full"
                         />
                     </div>
-                    <Link to={`${Routes.ProfilePublicPage}/${artist.id}`} className="font-semibold text-gray-800">{artist.username}</Link>
+                    <Link to={`${Routes.ProfilePublicPage}/${artist.id}`} className="font-semibold text-gray-800 hover:underline">{artist.username}</Link>
                 </div>
                 {/* <button className="text-gray-500 hover:text-gray-800">
                     <MoreHorizontal size={20} />
@@ -138,7 +155,7 @@ const ArtworkCard = ({
                             <Send size={24} />
                         </button> */}
                     </div>
-                    <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100">
+                    <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100" onClick={handleSaveButtonClick}>
                         <Bookmark size={24} className={`w-7 h-7 ${isWishList
                             ? "fill-red-500 text-red-500"
                             : "text-[var(--muted-foreground)]"

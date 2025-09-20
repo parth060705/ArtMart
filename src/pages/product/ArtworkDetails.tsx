@@ -29,10 +29,12 @@ import { useAddToWishList } from '@/hooks/useAddToWishList';
 import { Button } from '@/components/ui/button';
 import { Routes } from '@/lib/routes';
 import placeholderProfileImage from '@/assets/placeholder-profile-image.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const ArtworkDetail = () => {
   const queryClient = useQueryClient();
   const { isAuthenticated, userProfile } = useAuth();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
@@ -73,6 +75,10 @@ const ArtworkDetail = () => {
   }, [likeStatus, artwork, justOptimisticallyLiked]);
 
   const handlePostComment = async () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to post comment');
+      return;
+    }
     if (!commentText.trim()) return;
     try {
       await postComment({ content: commentText });
@@ -83,6 +89,10 @@ const ArtworkDetail = () => {
   };
 
   const handlePostReview = async () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to post review');
+      return;
+    }
     if (!reviewText.trim() || rating === 0) {
       toast.error('Please provide both a rating and review text');
       return;
@@ -103,6 +113,11 @@ const ArtworkDetail = () => {
   };
 
   const handleLikeButtonClick = () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to like this product');
+      return;
+    }
+
     if (likeAnimating) return;
     setLikeAnimating(true);
     setJustOptimisticallyLiked(true);
@@ -136,9 +151,13 @@ const ArtworkDetail = () => {
     setLikeAnimating(false);
   };
 
-  console.log(artwork?.artist?.id)
-  console.log(userProfile?.id)
-  console.log(artwork?.artist?.id === userProfile?.id)
+  const handleSaveButtonClick = () => {
+    if (!isAuthenticated) {
+      toast.error('Please login to save this product');
+      return;
+    }
+    addToWishList(artwork.id)
+  }
 
   if (isLoading) {
     return (
@@ -171,7 +190,7 @@ const ArtworkDetail = () => {
                 className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover shadow"
               />
               <div className="ml-3">
-                {artwork.artist.id === userProfile?.id ? 'You' : <p className="font-semibold text-lg">{artwork.artist.username}</p>}
+                {artwork.artist.id === userProfile?.id ? 'You' : <p className="font-semibold text-lg hover:underline">{artwork.artist.username}</p>}
                 <p className="text-sm text-[var(--muted-foreground)]">
                   {new Date(artwork.createdAt).toLocaleDateString()}
                 </p>
@@ -273,7 +292,7 @@ const ArtworkDetail = () => {
             />
             <span className="text-lg">{localLikeCount}</span>
           </button>
-          <button className="flex items-center gap-2 text-[var(--muted-foreground)]" onClick={() => addToWishList(artwork.id)}>
+          <button className="flex items-center gap-2 text-[var(--muted-foreground)]" onClick={handleSaveButtonClick}>
             <Bookmark size={24} className={`w-7 h-7 ${artwork.isWishList
               ? "fill-red-500 text-red-500"
               : "text-[var(--muted-foreground)]"
@@ -343,14 +362,18 @@ const ArtworkDetail = () => {
             <div className="flex-1 overflow-y-auto space-y-4 pr-1">
               {comments.length > 0 ? (
                 comments.map((comment: any) => (
-                  <div key={comment.id} className="flex items-start gap-3">
+                  <div
+                    key={comment.id}
+                    className="flex items-start gap-3"
+                  >
                     <img
                       src={comment.user?.profileImage || placeholderProfileImage}
                       alt={comment.user?.username || "user"}
-                      className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+                      className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow cursor-pointer"
+                      onClick={() => navigate(`${Routes.ProfilePublicPage}/${comment?.user_id}`)}
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-sm">{comment.user?.username}</span>
+                      <span className="font-semibold text-sm cursor-pointer hover:underline" onClick={() => navigate(`${Routes.ProfilePublicPage}/${comment?.user_id}`)}>{comment?.user?.username}</span>
                       <p className="text-sm text-[var(--foreground)]">{comment.content}</p>
                       {/* Optional timestamp */}
                       {/* <span className="text-xs text-[var(--muted-foreground)] mt-1">

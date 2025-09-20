@@ -80,9 +80,7 @@ const ArtworkCard = ({
     };
 
     return (
-        <div
-
-            className="md:bg-white md:rounded-xl mb-8  overflow-hidden md:min-w-[500px] md:max-w-[500px]">
+        <div className="md:bg-white md:rounded-xl mb-8  overflow-hidden min-w-full md:min-w-[500px] md:max-w-[500px]">
             {/* Header with profile and options */}
             <div className="flex items-center justify-between p-2">
                 <div className="flex items-center space-x-3">

@@ -32,12 +32,27 @@ export const resetPasswordFormSchema = z.object({
 export const uploadProductSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z.string().min(1, { message: 'Description is required' }),
-    price: z.string().min(1, { message: 'Price is required' }),
+    price: z.string().optional(),
     category: z.string().min(1, { message: 'Category is required' }),
     images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
-    tags: z.array(z.string()).min(1, { message: 'At least one tags for better search' }),
-    quantity: z.string().min(1, "Quantity is required").refine(val => parseInt(val, 10) > 0, {
-        message: "Quantity must be greater than 0",
-    }),
-
+    tags: z.array(z.string()).min(1, { message: 'At least one tag is required for better search' }),
+    quantity: z.string().optional(),
+    forSale: z.boolean().default(false),
+}).refine((data) => {
+    if (data.forSale) {
+        return data.price && data.price.trim() !== '' && data.quantity && data.quantity.trim() !== '';
+    }
+    return true;
+}, {
+    message: 'Price and quantity are required when the artwork is for sale',
+    path: ['price']
+}).refine((data) => {
+    if (data.forSale) {
+        const quantity = parseInt(data.quantity || '0', 10);
+        return !isNaN(quantity) && quantity > 0;
+    }
+    return true;
+}, {
+    message: 'Quantity must be greater than 0',
+    path: ['quantity']
 });

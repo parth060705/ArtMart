@@ -31,7 +31,7 @@ export default function ProductCard({
   return (
     <div
       key={id}
-      className="group relative break-inside-avoid rounded-3xl overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-[1.03] focus-within:scale-[1.03] bg-gray-100"
+      className="group relative break-inside-avoid rounded-sm overflow-hidden shadow-md cursor-pointer transition-transform bg-gray-100"
       tabIndex={onClick ? 0 : undefined}
       role={onClick ? "button" : undefined}
       aria-pressed={onClick ? false : undefined}
@@ -82,14 +82,14 @@ export default function ProductCard({
             </div>
           )}
           {/* Social Actions */}
-          <div className="flex gap-3 ml-auto">
+          {/* <div className="flex gap-3 ml-auto">
             <button className="flex items-center gap-1 text-white/90 hover:text-[var(--primary)] transition-all">
               <MessageCircle className="w-6 h-6" />
             </button>
             <button className="flex items-center gap-1 text-white/90 hover:text-[var(--primary)] transition-all">
               <Share2 className="w-6 h-6" />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

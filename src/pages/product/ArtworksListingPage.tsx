@@ -3,7 +3,7 @@ import FilterSidebar from '@/components/FilterSidebar';
 import { useProductSearchContext } from '@/context/ProductSearchContext';
 import MasonryFeed from '@/components/MasonryFeed';
 
-const ProductListingPage = () => {
+const ArtworksListingPage = () => {
   const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearchContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -13,7 +13,7 @@ const ProductListingPage = () => {
         <div className="flex flex-col md:flex-row gap-8 relative">
           <div className="flex-1 flex flex-col gap-6">
             <div className="w-full">
-              <MasonryFeed className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full" />
+              <MasonryFeed className="grid grid-cols-3 md:grid-cols-4 gap-1 w-full" />
             </div>
             {sidebarOpen && (
               <div className="fixed inset-0 z-50 flex">
@@ -55,4 +55,4 @@ const ProductListingPage = () => {
   );
 };
 
-export default ProductListingPage;
+export default ArtworksListingPage;

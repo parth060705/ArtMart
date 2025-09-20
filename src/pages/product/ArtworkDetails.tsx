@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import CommentCard from '@/components/CommentCard';
-import { Heart } from 'lucide-react';
+import { Bookmark, Heart } from 'lucide-react';
 import { useProductDetails } from '@/hooks/useProductDetails';
 import { Comment, Review } from '@/lib/types';
 import { useCommentsList } from '@/hooks/comments/useCommentsList';
@@ -25,12 +25,17 @@ import { useAddToCart } from '@/hooks/useAddToCart';
 import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
 import CircularLoader from '@/components/CircularLoader';
+import { useAddToWishList } from '@/hooks/useAddToWishList';
 
-const ProductDetail = () => {
+const ArtworkDetail = () => {
+  const queryClient = useQueryClient();
+  const { userProfile } = useAuth();
   const { id } = useParams<{ id: string }>();
+
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
+
   const [commentText, setCommentText] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
@@ -39,17 +44,21 @@ const ProductDetail = () => {
   const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
   const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
 
-  const swiperRef = useRef<any>(null);
-  const queryClient = useQueryClient();
-  const { userProfile } = useAuth();
 
   const { data: artwork, isLoading, error } = useProductDetails(id || '');
   const { mutate: followUser } = useUserFollow(artwork?.artistId);
   const { mutate: unfollowUser } = useUserUnFollow(artwork?.artistId);
+
   const { data: likeStatus } = useUserLikeStatus(id || '');
+
+  const { data: reviews = [] } = useReviewsList(id || '');
+  const { addToCart, isLoading: isAddingToCart } = useAddToCart();
+  const { data: comments = [] } = useCommentsList(id || '');
+  const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
+  const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
+  const { mutateAsync: addToWishList, isPending: isWishListPending } = useAddToWishList(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
-  const { addToCart, isLoading: isAddingToCart } = useAddToCart();
 
   useEffect(() => {
     if (!justOptimisticallyLiked) {
@@ -59,11 +68,6 @@ const ProductDetail = () => {
       }
     }
   }, [likeStatus, artwork, justOptimisticallyLiked]);
-
-  const { data: comments = [] } = useCommentsList(id || '');
-  const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
-  const { data: reviews = [] } = useReviewsList(id || '');
-  const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
 
   const handlePostComment = async () => {
     if (!commentText.trim()) return;
@@ -226,9 +230,11 @@ const ProductDetail = () => {
                 {artwork.description}
               </p>
             </div>
-            <div className="text-2xl font-extrabold text-[var(--primary)]">
-              ₹{artwork.price}
-            </div>
+            {artwork.forSale && (
+              <div className="text-2xl font-extrabold text-[var(--primary)]">
+                ₹{artwork.price}
+              </div>
+            )}
           </div>
           <div>
             {/* Tags Section */}
@@ -245,7 +251,7 @@ const ProductDetail = () => {
 
           </div>
 
-          {/* Like + Save */}
+          {/* Like and Save */}
           <div className="flex items-center gap-6">
             <button
               onClick={handleLikeButtonClick}
@@ -259,48 +265,38 @@ const ProductDetail = () => {
               />
               <span className="text-lg">{localLikeCount}</span>
             </button>
-            <button className="flex items-center gap-2 text-[var(--muted-foreground)]">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 5h14v16l-7-3.5L5 21z"
-                />
-              </svg>
+            <button className="flex items-center gap-2 text-[var(--muted-foreground)]" onClick={() => addToWishList(artwork.id)}>
+              <Bookmark size={24} className={`w-7 h-7 ${artwork.isWishList
+                ? "fill-red-500 text-red-500"
+                : "text-[var(--muted-foreground)]"
+                }`} />
               Save
             </button>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
-            <button
+          {artwork.forSale && <div className="flex gap-4">
+            {!artwork.isSold ? <button
               onClick={() => addToCart(artwork.id)}
               disabled={isAddingToCart}
               className="flex-1 bg-[var(--primary)] text-white font-medium py-3 rounded-full text-lg"
             >
               {isAddingToCart ? "Adding..." : "Add to Cart"}
-            </button>
-            <button
+            </button> : <button
               disabled={artwork.isSold}
               className="flex-1 border border-[var(--primary)] text-[var(--primary)] font-medium py-3 rounded-full text-lg"
             >
               {artwork.isSold ? "Sold Out" : "Buy Now"}
-            </button>
-          </div>
+            </button>}
+          </div>}
         </div>
 
         {/* Right Pane (1/3) */}
         <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6">
           <Tabs defaultValue="comments">
-            <TabsList className="grid grid-cols-2 mb-4">
+            <TabsList className={`grid ${artwork.forSale ? 'grid-cols-2' : 'grid-cols-1'} mb-4`}>
               <TabsTrigger value="comments">Comments</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+              {artwork.forSale && <TabsTrigger value="reviews">Reviews</TabsTrigger>}
             </TabsList>
 
             {/* Comments */}
@@ -404,4 +400,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default ArtworkDetail;

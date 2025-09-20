@@ -6,6 +6,9 @@ export interface ProductFormData {
   description: string;
   price: number;
   category: string;
+  quantity: number;
+  forSale: boolean;
+  tags: string[];
   files: File[];
 }
 
@@ -19,11 +22,16 @@ export const useUploadProduct = () => {
       // Append all product data fields to formData
       Object.entries(productData).forEach(([key, value]) => {
         if (key === 'files') {
-          // Handle files array separately - use 'file' as field name to match backend
+          // Handle files array separately
           productData.files.forEach((file) => {
             formData.append('files', file);
           });
-        } else {
+        } else if (key === 'tags' && Array.isArray(value)) {
+          // Handle tags array
+          value.forEach((tag, index) => {
+            formData.append(`tags[${index}]`, tag);
+          });
+        } else if (value !== undefined && value !== null) {
           // Convert other values to string and append
           formData.append(key, String(value));
         }

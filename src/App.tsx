@@ -13,17 +13,15 @@ import OrderManage from './admin-panel/orders_manage';
 import AdminDashboardSkeleton from './admin-panel/admin_dashboard';
 // ------------------------------------------------------------------
 
+import Home from './pages/Home';
 
 import Loginpage from './pages/auth/Loginpage';
 import Cart from './pages/Cart';
-import ProductDetail from './pages/product/ProductDetail';
+import ArtworkDetail from './pages/product/ArtworkDetails';
 import ProtectedRoute from './components/ProtectedRoutes';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from './pages/auth/ResetPasswordPage';
-import Home from './pages/Home';
-             // chat
-import ProductListingPage from './pages/product/ProductListingPage';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/client';
 import Profile from './pages/profile/Profile';
@@ -35,6 +33,7 @@ import SearchProduct from './pages/product/SearchProduct';
 import { Routes as AppRoutes } from './lib/routes';
 import MainLayout from './Layout/Mainlayout';
 import ChatWrapper from './pages/chat/chatWrapper';
+import ArtworksListingPage from './pages/product/ArtworksListingPage';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -52,13 +51,14 @@ function App() {
               </Route>
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<Home />} />
-                <Route path={AppRoutes.ProductsListingPage} element={<ProductListingPage />} />
-                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ProductDetail />} />
+                <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
+                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
                 <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
                 <Route path={AppRoutes.CartPage} element={<Cart />} />
                 <Route path={AppRoutes.ProfilePage} element={<Profile />} />
                 <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
+
                 {/* chat */}
                 <Route path="/chat/:peerId" element={<ChatWrapper />} />
                 <Route path="*" element={<NotFound />} />

@@ -15,7 +15,7 @@ export class Routes {
 export const navbarRoutes = {
     other:[
         { title: "Home", url: "/" },
-        { title: "Products", url: Routes.ProductsListingPage },
+        { title: "Artworks", url: Routes.ProductsListingPage },
     ],
     auth: {
         login: { title: "Login", url: Routes.AuthLoginPage },

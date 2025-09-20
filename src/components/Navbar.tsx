@@ -320,7 +320,7 @@ const Navbar = ({
                 className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-primary' : 'text-foreground'}`}
               >
                 <Box className="w-6 h-6 mb-1" />
-                Products
+                Artworks
               </Link>
 
 

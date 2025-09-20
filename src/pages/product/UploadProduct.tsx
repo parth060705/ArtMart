@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { useUploadProduct } from '@/hooks/useUploadProduct';
 import { uploadProductSchema } from '@/lib/validation-schemas';
 import type { z } from 'zod';
 import { Routes } from '@/lib/routes';
+import CircularLoader from '@/components/CircularLoader';
 
 const categories = [
   'Painting',
@@ -35,25 +36,25 @@ const UploadProduct = () => {
   const { mutate: uploadProduct, isPending: isUploading } = useUploadProduct();
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [forSale, setForSale] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset
-  } = useForm<FormData>({
-    resolver: zodResolver(uploadProductSchema),
+  const form = useForm<FormData>({
+    resolver: zodResolver(uploadProductSchema) as any, // Type assertion to fix the resolver type
     defaultValues: {
+      images: [],
       title: '',
       description: '',
       price: '',
       category: '',
-      images: [],
       quantity: '',
       tags: [],
+      forSale: false,
     }
   });
+
+  const { register, handleSubmit, formState: { errors }, setValue, watch, reset } = form;
+
+  const watchForSale = watch('forSale');
 
   const SUPPORTED_IMAGE_TYPES = [
     'image/jpeg',
@@ -126,51 +127,79 @@ const UploadProduct = () => {
   };
 
   const onSubmit = async (data: FormData) => {
+    console.log('Form submitted with data:', data);
+    console.log('Image files:', imageFiles);
+
     if (!isAuthenticated) {
+      console.error('User not authenticated');
       toast.error('Please log in to upload artwork');
       return;
     }
 
     if (imageFiles.length === 0) {
+      console.error('No images uploaded');
       toast.error('Please upload at least one image');
       return;
     }
 
     try {
-      const priceValue = parseFloat(data.price);
-      if (isNaN(priceValue) || priceValue <= 0) {
-        toast.error('Please enter a valid price');
-        return;
-      }
+      let priceValue: number | undefined;
+      let quantityValue: number | undefined;
 
-      const quantityValue = parseInt(data.quantity, 10);
-      if (isNaN(quantityValue) || quantityValue <= 0) {
-        toast.error('Please enter a valid quantity');
-        return;
+      if (data.forSale) {
+        if (!data.price) {
+          toast.error('Price is required for items marked for sale');
+          return;
+        }
+        priceValue = parseFloat(data.price);
+        if (isNaN(priceValue) || priceValue <= 0) {
+          toast.error('Please enter a valid price');
+          return;
+        }
+      
+        if (!data.quantity) {
+          toast.error('Quantity is required for items marked for sale');
+          return;
+        }
+        quantityValue = parseInt(data.quantity, 10);
+        if (isNaN(quantityValue) || quantityValue <= 0) {
+          toast.error('Please enter a valid quantity');
+          return;
+        }
       }
 
       const productData = {
         title: data.title,
         description: data.description,
-        price: priceValue,
+        price: priceValue || 0,
         tags: data.tags,
         category: data.category,
-        quantity: quantityValue,
+        quantity: quantityValue || 1,
+        forSale: data.forSale,
         files: imageFiles
       };
 
-      uploadProduct(productData, {
-        onSuccess: () => {
-          toast.success('Artwork uploaded successfully!');
-          reset();
-          setImageFiles([]);
-          setPreviewUrls([]);
-        },
-        onError: (error) => {
-          console.error('Error uploading artwork:', error);
-          toast.error('Failed to upload artwork. Please try again.');
-        }
-      });
+      console.log('Uploading product with data:', productData);
+      try {
+        uploadProduct(productData, {
+          onSuccess: (response) => {
+            console.log('Upload successful:', response);
+            toast.success('Artwork uploaded successfully!');
+            reset();
+            setImageFiles([]);
+            setPreviewUrls([]);
+            // Optionally navigate to the artwork page or home
+            // navigate('/');
+          },
+          onError: (error) => {
+            console.error('Error uploading artwork:', error);
+            toast.error(error.message || 'Failed to upload artwork. Please try again.');
+          }
+        });
+      } catch (error) {
+        console.error('Unexpected error in upload process:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+      }
     } catch (error) {
       console.error('Error in form submission:', error);
       toast.error('An unexpected error occurred');
@@ -264,7 +293,7 @@ const UploadProduct = () => {
 
             {/* Description */}
             <div className="space-y-2">
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 placeholder="Tell us about your artwork..."
@@ -276,84 +305,97 @@ const UploadProduct = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Price */}
-              <div className="space-y-2">
-                <Label htmlFor="price">Price (₹) *</Label>
-                <div className="relative">
-                  <Input
-                    id="price"
-                    type="number"
-                    placeholder="0.00"
-                    min="0"
-                    step="0.01"
-                    className="pl-8"
-                    {...register('price')}
-                  />
-                  <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
+            {/* For Sale Toggle */}
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="forSale"
+                {...register('forSale')}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <Label htmlFor="forSale">This artwork is for sale</Label>
+            </div>
+
+            {watchForSale && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                {/* Price */}
+                <div className="space-y-2">
+                  <Label htmlFor="price">Price (₹) *</Label>
+                  <div className="relative">
+                    <Input
+                      id="price"
+                      type="number"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      className="pl-8"
+                      {...register('price')}
+                    />
+                    <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
+                  </div>
+                  {errors.price && (
+                    <p className="text-sm text-red-500">{errors.price.message}</p>
+                  )}
                 </div>
-                {errors.price && (
-                  <p className="text-sm text-red-500">{errors.price.message}</p>
-                )}
-              </div>
 
-              {/* Quantity */}
-              <div className="space-y-2">
-                <Label htmlFor="quantity">Quantity *</Label>
-                <Input
-                  id="quantity"
-                  type="number"
-                  min="1"
-                  placeholder="Enter quantity"
-                  {...register('quantity')}
-                />
-                {errors.quantity && (
-                  <p className="text-sm text-red-500">{errors.quantity.message}</p>
-                )}
+                {/* Quantity */}
+                <div className="space-y-2">
+                  <Label htmlFor="quantity">Quantity *</Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    placeholder="1"
+                    min="1"
+                    {...register('quantity')}
+                  />
+                  {errors.quantity && (
+                    <p className="text-sm text-red-500">{errors.quantity.message}</p>
+                  )}
+                </div>
               </div>
+            )}
 
-              {/* Tags */}
-              <div className="space-y-2">
-                <Label htmlFor="tags">Tags (comma separated)</Label>
-                <Input
-                  id="tags"
-                  placeholder="#abstract, #colorful"
-                  onChange={(e) => {
-                    const inputTags = e.target.value
-                      .split(',')
-                      .map(tag => tag.trim())
-                      .filter(tag => tag.length > 0);
+            {/* Tags */}
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags (comma separated)</Label>
+              <Input
+                id="tags"
+                placeholder="#abstract, #colorful"
+                onChange={(e) => {
+                  const inputTags = e.target.value
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag.length > 0);
 
-                    setValue('tags', inputTags, { shouldValidate: true });
-                  }}
-                />
-                {errors.tags && (
-                  <p className="text-sm text-red-500">{errors.tags.message}</p>
-                )}
-              </div>
+                  setValue('tags', inputTags, { shouldValidate: true });
+                }}
+              />
+              {errors.tags && (
+                <p className="text-sm text-red-500">{errors.tags.message}</p>
+              )}
+            </div>
 
-              {/* Category */}
-              <div className="space-y-2">
-                <Label htmlFor="category">Category *</Label>
-                <Select
-                  onValueChange={(value) => setValue('category', value, { shouldValidate: true })}
-                  {...register('category')}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.category && (
-                  <p className="text-sm text-red-500">{errors.category.message}</p>
-                )}
-              </div>
+            {/* Category */}
+            <div className="space-y-2">
+              <Label htmlFor="category">Category *</Label>
+              <Select
+                onValueChange={(value) => setValue('category', value, { shouldValidate: true })}
+                {...register('category')}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.category && (
+                <p className="text-sm text-red-500">{errors.category.message}</p>
+              )}
             </div>
 
             {/* Submit */}
@@ -365,10 +407,7 @@ const UploadProduct = () => {
               >
                 {isUploading ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <CircularLoader />
                     Uploading...
                   </>
                 ) : (

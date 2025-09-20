@@ -34,7 +34,7 @@ export type Image = {
 // ------------------ PRODUCT ------------------
 
 export type Product = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   images: Image[];
@@ -42,14 +42,19 @@ export type Product = {
   tags: string[];
   quantity: number;
   category: string;
+  isInCart: boolean;
   artist: {
     username: string;
     profileImage: string;
   };
+  how_many_like: {
+    like_count: number;
+  }
   isSold: boolean;
   artistid: string;
   likes: number;
   comments: number;
+  isWishList: boolean;
   location: string;
   createdAt: string;
 };
@@ -74,14 +79,14 @@ export type Review = {
   id: string;
   rating: number;
   comment: string;
-  author: {
-    id: string;
-    username: string;
-    profileImage?: string;
-  };
+  reviewerId: string;
   createdAt: string;
   artworkId: string;
   artistId: string;
+  reviewer: {
+    username: string;
+    profileImage?: string;
+  };
 };
 
 // ------------------ MENU ------------------

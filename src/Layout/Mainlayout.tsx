@@ -18,12 +18,11 @@ const MainLayout = () => {
   const isProductPage = location.pathname.startsWith('/products');
 
   return (
-    <div className="">
+    <div className="relative md:pl-[15vw]">
       <Navbar />
-      <main className={`md:px-6 py-4 ${isProductPage ? 'min-h-[calc(100vh-80px)]' : 'min-h-[calc(100vh-250px)]'}`}>
+      <main className={``}>
         <Outlet />
       </main>
-      {/* {!isProductPage && <Footer />} */}
     </div>
   );
 };

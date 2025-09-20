@@ -23,7 +23,7 @@ const Profile = () => {
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
 
   return (
-    <div className="max-w-4xl mx-auto p-1 pt-8 md:px-4 md:py-8">
+    <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img

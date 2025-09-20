@@ -7,10 +7,10 @@ import { useProductsList } from '@/hooks/useProductsList';
 const ArtworksListingPage = () => {
   const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearchContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-    const { data: products, isLoading } = useProductsList('/artworks')
-  
+  const { data: products, isLoading } = useProductsList('/artworks')
+
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] font-sans" style={{ fontFamily: 'Poppins' }}>
+    <div className="p-1">
       <MasonryFeed data={products} isLoading={isLoading} className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full" />
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex">

@@ -1,3 +1,22 @@
+import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark } from "lucide-react";
+import { ComponentType } from "react";
+
+interface NavItem {
+    title: string;
+    url: string;
+    icon: ComponentType<{ className?: string }>;
+}
+
+interface NavbarRoutes {
+    other: NavItem[];
+    auth: {
+        [key: string]: {
+            title: string;
+            url: string;
+        };
+    };
+}
+
 export class Routes {
     static ProductsListingPage = "products"
     static ProductDetailPage = "product"
@@ -7,17 +26,35 @@ export class Routes {
     static UploadProductPage = "upload"
     static SearchProductPage = "search"
     static AuthLoginPage = "/auth/login"
-    static AuthRegisterPage = "/auth/register"  
+    static AuthRegisterPage = "/auth/register"
     static AuthForgotPasswordPage = "/auth/forgot-password"
     static AuthResetPasswordPage = "/auth/reset-password"
     static CartPage = "/auth/cart"
     static WishListPage = "/auth/wishlist"
 }
 
-export const navbarRoutes = {
-    other:[
-        { title: "Home", url: "/" },
-        { title: "Discover", url: Routes.ProductsListingPage },
+interface NavbarRoutes {
+    other: NavItem[];
+    auth: {
+        [key: string]: {
+            title: string;
+            url: string;
+        };
+    };
+}
+
+export const navbarRoutes: NavbarRoutes = {
+    other: [
+        { 
+            title: "Home", 
+            url: "/", 
+            icon: Home
+        },
+        { 
+            title: "Discover", 
+            url: Routes.ProductsListingPage, 
+            icon: Box
+        },
     ],
     auth: {
         login: { title: "Login", url: Routes.AuthLoginPage },
@@ -25,4 +62,4 @@ export const navbarRoutes = {
         addtoCart: { title: "Add to Cart", url: Routes.CartPage },
         wishlist: { title: "Wishlist", url: Routes.WishListPage },
     },
-}
+};

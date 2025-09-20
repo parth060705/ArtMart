@@ -71,7 +71,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                         <p className="text-sm text-gray-500">
                           @{user.username}
                         </p>
-                        <h3 className="text-[10px] md:text-base font-semibold">{user.name}</h3>
+                        <h3 className="text-[10px] md:text-base artwfont-semibold">{user.name}</h3>
                       </div>
                       <Button
                         size="sm"

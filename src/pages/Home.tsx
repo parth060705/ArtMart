@@ -10,7 +10,7 @@ const HomePage = () => {
   const { data: userProfile } = useUserProfile();
   const { data: artworks, isLoading } = useProductsList(userProfile ? '/auth/homefeed' : '/artworks')
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] font-sans" style={{ fontFamily: 'Poppins' }}>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] font-sans mb-5" style={{ fontFamily: 'Poppins' }}>
       <div className="max-auto flex flex-col justify-center items-center w-full">
         {
           isLoading ? <CircularLoader /> : artworks?.map((artwork: Product) => <ArtworkCard key={artwork.id} {...artwork} />)

@@ -23,7 +23,7 @@ const MainLayout = () => {
       <main className={`md:px-6 py-4 ${isProductPage ? 'min-h-[calc(100vh-80px)]' : 'min-h-[calc(100vh-250px)]'}`}>
         <Outlet />
       </main>
-      {!isProductPage && <Footer />}
+      {/* {!isProductPage && <Footer />} */}
     </div>
   );
 };

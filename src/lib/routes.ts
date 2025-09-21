@@ -52,7 +52,7 @@ export const navbarRoutes: NavbarRoutes = {
         },
         { 
             title: "Discover", 
-            url: Routes.ProductsListingPage, 
+            url: '/products', 
             icon: Box
         },
     ],

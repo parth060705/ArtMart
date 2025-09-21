@@ -12,8 +12,8 @@ import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { Edit, Plus, ShoppingCart, Upload } from 'lucide-react';
-
+import { Edit, Plus, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
@@ -21,6 +21,14 @@ const Profile = () => {
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    toast.success('Logged out successfully!');
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 500);
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">
@@ -44,6 +52,13 @@ const Profile = () => {
             <Link to={`/${Routes.CartPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><ShoppingCart /></Button>
             </Link>
+            <Button
+              variant="ghost"
+              className="bg-red-600 text-white rounded-full px-3 font-semibold cursor-pointer md:hidden"
+              onClick={handleLogout}
+            >
+              Log Out
+            </Button>
             <ThemeSwitcher />
 
           </div>

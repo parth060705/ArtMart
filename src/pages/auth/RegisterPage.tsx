@@ -26,6 +26,8 @@ import { Input } from '@/components/ui/input'
 import { registerFormSchema } from '@/lib/validation-schemas'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRegister } from '@/hooks/user/auth/useRegister'
+import { useEffect } from 'react'
+import { useAuth } from '@/hooks/user/auth/UseAuth'
 
 const formSchema = registerFormSchema
 
@@ -48,6 +50,7 @@ export default function RegisterPage() {
 
     const navigate = useNavigate();
     const registerMutation = useRegister();
+    const { isAuthenticated } = useAuth();
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         registerMutation.mutate(values, {
@@ -62,8 +65,14 @@ export default function RegisterPage() {
         });
     }
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
+
     return (
-        <div className="flex min-h-[60vh] h-full w-full items-center justify-center px-4">
+        <div className="flex h-screen w-full items-center justify-center px-4">
             <Card className="mx-auto w-[500px]">
                 <CardHeader>
                     <CardTitle className="text-2xl">Register</CardTitle>
@@ -74,7 +83,7 @@ export default function RegisterPage() {
                 <CardContent>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {/* Name Field */}
                                 <FormField
                                     control={form.control}

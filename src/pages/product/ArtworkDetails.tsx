@@ -302,7 +302,7 @@ const ArtworkDetail = () => {
         </div>
 
         {/* Action Buttons */}
-        {
+        {/* {
           artwork?.artist?.id !== userProfile?.id ? <>{artwork.forSale && <div className="flex gap-4">
             {!artwork.isSold ? <button
               onClick={() => addToCart(artwork.id)}
@@ -317,7 +317,7 @@ const ArtworkDetail = () => {
               {artwork.isSold ? "Sold Out" : "Buy Now"}
             </button>}
           </div>}</> : <></>
-        }
+        } */}
       </div>
 
       {/* Right Pane (1/3) */}

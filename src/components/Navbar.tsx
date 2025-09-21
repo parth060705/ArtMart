@@ -37,7 +37,7 @@ const Navbar = ({
   return (
     <div className="">
       {/* Instagram/Pinterest-like Desktop Sidebar */}
-      <div className="fixed left-0 top-0 h-full w-64 border-r border-gray-200 dark:border-gray-800 bg-background p-4 hidden lg:flex flex-col">
+      <div className="fixed left-0 top-0 h-full w-[15vw] border-r border-gray-200 dark:border-gray-800 bg-background p-4 hidden lg:flex flex-col">
         {/* Logo */}
         <div className="px-4 py-6">
           <a href={logo.url} className="flex items-center gap-2">

@@ -21,10 +21,10 @@ import { toast } from 'sonner';
 
 
 const Profile = () => {
-    const {isAuthenticated} = useAuth();
+    const { isAuthenticated } = useAuth();
     const { userId } = useParams<{ userId: string }>();
     const { data: userProfile } = useGetUserProfilePublic(userId || '');
-    const { data: products, isLoading } = useProductsList("/artworks/" + userId || '');
+    const { data: products, isLoading } = useProductsList('/' + userId + '/artworks');
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
     const { mutate: followUser } = useUserFollow(userId || '');

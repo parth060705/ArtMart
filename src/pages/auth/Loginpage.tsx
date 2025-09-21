@@ -10,10 +10,12 @@ import { toast } from 'sonner'
 import { loginFormSchema } from '../../lib/validation-schemas';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useLogin } from '@/hooks/user/auth/useLogin';
+import { useEffect } from 'react';
 
 const formSchema = loginFormSchema
 
 const LoginPage = () => {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -21,9 +23,11 @@ const LoginPage = () => {
       password: '',
     },
   });
+
   const navigate = useNavigate();
   const loginMutation = useLogin();
   const { login } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
@@ -43,8 +47,14 @@ const LoginPage = () => {
     });
   }
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
-    <div className="w-full flex flex-col items-center justify-center px-4">
+    <div className="w-full h-screen flex flex-col items-center justify-center px-4">
       <Card className="mx-auto w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

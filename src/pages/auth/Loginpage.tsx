@@ -48,6 +48,10 @@ const LoginPage = () => {
   }
 
   useEffect(() => {
+    document.title = 'Login | Auroraa';
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }

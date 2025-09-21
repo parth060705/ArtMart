@@ -48,8 +48,8 @@ const formSchema = registerFormSchema.extend({
 export default function RegisterPage() {
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    
-        type FormValues = {
+
+    type FormValues = {
         name: string;
         email: string;
         username: string;
@@ -96,7 +96,7 @@ export default function RegisterPage() {
     async function onSubmit(values: FormValues) {
         setIsUploading(true);
         const formData = new FormData();
-        
+
         // Manually append each field to avoid TypeScript errors with dynamic keys
         formData.append('name', values.name);
         formData.append('email', values.email);
@@ -128,6 +128,10 @@ export default function RegisterPage() {
     }
 
     useEffect(() => {
+        document.title = 'Register | Auroraa';
+    }, []);
+
+    useEffect(() => {
         if (isAuthenticated) {
             navigate('/');
         }
@@ -149,18 +153,18 @@ export default function RegisterPage() {
                             <div className="flex flex-col items-center justify-center gap-4 md:col-span-2">
                                 <div className="relative">
                                     <Avatar className="h-24 w-24 border-2 border-primary">
-                                        <AvatarImage 
-                                src={(() => {
-                                    const file = form.watch('profileImage')?.[0];
-                                    return file ? URL.createObjectURL(file) : '';
-                                })()} 
-                            />
+                                        <AvatarImage
+                                            src={(() => {
+                                                const file = form.watch('profileImage')?.[0];
+                                                return file ? URL.createObjectURL(file) : '';
+                                            })()}
+                                        />
                                         <AvatarFallback className="bg-muted">
                                             <User className="h-12 w-12 text-muted-foreground" />
                                         </AvatarFallback>
                                     </Avatar>
-                                    <label 
-                                        htmlFor="profileImage" 
+                                    <label
+                                        htmlFor="profileImage"
                                         className="absolute -bottom-2 -right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
                                     >
                                         <Camera className="h-4 w-4" />
@@ -431,9 +435,9 @@ export default function RegisterPage() {
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel className="text-sm font-normal text-foreground">
                                                         I agree to the{' '}
-                                                        <a 
-                                                            href="/terms" 
-                                                            target="_blank" 
+                                                        <a
+                                                            href="/terms"
+                                                            target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
                                                             onClick={(e) => e.stopPropagation()}
@@ -441,9 +445,9 @@ export default function RegisterPage() {
                                                             Terms and Conditions
                                                         </a>
                                                         {' '}and{' '}
-                                                        <a 
-                                                            href="/privacy" 
-                                                            target="_blank" 
+                                                        <a
+                                                            href="/privacy"
+                                                            target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
                                                             onClick={(e) => e.stopPropagation()}
@@ -459,9 +463,9 @@ export default function RegisterPage() {
                                 </div>
 
                                 <div className="md:col-span-2">
-                                    <Button 
-                                        type="submit" 
-                                        className="w-full py-6 text-base sm:py-2" 
+                                    <Button
+                                        type="submit"
+                                        className="w-full py-6 text-base sm:py-2"
                                         disabled={registerMutation.isPending || isUploading}
                                         size="lg"
                                     >
@@ -471,12 +475,12 @@ export default function RegisterPage() {
                             </div>
                         </form>
                     </Form>
-                            <div className="mt-6 text-center text-sm sm:text-base">
-                                Already have an account?{' '}
-                                <Link to="/auth/login" className="font-medium text-primary underline-offset-4 hover:underline">
-                                    Sign in
-                                </Link>
-                            </div>
+                    <div className="mt-6 text-center text-sm sm:text-base">
+                        Already have an account?{' '}
+                        <Link to="/auth/login" className="font-medium text-primary underline-offset-4 hover:underline">
+                            Sign in
+                        </Link>
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -36,8 +36,8 @@ import ChatWrapper from './pages/chat/chatWrapper';
 import ArtworksListingPage from './pages/product/ArtworksListingPage';
 import WishList from './pages/product/WishList';
 import PublicProfile from './pages/profile/PublicProfile';
-import TermsAndConditions from './pages/termsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">

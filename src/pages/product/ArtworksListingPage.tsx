@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilterSidebar from '@/components/FilterSidebar';
 import { useProductSearchContext } from '@/context/ProductSearchContext';
 import MasonryFeed from '@/components/MasonryFeed';
@@ -8,6 +8,10 @@ const ArtworksListingPage = () => {
   const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearchContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: products, isLoading } = useProductsList('/artworks')
+
+  useEffect(() => {
+    document.title = 'Artworks | Auroraa';
+  }, []);
 
   return (
     <div className="p-1">

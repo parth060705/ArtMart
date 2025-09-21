@@ -8,7 +8,7 @@ const TermsAndConditions = () => {
     });
 
     useEffect(() => {
-        document.title = 'Terms & Conditions | ArtMart';
+        document.title = 'Terms & Conditions | Auroraa';
     }, []);
 
     return (

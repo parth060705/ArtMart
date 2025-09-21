@@ -1,5 +1,5 @@
 import { User, Box, Home, ShoppingCart, Bookmark } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
 import { Routes } from '@/lib/routes';
@@ -25,6 +25,7 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const { isAuthenticated, username, userProfile } = useAuth();
+  const { page } = useParams()
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -36,6 +37,17 @@ const Navbar = ({
 
   return (
     <div className="">
+
+      {page !== '/auth/login' && page !== '/auth/signup' && <div>
+        <div className="px-4 py-6">
+          <a href={logo.url} className="flex items-center gap-2">
+            <span className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              {logo.title}
+            </span>
+          </a>
+        </div>
+      </div>}
+
       {/* Instagram/Pinterest-like Desktop Sidebar */}
       <div className="fixed left-0 top-0 h-full w-[15vw] border-r border-gray-200 dark:border-gray-800 bg-background p-4 hidden lg:flex flex-col">
         {/* Logo */}

@@ -14,6 +14,7 @@ import MasonryFeed from '@/components/MasonryFeed';
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Edit, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 const Profile = () => {
   const { data: userProfile } = useUserProfile();
@@ -29,6 +30,10 @@ const Profile = () => {
       window.location.href = "/";
     }, 500);
   };
+
+  useEffect(() => {
+    document.title = 'Profile | Auroraa';
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">

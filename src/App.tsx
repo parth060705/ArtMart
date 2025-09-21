@@ -36,6 +36,8 @@ import ChatWrapper from './pages/chat/chatWrapper';
 import ArtworksListingPage from './pages/product/ArtworksListingPage';
 import WishList from './pages/product/WishList';
 import PublicProfile from './pages/profile/PublicProfile';
+import TermsAndConditions from './pages/termsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
@@ -62,6 +64,8 @@ function App() {
                 <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
                 <Route path={AppRoutes.WishListPage} element={<WishList />} />
                 <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
+                <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
+                <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
 
                 {/* chat */}
                 <Route path="/chat/:peerId" element={<ChatWrapper />} />

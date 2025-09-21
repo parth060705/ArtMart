@@ -101,7 +101,14 @@ const Navbar = ({
               </Button>
             </div>
           )}
-
+          <div className="mt-4">
+            <Link to={Routes.TermsAndConditionsPage}>
+              <Button variant="ghost" size="sm">Terms and Conditions</Button>
+            </Link>
+            <Link to={Routes.PrivacyPolicyPage}>
+              <Button variant="ghost" size="sm">Privacy Policy</Button>
+            </Link>
+          </div>
           {/* Theme Toggle */}
           <div className="mt-4 px-4">
             <ThemeSwitcher />

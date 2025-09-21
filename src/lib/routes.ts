@@ -31,6 +31,8 @@ export class Routes {
     static AuthResetPasswordPage = "/auth/reset-password"
     static CartPage = "/auth/cart"
     static WishListPage = "/auth/wishlist"
+    static PrivacyPolicyPage = "/privacy-policy"
+    static TermsAndConditionsPage = "/terms-and-conditions"
 }
 
 interface NavbarRoutes {
@@ -45,14 +47,14 @@ interface NavbarRoutes {
 
 export const navbarRoutes: NavbarRoutes = {
     other: [
-        { 
-            title: "Home", 
-            url: "/", 
+        {
+            title: "Home",
+            url: "/",
             icon: Home
         },
-        { 
-            title: "Discover", 
-            url: '/products', 
+        {
+            title: "Discover",
+            url: '/products',
             icon: Box
         },
     ],

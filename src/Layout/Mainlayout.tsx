@@ -1,6 +1,5 @@
 
-import { Outlet, useLocation } from 'react-router-dom';
-import Footer from '@/components/Footer';
+import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
@@ -14,13 +13,11 @@ const MainLayout = () => {
     setUserProfile(userProfile);
   }, [userProfile]);
 
-  const location = useLocation();
-  const isProductPage = location.pathname.startsWith('/products');
 
   return (
     <div className="relative md:pl-[15vw]">
       <Navbar />
-      <main className={``}>
+      <main>
         <Outlet />
       </main>
     </div>

@@ -156,7 +156,7 @@ const UploadProduct = () => {
           toast.error('Please enter a valid price');
           return;
         }
-      
+
         if (!data.quantity) {
           toast.error('Quantity is required for items marked for sale');
           return;
@@ -208,10 +208,7 @@ const UploadProduct = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(`/auth/${Routes.AuthLoginPage}`, {
-        state: { from: location },
-        replace: true
-      });
+      navigate(Routes.AuthLoginPage, { state: { from: location } });
     }
   }, [isAuthenticated, navigate, location]);
 

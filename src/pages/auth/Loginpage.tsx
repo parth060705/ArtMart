@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { z } from 'zod'
@@ -15,6 +15,16 @@ import { useEffect } from 'react';
 const formSchema = loginFormSchema
 
 const LoginPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const loginMutation = useLogin();
+  const { login } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const fromUpload = location.state?.from?.pathname === '/upload';
+  const fromProfile = location.state?.from === '/me/profile';
+
+  console.log(location)
+  console.log(fromProfile)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -24,26 +34,22 @@ const LoginPage = () => {
     },
   });
 
-  const navigate = useNavigate();
-  const loginMutation = useLogin();
-  const { login } = useAuth();
-  const { isAuthenticated } = useAuth();
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     formData.append('username', values.username);
     formData.append('password', values.password);
+
     loginMutation.mutate(formData, {
-      onSuccess: async (data) => {
+      onSuccess: (data) => {
+        login(data.data);
         toast.success('Login successful!');
-        if (data?.access_token) {
-          login(data.access_token);
-        }
-        setTimeout(() => navigate('/'), 500);
+        // Redirect to the previous page or home
+        const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : '/';
+        navigate(redirectTo);
       },
       onError: (error: any) => {
         toast.error(error?.response?.data?.message || 'Login failed');
-      }
+      },
     });
   }
 
@@ -57,13 +63,32 @@ const LoginPage = () => {
     }
   }, [isAuthenticated, navigate]);
 
+
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center px-4">
       <Card className="mx-auto w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your username and password to login to your account.
+            {fromUpload || fromProfile ? (
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-yellow-700">
+                      {fromUpload && 'Please login to upload your artwork.'}
+                      {fromProfile && 'Please login to access your profile.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              'Enter your credentials to access your account'
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 import { useAuth } from '../../hooks/user/auth/UseAuth';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
 import { useProductsList } from '@/hooks/useProductsList';
 import { Product, User } from '@/lib/types';
@@ -22,6 +22,9 @@ const Profile = () => {
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('token');

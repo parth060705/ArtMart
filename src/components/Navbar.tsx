@@ -1,12 +1,12 @@
 import { User, Box, Home, ShoppingCart, Bookmark } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
 import { Routes } from '@/lib/routes';
 import { Button } from "@/components/ui/button";
 import { navbarRoutes } from "@/lib/routes";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-
+import profilePlaceHolderImage from '@/assets/placeholder-profile-image.jpg';
 interface NavbarProps {
   logo?: {
     url: string;
@@ -25,7 +25,8 @@ const Navbar = ({
   },
 }: NavbarProps) => {
   const { isAuthenticated, username, userProfile } = useAuth();
-  const { page } = useParams()
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -35,16 +36,25 @@ const Navbar = ({
     }, 500);
   };
 
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      navigate(`/me/profile/${username}`);
+    } else {
+      navigate(Routes.AuthLoginPage, {
+        state: { from: Routes.ProfilePage },
+        replace: true
+      });
+    }
+  };
+
   return (
     <div className="">
 
-      {page !== '/auth/login' && page !== '/auth/signup' && <div>
-        <div className="px-4 py-6">
-          <a href={logo.url} className="flex items-center gap-2">
-            <span className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {logo.title}
-            </span>
-          </a>
+      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && <div>
+        <div className="px-1 py-6 md:hidden">
+          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            {logo.title}
+          </Link>
         </div>
       </div>}
 
@@ -52,11 +62,9 @@ const Navbar = ({
       <div className="fixed left-0 top-0 h-full w-[15vw] border-r border-gray-200 dark:border-gray-800 bg-background p-4 hidden lg:flex flex-col">
         {/* Logo */}
         <div className="px-4 py-6">
-          <a href={logo.url} className="flex items-center gap-2">
-            <span className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {logo.title}
-            </span>
-          </a>
+          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent pl-6">
+            {logo.title}
+          </Link>
         </div>
 
         {/* Main Navigation */}
@@ -171,22 +179,19 @@ const Navbar = ({
             </Link>
 
             {/* Profile */}
-            <Link
-              to={isAuthenticated ? `/me/profile/${username}` : Routes.AuthLoginPage}
+            <div
+              onClick={handleProfileClick}
               className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-primary' : 'text-foreground'
                 }`}
             >
-              {isAuthenticated && userProfile?.profileImage ? (
-                <img
-                  src={userProfile.profileImage}
-                  alt="Profile"
-                  className="w-7 h-7 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
-                />
-              ) : (
-                <User className="w-6 h-6 mb-1" />
-              )}
+              <img
+                src={userProfile?.profileImage || profilePlaceHolderImage}
+                alt="Profile"
+                className="w-7 h-7 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
+
+              />
               Profile
-            </Link>
+            </div>
           </div>
         </div>
 

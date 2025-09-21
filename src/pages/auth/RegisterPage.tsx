@@ -72,8 +72,8 @@ export default function RegisterPage() {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div className="flex h-screen w-full items-center justify-center px-4">
-            <Card className="mx-auto w-[500px]">
+        <div className="flex min-h-screen w-full items-center justify-center p-4 sm:p-6 pb-20 md:pb-6">
+            <Card className="w-full max-w-md sm:max-w-lg md:max-w-2xl">
                 <CardHeader>
                     <CardTitle className="text-2xl">Register</CardTitle>
                     <CardDescription>
@@ -82,15 +82,15 @@ export default function RegisterPage() {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+                            <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                                 {/* Name Field */}
                                 <FormField
                                     control={form.control}
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="name">Full Name</FormLabel>
+                                            <FormLabel htmlFor="name" className="text-sm sm:text-base">Full Name</FormLabel>
                                             <FormControl>
                                                 <Input id="name" placeholder="John Doe" {...field} />
                                             </FormControl>
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="email">Email</FormLabel>
+                                            <FormLabel htmlFor="email" className="text-sm sm:text-base">Email</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="email"
@@ -126,7 +126,7 @@ export default function RegisterPage() {
                                     name="username"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="username">Username</FormLabel>
+                                            <FormLabel htmlFor="username" className="text-sm sm:text-base">Username</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="username"
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                                     name="location"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="location">Location</FormLabel>
+                                            <FormLabel htmlFor="location" className="text-sm sm:text-base">Location</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="location"
@@ -167,7 +167,7 @@ export default function RegisterPage() {
                                     name="gender"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="gender">Gender</FormLabel>
+                                            <FormLabel htmlFor="gender" className="text-sm sm:text-base">Gender</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="gender"
@@ -187,7 +187,7 @@ export default function RegisterPage() {
                                     name="age"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="age">Age</FormLabel>
+                                            <FormLabel htmlFor="age" className="text-sm sm:text-base">Age</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     id="age"
@@ -287,19 +287,24 @@ export default function RegisterPage() {
                                 />
 
                                 <div className="md:col-span-2">
-                                    <Button type="submit" className="w-full">
-                                        Register
-                                    </Button>
+                                    <Button 
+                                type="submit" 
+                                className="w-full py-6 text-base sm:py-2" 
+                                disabled={registerMutation.isPending}
+                                size="lg"
+                            >
+                                {registerMutation.isPending ? 'Creating account...' : 'Create account'}
+                            </Button>
                                 </div>
                             </div>
                         </form>
                     </Form>
-                    <div className="mt-4 text-center text-sm">
-                        Already have an account?{' '}
-                        <Link to="/auth/login" className="underline">
-                            Login
-                        </Link>
-                    </div>
+                            <div className="mt-6 text-center text-sm sm:text-base">
+                                Already have an account?{' '}
+                                <Link to="/auth/login" className="font-medium text-primary underline-offset-4 hover:underline">
+                                    Sign in
+                                </Link>
+                            </div>
                 </CardContent>
             </Card>
         </div>

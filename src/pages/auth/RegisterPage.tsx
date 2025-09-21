@@ -32,22 +32,60 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useRegister } from '@/hooks/user/auth/useRegister'
 import { useEffect } from 'react'
 import { useAuth } from '@/hooks/user/auth/UseAuth'
+import { Routes } from '@/lib/routes'
 
 // Extend the register form schema with additional fields
 const formSchema = registerFormSchema.extend({
-    bio: z.string().min(10, 'Bio must be at least 10 characters').max(500, 'Bio cannot exceed 500 characters').optional(),
-    gender: z.enum(['male', 'female', 'other', 'prefer-not-to-say']),
-    profileImage: z.instanceof(FileList).optional()
-        .refine(files => !files || files.length === 0 || files[0]?.size <= 5 * 1024 * 1024, 'Max file size is 5MB')
-        .refine(files => !files || files.length === 0 || ['image/jpeg', 'image/png', 'image/webp'].includes(files[0]?.type), 'Only .jpg, .png, and .webp formats are supported'),
+    name: z.string()
+        .min(2, 'Name must be at least 2 characters')
+        .max(50, 'Name cannot exceed 50 characters'),
+    email: z.string()
+        .email('Please enter a valid email address')
+        .max(100, 'Email cannot exceed 100 characters'),
+    username: z.string()
+        .min(3, 'Username must be at least 3 characters')
+        .max(30, 'Username cannot exceed 30 characters')
+        .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores'),
+    location: z.string()
+        .min(2, 'Location must be at least 2 characters')
+        .max(100, 'Location cannot exceed 100 characters'),
+    gender: z.enum(['male', 'female', 'other', 'prefer-not-to-say'], {
+        errorMap: () => ({ message: 'Please select a valid gender' })
+    }),
+    age: z.string()
+        .min(1, 'Age is required')
+        .refine((val) => !isNaN(Number(val)) && Number(val) >= 13 && Number(val) <= 120, {
+            message: 'Age must be between 13 and 120',
+        }),
+    pincode: z.string()
+        .min(6, 'Pincode must be 6 digits')
+        .max(6, 'Pincode must be 6 digits')
+        .regex(/^[0-9]+$/, 'Pincode must contain only numbers'),
+    phone: z.string()
+        .min(10, 'Phone number must be at least 10 digits')
+        .max(15, 'Phone number cannot exceed 15 digits')
+        .regex(/^[0-9+\-\s]*$/, 'Please enter a valid phone number'),
+    password: z.string()
+        .min(8, 'Password must be at least 8 characters')
+        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .regex(/[0-9]/, 'Password must contain at least one number')
+        .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+    confirmPassword: z.string(),
+    bio: z.string()
+        .min(10, 'Bio must be at least 10 characters')
+        .max(500, 'Bio cannot exceed 500 characters')
+        .optional(),
     terms: z.literal(true, {
         errorMap: () => ({ message: 'You must accept the terms and conditions' })
     })
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
 })
 
 export default function RegisterPage() {
     const [isUploading, setIsUploading] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
     type FormValues = {
         name: string;
@@ -61,7 +99,6 @@ export default function RegisterPage() {
         password: string;
         confirmPassword: string;
         bio?: string;
-        profileImage?: FileList;
         terms: boolean;
     };
 
@@ -83,12 +120,6 @@ export default function RegisterPage() {
         },
     })
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            form.setValue('profileImage', e.target.files);
-        }
-    }
-
     const navigate = useNavigate();
     const registerMutation = useRegister();
     const { isAuthenticated } = useAuth();
@@ -108,9 +139,6 @@ export default function RegisterPage() {
         formData.append('phone', values.phone);
         formData.append('password', values.password);
         if (values.bio) formData.append('bio', values.bio);
-        if (values.profileImage?.[0]) {
-            formData.append('profileImage', values.profileImage[0]);
-        }
         formData.append('terms', values.terms.toString());
 
         registerMutation.mutate(formData, {
@@ -149,47 +177,6 @@ export default function RegisterPage() {
                 <CardContent>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            {/* Profile Image Upload */}
-                            <div className="flex flex-col items-center justify-center gap-4 md:col-span-2">
-                                <div className="relative">
-                                    <Avatar className="h-24 w-24 border-2 border-primary">
-                                        <AvatarImage
-                                            src={(() => {
-                                                const file = form.watch('profileImage')?.[0];
-                                                return file ? URL.createObjectURL(file) : '';
-                                            })()}
-                                        />
-                                        <AvatarFallback className="bg-muted">
-                                            <User className="h-12 w-12 text-muted-foreground" />
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <label
-                                        htmlFor="profileImage"
-                                        className="absolute -bottom-2 -right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
-                                    >
-                                        <Camera className="h-4 w-4" />
-                                        <span className="sr-only">Upload profile image</span>
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="profileImage"
-                                        accept="image/jpeg, image/png, image/webp"
-                                        className="hidden"
-                                        ref={fileInputRef}
-                                        onChange={handleImageChange}
-                                    />
-                                </div>
-                                <div className="text-center">
-                                    <p className="text-sm font-medium">Profile Photo</p>
-                                    <p className="text-xs text-muted-foreground">Click to upload (max 5MB)</p>
-                                    {form.formState.errors.profileImage && (
-                                        <p className="text-xs text-destructive">
-                                            {form.formState.errors.profileImage.message}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-
                             <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                                 {/* Name Field */}
                                 <FormField
@@ -435,25 +422,25 @@ export default function RegisterPage() {
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel className="text-sm font-normal text-foreground">
                                                         I agree to the{' '}
-                                                        <a
-                                                            href="/terms"
+                                                        <Link
+                                                            to={Routes.TermsAndConditionsPage}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             Terms and Conditions
-                                                        </a>
+                                                        </Link>
                                                         {' '}and{' '}
-                                                        <a
-                                                            href="/privacy"
+                                                        <Link
+                                                            to={Routes.PrivacyPolicyPage}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             Privacy Policy
-                                                        </a>
+                                                        </Link>
                                                     </FormLabel>
                                                     <FormMessage className="text-destructive text-xs" />
                                                 </div>
@@ -477,7 +464,7 @@ export default function RegisterPage() {
                     </Form>
                     <div className="mt-6 text-center text-sm sm:text-base">
                         Already have an account?{' '}
-                        <Link to="/auth/login" className="font-medium text-primary underline-offset-4 hover:underline">
+                        <Link to={Routes.AuthLoginPage} className="font-medium text-primary underline-offset-4 hover:underline">
                             Sign in
                         </Link>
                     </div>

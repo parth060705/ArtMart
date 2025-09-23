@@ -5,7 +5,7 @@ import { toast } from "sonner";
 export const useUserProfileUpdate = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (values: any) => axiosClient.put('/auth/update/users/me', values),
+        mutationFn: (values: any) => axiosClient.patch('/auth/update/users/me', values),
         onSuccess: () => {
             toast.success('Profile updated successfully');
             queryClient.invalidateQueries({ queryKey: ['user', 'profile'] });

@@ -45,15 +45,15 @@ const Profile = () => {
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-1" style={{ fontFamily: 'Poppins' }}>{userProfile?.name}</h2>
           <p className="text-gray-600 text-center md:text-left mb-3">{userProfile?.bio}</p>
           <div className='flex gap-2'>
-            <Link to={`/profile/${userProfile?.username}/update`}>
+            <Link to={`/me/profile/${userProfile?.username}/update`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Edit /></Button>
             </Link>
             <Link to={`/${Routes.UploadProductPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Plus /></Button>
             </Link>
-            <Link to={`/${Routes.CartPage}`}>
+            {/* <Link to={`/${Routes.CartPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><ShoppingCart /></Button>
-            </Link>
+            </Link> */}
             <Button
               variant="ghost"
               className="bg-red-600 text-white rounded-full px-3 font-semibold cursor-pointer md:hidden"

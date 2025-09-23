@@ -17,6 +17,17 @@ export interface User {
   following: number;
 }
 
+export interface UserUpdate {
+  name: string;
+  username: string;
+  bio: string;
+  location: string;
+  gender: string;
+  age: number;
+  pincode: number;
+  phone: number;
+}
+
 export interface UserProfile extends User {
   followersList: User[];
   followingList: User[];

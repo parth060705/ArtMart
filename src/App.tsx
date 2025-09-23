@@ -87,7 +87,7 @@ function App() {
               </Route>
             </Routes>
           </BrowserRouter>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ProductSearchProvider>
     </ThemeProvider>

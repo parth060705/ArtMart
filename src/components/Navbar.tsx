@@ -25,12 +25,12 @@ const Navbar = ({
     title: "Auroraa",
   },
 }: NavbarProps) => {
-  const { isAuthenticated, username, userProfile } = useAuth();
+  const { isAuthenticated, username, userProfile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     toast.success('Logged out successfully!');
     setTimeout(() => {
       window.location.href = "/";

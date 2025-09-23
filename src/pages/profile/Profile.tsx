@@ -12,8 +12,10 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Edit, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
 
 const Profile = () => {
+  const { logout } = useAuth();
   const { data: userProfile } = useUserProfile();
   const { data: products, isLoading } = useProductsList("/auth/artworks/me");
   const { data: followers } = useUserFollowersList();
@@ -21,7 +23,7 @@ const Profile = () => {
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     toast.success('Logged out successfully!');
     setTimeout(() => {
       window.location.href = "/";

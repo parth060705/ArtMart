@@ -1,4 +1,5 @@
-import { User, Box, Home, ShoppingCart, Bookmark } from "lucide-react";
+import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
@@ -50,11 +51,18 @@ const Navbar = ({
   return (
     <div className="">
 
+      {/* mobile header  */}
       {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && <div>
-        <div className="px-1 py-6 md:hidden">
+        <div className="px-4 py-6 md:hidden flex justify-between items-center">
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             {logo.title}
           </Link>
+          <div className="relative">
+            <MessageCircleIcon className="w-6 h-6" />
+            <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
+              3
+            </Badge>
+          </div>
         </div>
       </div>}
 

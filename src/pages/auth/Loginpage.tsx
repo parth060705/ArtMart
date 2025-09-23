@@ -18,13 +18,9 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const loginMutation = useLogin();
-  const { login } = useAuth();
-  const { isAuthenticated } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const fromUpload = location.state?.from?.pathname === '/upload';
   const fromProfile = location.state?.from === '/me/profile';
-
-  console.log(location)
-  console.log(fromProfile)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,7 +37,10 @@ const LoginPage = () => {
 
     loginMutation.mutate(formData, {
       onSuccess: (data) => {
-        login(data.data);
+        if (!data.access_token) {
+          throw new Error('No access token received');
+        }
+        login(data.access_token, data.refresh_token);
         toast.success('Login successful!');
         // Redirect to the previous page or home
         const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : '/';

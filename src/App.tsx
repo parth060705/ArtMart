@@ -1,50 +1,86 @@
-// src/App.jsx
+import React, { useState, useEffect, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import NotFound from './pages/NotFound';
-import { ThemeProvider } from './components/ui/theme-provider';
-import { Toaster } from 'sonner';
-import { useState, useEffect } from 'react';
-
-// ---------------------------------------------------------------
-import UserManage from './admin-panel/user_manage';
-import ArtworkManage from './admin-panel/artwork_manage';
-import OrderManage from './admin-panel/orders_manage';
-import AdminDashboardSkeleton from './admin-panel/admin_dashboard';
-// ------------------------------------------------------------------
-
-import Home from './pages/Home';
-
-import Loginpage from './pages/auth/Loginpage';
-import Cart from './pages/Cart';
-import ArtworkDetail from './pages/product/ArtworkDetails';
-import ProtectedRoute from './components/ProtectedRoutes';
-import RegisterPage from './pages/auth/RegisterPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
-import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './lib/client';
-import Profile from './pages/profile/Profile';
-import ProfileUpdate from './pages/profile/ProfileUpdate';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import UploadProduct from './pages/product/UploadProduct';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'sonner';
+import { register } from './serviceWorkerRegistration';
+import { useNetworkStatus } from './hooks/useNetworkStatus';
+import { useServiceWorkerUpdate } from './hooks/useServiceWorkerUpdate';
+
+// Providers
+import { ThemeProvider } from './components/ui/theme-provider';
 import { ProductSearchProvider } from './context/ProductSearchContext';
-import SearchProduct from './pages/product/SearchProduct';
-import { Routes as AppRoutes } from './lib/routes';
+import { queryClient } from './lib/client';
+
+// Layouts
 import MainLayout from './Layout/Mainlayout';
-import ChatWrapper from './pages/chat/chatWrapper';
-import ArtworksListingPage from './pages/product/ArtworksListingPage';
-import WishList from './pages/product/WishList';
-import PublicProfile from './pages/profile/PublicProfile';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsAndConditions from './pages/TermsAndConditions';
+
+// Pages
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const Home = React.lazy(() => import('./pages/Home'));
+const Loginpage = React.lazy(() => import('./pages/auth/Loginpage'));
+const Cart = React.lazy(() => import('./pages/Cart'));
+const ArtworkDetail = React.lazy(() => import('./pages/product/ArtworkDetails'));
+const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
+const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordPage'));
+const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
+const Profile = React.lazy(() => import('./pages/profile/Profile'));
+const ProfileUpdate = React.lazy(() => import('./pages/profile/ProfileUpdate'));
+const UploadProduct = React.lazy(() => import('./pages/product/UploadProduct'));
+const SearchProduct = React.lazy(() => import('./pages/product/SearchProduct'));
+const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
+const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
+const WishList = React.lazy(() => import('./pages/product/WishList'));
+const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
+
+// Admin Pages
+const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
+const ArtworkManage = React.lazy(() => import('./admin-panel/artwork_manage'));
+const OrderManage = React.lazy(() => import('./admin-panel/orders_manage'));
+const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dashboard'));
+
+// Components
+const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoutes'));
+const InstallButton = React.lazy(() => import('@/components/InstallButton'));
+// Simple loading spinner component
+const LoadingSpinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => (
+  <div className={`flex items-center justify-center ${size === 'lg' ? 'h-12 w-12' : size === 'sm' ? 'h-4 w-4' : 'h-6 w-6'}`}>
+    <div className={`${size === 'lg' ? 'h-8 w-8' : size === 'sm' ? 'h-3 w-3' : 'h-5 w-5'} animate-spin rounded-full border-2 border-solid border-current border-r-transparent`} />
+  </div>
+);
+
+// Constants
+import { Routes as AppRoutes } from './lib/routes';
+// Loading component for Suspense fallback
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <LoadingSpinner size="lg" />
+  </div>
+);
+
 function App() {
+  const { waitingWorker, isUpdateAvailable, updateServiceWorker } = useServiceWorkerUpdate();
+  const isOnline = useNetworkStatus();
+
+  // Register service worker
+  useEffect(() => {
+    register({
+      onSuccess: () => {
+        console.log('Service worker registered successfully');
+      },
+    });
+  }, []);
+
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
       <ProductSearchProvider>
-        <QueryClientProvider client={queryClient} >
+        <QueryClientProvider client={queryClient}>
           <Toaster richColors position="top-center" />
-          <BrowserRouter>
+          {/* Update notification is now handled by useServiceWorkerUpdate toast */}
+          <Suspense fallback={<PageLoader />}>
+            <BrowserRouter>
             <Routes>
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
@@ -84,10 +120,12 @@ function App() {
             <Route path={AppRoutes.ProfilePage} element={<Profile />} />
           </Route> */}
 
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <ReactQueryDevtools initialIsOpen={false} />
+                </Route>
+              </Routes>
+              <InstallButton />
+            </BrowserRouter>
+          </Suspense>
+          <ReactQueryDevtools initialIsOpen={false} position="bottom" />
         </QueryClientProvider>
       </ProductSearchProvider>
     </ThemeProvider>

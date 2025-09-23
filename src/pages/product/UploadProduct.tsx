@@ -220,7 +220,7 @@ const UploadProduct = () => {
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Upload Artwork</CardTitle>
           <CardDescription>
-            Share your creative work with the ArtMart community
+            Share your creative work with the Auroraa community
           </CardDescription>
           {errors.images && (
             <p className="text-sm text-red-500">{errors.images.message}</p>

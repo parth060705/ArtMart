@@ -100,7 +100,7 @@ const Navbar = ({
                 <img
                   src={userProfile?.profileImage || '/default-avatar.png'}
                   alt="Profile"
-                  className="w-6 h-6 rounded-full mr-4 object-cover"
+                  className="w-10 h-10 rounded-full border-2 border-[var(--primary)] mr-4 object-cover"
                 />
                 <span className="text-base">Profile</span>
               </Link>
@@ -131,7 +131,7 @@ const Navbar = ({
           )}
           <div className="mt-4">
             <Link to={Routes.TermsAndConditionsPage}>
-              <Button variant="ghost" size="sm">Terms and Conditions</Button>
+              <Button variant="ghost" size="sm">Terms & Conditions</Button>
             </Link>
             <Link to={Routes.PrivacyPolicyPage}>
               <Button variant="ghost" size="sm">Privacy Policy</Button>

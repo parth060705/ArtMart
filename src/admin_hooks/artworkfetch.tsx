@@ -7,7 +7,7 @@ export const useAdminArtworks = () =>
   useQuery<Artwork[], Error>({
     queryKey: ["admin", "artworks"],
     queryFn: async () => {
-      const { data } = await axiosClient.get("/admin/artworks");
+      const { data } = await axiosClient.get("/admin/artworks/list");
       return data;
     },
     staleTime: 1000 * 60 * 5,

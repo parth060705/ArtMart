@@ -113,7 +113,7 @@ const Navbar = ({
               </Link> */}
               <Button
                 variant="ghost"
-                className="w-full justify-start px-4 py-3 h-auto text-base"
+                className="w-full bg-red-600 text-base text-white text-center px-4 py-2 rounded"
                 onClick={handleLogout}
               >
                 Log Out

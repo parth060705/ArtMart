@@ -363,7 +363,7 @@ const ArtworkDetail = () => {
             </div>
 
             {/* Comments List */}
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+            <div className="flex-1 overflow-y-auto space-y-4 pr-1 pb-20">
               {comments.length > 0 ? (
                 comments.map((comment: any) => (
                   <div

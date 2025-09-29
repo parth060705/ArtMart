@@ -2,17 +2,13 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useChat } from "@/hooks/chat/useChat";
 import { useUserProfile } from "@/hooks/user/auth/useUserProfile";
 import { UserProfile } from "@/lib/types";
-import { MessageOut } from "@/communication/chatSocket";
 import { useGetUserProfilePublic } from "@/hooks/user/useUserProfilePublic";
+import type { MessageOut } from '@/communication/chatSocket';
 
-// Define a complete message type that includes all necessary fields
-type ChatMessage = {
-  sender_id: string;
-  receiver_id: string;
-  content: string;
-  timestamp: string;
-  status?: 'sending' | 'sent' | 'failed';
-  id?: string; // Optional ID for tracking messages
+type ChatMessage = MessageOut & {
+  // Add any additional fields specific to the Chat component
+  status?: 'sending' | 'sent' | 'failed' | 'delivered';
+  id?: string;
 };
 import { FiPaperclip, FiSend, FiSmile, FiImage } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,13 +29,20 @@ const Chat: React.FC<ChatProps> = ({
   const { data: currentUser } = useUserProfile();
   const { data: peerData } = useGetUserProfilePublic(chatUserId);
   const currentUserId: string = currentUser?.id.toString() || '';
-  const accessToken = localStorage.getItem('token') || '';
+  const accessToken = localStorage.getItem('accessToken') || '';
   const [input, setInput] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { messages: realtimeMessages = [], isTyping, sendMessage, sendTyping, isConnected } = useChat({
+  const {
+    messages: realtimeMessages = [],
+    isTyping,
+    sendMessage,
+    sendTyping,
+    isConnected,
+    peerStatus
+  } = useChat({
     accessToken,
     peerId: chatUserId,
     userId: currentUserId
@@ -99,6 +102,7 @@ const Chat: React.FC<ChatProps> = ({
         content: messageContent,
         timestamp: new Date().toISOString(),
         status: 'sending',
+        is_read: false,
         id: `temp-${Date.now()}`
       };
 
@@ -138,8 +142,8 @@ const Chat: React.FC<ChatProps> = ({
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4">
-      <div className="w-full max-w-2xl h-[85vh] flex flex-col bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300">
+    <div className="flex items-start md:items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+      <div className="w-full max-w-2xl h-[90vh] md:h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
           <div className="flex items-center space-x-3">
@@ -149,15 +153,53 @@ const Chat: React.FC<ChatProps> = ({
                 alt={peerData?.username || "user"}
                 className="w-12 h-12 rounded-full object-cover border-2 border-white shadow"
               />
-              <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${isConnected ? 'bg-green-400' : 'bg-gray-400'} border-2 border-white`}></span>
+              {/* Animated status indicator */}
+              {/* <motion.span 
+                className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-400'} border-2 border-white`}
+                animate={isConnected ? {
+                  scale: [1, 1.2, 1],
+                  opacity: [0.8, 1, 0.8],
+                } : {}}
+                transition={{
+                  duration: 2,
+                  repeat: isConnected ? Infinity : 0,
+                  ease: 'easeInOut',
+                }}
+              /> */}
             </div>
-            <div>
-              <h2 className="text-lg font-semibold">
-                {peerData?.name}
-              </h2>
-              <p className="text-sm text-indigo-100">
-                {isTyping ? 'typing...' : chatUserStatus}
-              </p>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center">
+                <h2 className="text-lg font-semibold truncate">
+                  {peerData?.name}
+                </h2>
+              </div>
+              <div className="flex items-center space-x-2">
+                {isTyping ? (
+                  <motion.div
+                    className="flex items-center space-x-1"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                  >
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    <span className="text-xs text-indigo-100 ml-1">typing...</span>
+                  </motion.div>
+                ) : (
+                  <div className="flex items-center">
+                    <span
+                      className={`inline-block w-2 h-2 rounded-full mr-1.5 ${peerStatus === 'online' ? 'bg-green-400' :
+                          peerStatus === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                        } ${peerStatus === 'online' ? 'animate-pulse' : ''}`}
+                    ></span>
+                    <span className="text-xs text-indigo-100 font-medium capitalize">
+                      {peerStatus === 'online' ? 'Online' :
+                        peerStatus === 'away' ? 'Away' : 'Offline'}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -182,11 +224,26 @@ const Chat: React.FC<ChatProps> = ({
                       }`}
                   >
                     <div className="text-sm">{msg.content}</div>
-                    <div className={`text-xs mt-1 flex ${isMine ? 'text-indigo-200' : 'text-gray-500'} justify-end`}>
-                      {new Date(msg.timestamp).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
+                    <div className={`flex items-center justify-end space-x-1 mt-1 ${isMine ? 'text-indigo-200' : 'text-gray-500'}`}>
+                      <span className="text-xs">
+                        {new Date(msg.timestamp).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </span>
+                      {isMine && (
+                        <span className="text-xs">
+                          {msg.status === 'sending' ? (
+                            <span className="opacity-70">Sending</span>
+                          ) : msg.status === 'failed' ? (
+                            <span className="text-red-400">Failed</span>
+                          ) : msg.is_read ? (
+                            <span className="text-blue-300">✓✓</span>
+                          ) : (
+                            <span className="opacity-50">✓</span>
+                          )}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </motion.div>

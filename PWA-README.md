@@ -1,6 +1,6 @@
 # Progressive Web App (PWA) Setup
 
-This guide provides information about the PWA features implemented in ArtMart and how to use them.
+This guide provides information about the PWA features implemented in Auroraa and how to use them.
 
 ## Features
 

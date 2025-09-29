@@ -1,6 +1,6 @@
 # 🎨 ArtMart
 
-**ArtMart** is a modern eCommerce + social media hybrid platform for artists to showcase, sell, and promote handmade or digital art. Built for creators, it combines an artistic marketplace with social engagement features.
+**Auroraa** is a modern eCommerce + social media hybrid platform for artists to showcase, sell, and promote handmade or digital art. Built for creators, it combines an artistic marketplace with social engagement features.
 
 ---
 
@@ -26,7 +26,7 @@
 | Database    | MySQL (Aiven Cloud)                         |
 | State Mgmt  | TanStack Query                              |
 | Auth        | JWT-based system                            |
-| Deployment  | Vercel (frontend), Railway/Aiven (backend)  |
+| Deployment  | Vercel (frontend), Render/Aiven (backend)         |
 
 ---
 

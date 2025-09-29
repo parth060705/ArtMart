@@ -2,19 +2,27 @@
 export interface MessageBase {
   receiver_id: string;
   content?: string;
-  action: "message" | "typing" | "read";
+  action: "message" | "typing" | "read" | "presence";
+}
+
+export interface PresenceMessage extends MessageBase {
+  action: "presence";
+  content: 'online' | 'offline' | 'away';
 }
 
 export interface MessageOut {
+  id?: string;
   sender_id: string;
   receiver_id: string;
   content: string;
   timestamp: string;
   is_read: boolean;
+  status?: 'sending' | 'sent' | 'failed' | 'delivered';
 }
 
 class ChatSocket {
   private socket: WebSocket | null = null;
+  private presenceTimeouts: { [key: string]: NodeJS.Timeout } = {};
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: ((data: any) => void)[] = [];
   private accessToken: string | null = null;
@@ -99,7 +107,44 @@ class ChatSocket {
   }
 
   public sendMessage(receiverId: string, content: string): void {
-    this.send({ receiver_id: receiverId, content, action: "message" });
+    this.send({
+      action: "message",
+      receiver_id: receiverId,
+      content,
+    } as const);
+  }
+
+  public sendPresence(receiverId: string, status: 'online' | 'away' | 'offline'): void {
+    this.send({
+      action: "presence",
+      receiver_id: receiverId,
+      content: status
+    });
+  }
+
+  private handlePresenceUpdate(senderId: string, status: string): void {
+    // Clear any existing timeout for this user
+    if (this.presenceTimeouts[senderId]) {
+      clearTimeout(this.presenceTimeouts[senderId]);
+      delete this.presenceTimeouts[senderId];
+    }
+
+    // Notify all message handlers about the presence update
+    const presenceMessage = {
+      action: 'presence' as const,
+      sender_id: senderId,
+      content: status as 'online' | 'away' | 'offline',
+      receiver_id: '' // This will be set by the send method
+    };
+    
+    this.messageHandlers.forEach(handler => handler(presenceMessage));
+
+    if (status === 'online') {
+      // Set timeout to mark as away after 30 seconds of inactivity
+      this.presenceTimeouts[senderId] = setTimeout(() => {
+        this.handlePresenceUpdate(senderId, 'away');
+      }, 30000);
+    }
   }
 
   public sendTyping(receiverId: string): void {
@@ -110,7 +155,7 @@ class ChatSocket {
     this.send({ receiver_id: receiverId, action: "read" });
   }
 
-  private send(data: MessageBase): void {
+  public send(data: MessageBase): void {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       // Format the message according to the required structure
       const message = {

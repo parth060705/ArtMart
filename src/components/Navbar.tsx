@@ -54,7 +54,7 @@ const Navbar = ({
       {/* mobile header  */}
       {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && <div>
         <div className="px-4 py-6 md:hidden flex justify-between items-center">
-          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {logo.title}
           </Link>
           <div className="relative">
@@ -70,7 +70,8 @@ const Navbar = ({
       <div className="fixed left-0 top-0 h-full w-[15vw] border-r border-gray-200 dark:border-gray-800 bg-background p-4 hidden lg:flex flex-col">
         {/* Logo */}
         <div className="px-4 py-6">
-          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent pl-6">
+          {/* <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-[#00bf99] to-[#612cd4] bg-clip-text text-transparent pl-6"> */}
+          <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent pl-6">
             {logo.title}
           </Link>
         </div>

@@ -28,7 +28,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:w-full w-[450px] rounded-xl shadow-lg bg-gradient-to-r from-purple-100 via-white to-blue-100 text-[var(--foreground)] p-2 md:p-10">
+      <DialogContent className="sm:w-full w-[450px] rounded-xl shadow-lg bg-gradient-to-r from-[#b3f7e6] via-[#b7baf4] to-[#f0d7fb] text-[var(--foreground)] p-2 md:p-10">
         <div className="flex flex-col pt-8">
           <Tabs defaultValue="followers" className="flex-1">
             <TabsList className="grid w-full grid-cols-2 rounded-xl overflow-hidden bg-[var(--muted)] p-1">

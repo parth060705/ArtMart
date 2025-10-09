@@ -30,17 +30,17 @@ import { Button } from '@/components/ui/button';
 import { Routes } from '@/lib/routes';
 import placeholderProfileImage from '@/assets/placeholder-profile-image.jpg';
 import { useNavigate } from 'react-router-dom';
+import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
 
 const ArtworkDetail = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isAuthenticated, userProfile } = useAuth();
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
+  // States
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
-
   const [commentText, setCommentText] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
@@ -49,16 +49,15 @@ const ArtworkDetail = () => {
   const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
   const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
 
-
+  // Queries
   const { data: artwork, isLoading, error } = useProductDetails(id || '');
   const { mutate: followUser } = useUserFollow(artwork?.artistId);
   const { mutate: unfollowUser } = useUserUnFollow(artwork?.artistId);
-
   const { data: likeStatus } = useUserLikeStatus(id || '');
-
   const { data: reviews = [] } = useReviewsList(id || '');
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
   const { data: comments = [] } = useCommentsList(id || '');
+  const { data: isFollowingCheck } = useUserIsFollowingCheck(artwork?.artistId);
   const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
   const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
   const { mutateAsync: addToWishList, isPending: isWishListPending } = useAddToWishList(id || '');
@@ -211,10 +210,12 @@ const ArtworkDetail = () => {
               }
               if (isFollowLoading) return;
               setIsFollowLoading(true);
-              const action = isFollowing ? unfollowUser : followUser;
+              const action = isFollowingCheck?.is_following ? unfollowUser : followUser;
               action(undefined, {
                 onSuccess: () => {
-                  setIsFollowing(!isFollowing);
+                  queryClient.invalidateQueries({
+                    queryKey: ["useUserIsFollowingCheck", artwork?.artistId]
+                  });
                   setIsFollowLoading(false);
                 },
                 onError: () => {
@@ -225,7 +226,7 @@ const ArtworkDetail = () => {
             }}
             disabled={isFollowLoading}
           >
-            {isFollowing ? 'Following' : 'Follow'}
+            {isFollowingCheck?.is_following ? 'Following' : 'Follow'}
           </Button>}
         </div>
 
@@ -261,6 +262,7 @@ const ArtworkDetail = () => {
               {artwork.description}
             </p>
           </div>
+          {/* Show price only if artwork is for sale  */}
           {artwork.forSale && (
             <div className="text-2xl font-extrabold text-[var(--primary)]">
               ₹{artwork.price}

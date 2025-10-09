@@ -6,7 +6,7 @@ interface IReviewCardProps {
     item: Review
 }
 
-const ReviewCard:FunctionComponent<IReviewCardProps> = ({item}) => {
+const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item }) => {
     return (
         <div className="bg-white dark:bg-[var(--card)] rounded-xl p-6 shadow-sm border border-[var(--border)]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -19,11 +19,11 @@ const ReviewCard:FunctionComponent<IReviewCardProps> = ({item}) => {
                     <div>
                         <h4 className="font-medium">{item.reviewer.username}</h4>
                         <div className="flex items-center gap-1 mt-0.5">
-                            {[...Array(5)].map((_, i) => (
+                            {[...Array(item?.rating)].map((_, i) => (
                                 <span key={i} className="text-amber-400">★</span>
                             ))}
                             <span className="ml-1 text-xs text-[var(--muted-foreground)]">
-                              {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
+                                {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
                             </span>
                         </div>
                     </div>

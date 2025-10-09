@@ -37,7 +37,8 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">
       {/* Profile Banner */}
-      <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-purple-100 via-white to-blue-100 rounded-3xl shadow-lg p-6 md:p-10 mb-10">
+      <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff]
+ rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
           src={userProfile?.profileImage}
           alt={userProfile?.name}

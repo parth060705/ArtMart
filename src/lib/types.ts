@@ -34,6 +34,14 @@ export interface UserProfile extends User {
   products: Product[];
 }
 
+export interface TopArtsistResponse {
+  artistId: string;
+  avgRating: number;
+  reviewCount: number;
+  username: string;
+  profileImage: string;
+}
+
 // ------------------ IMAGE ------------------
 
 export type Image = {

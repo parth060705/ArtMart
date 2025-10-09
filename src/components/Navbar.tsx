@@ -1,6 +1,6 @@
 import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
 import { toast } from 'sonner';
 import { Routes } from '@/lib/routes';
@@ -139,9 +139,9 @@ const Navbar = ({
             </Link>
           </div>
           {/* Theme Toggle */}
-          <div className="mt-4 px-4">
+          {/* <div className="mt-4 px-4">
             <ThemeSwitcher />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -170,9 +170,9 @@ const Navbar = ({
             </Link>
 
 
-            {/* Cart */}
+            {/* Artists */}
             <Link
-              to={navbarRoutes.auth.wishlist.url}
+              to={Routes.ArtistsRankingPage}
               className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground"
             >
               <Bookmark className="w-6 h-6 mb-1" />

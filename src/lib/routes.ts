@@ -31,8 +31,10 @@ export class Routes {
     static AuthResetPasswordPage = "/auth/reset-password"
     static CartPage = "/auth/cart"
     static WishListPage = "/auth/wishlist"
+    static ArtistsRankingPage = "/artists-ranking"
     static PrivacyPolicyPage = "/privacy-policy"
     static TermsAndConditionsPage = "/terms-and-conditions"
+    static SettingsPage = "/settings"
 }
 
 interface NavbarRoutes {
@@ -56,6 +58,16 @@ export const navbarRoutes: NavbarRoutes = {
             title: "Discover",
             url: '/products',
             icon: Box
+        },
+        {
+            title: "Artists",
+            url: '/artists-ranking',
+            icon: Bookmark
+        },
+        {
+            title: "Settings",
+            url: '/settings',
+            icon: Sliders
         },
     ],
     auth: {

@@ -32,8 +32,10 @@ const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
 const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
 const WishList = React.lazy(() => import('./pages/product/WishList'));
 const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
+const ArtistsRankingPage = React.lazy(() => import('./pages/ArtistsRankingPage'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
+const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
 
 // Admin Pages
 const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
@@ -81,41 +83,43 @@ function App() {
           {/* Update notification is now handled by useServiceWorkerUpdate toast */}
           <Suspense fallback={<PageLoader />}>
             <BrowserRouter>
-            <Routes>
-              <Route path="/auth" element={<MainLayout />}>
-                <Route index element={<Loginpage />} />
-                <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
-                <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
-                <Route path={AppRoutes.AuthForgotPasswordPage} element={<ForgotPasswordPage />} />
-                <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
-              </Route>
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<Home />} />
-                <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
-                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
-                <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
-                <Route path={AppRoutes.CartPage} element={<Cart />} />
-                <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
-                <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
-                <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
-                <Route path={AppRoutes.WishListPage} element={<WishList />} />
-                <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
-                <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
-                <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
+              <Routes>
+                <Route path="/auth" element={<MainLayout />}>
+                  <Route index element={<Loginpage />} />
+                  <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
+                  <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
+                  <Route path={AppRoutes.AuthForgotPasswordPage} element={<ForgotPasswordPage />} />
+                  <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
+                </Route>
+                <Route path="/" element={<MainLayout />}>
+                  <Route index element={<Home />} />
+                  <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
+                  <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
+                  <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
+                  <Route path={AppRoutes.CartPage} element={<Cart />} />
+                  <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
+                  <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
+                  <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
+                  <Route path={AppRoutes.WishListPage} element={<WishList />} />
+                  <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
+                  <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsRankingPage />} />
+                  <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
+                  <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
+                  <Route path={AppRoutes.SettingsPage} element={<SettingsPage />} />
 
-                {/* chat */}
-                <Route path="/chat/:peerId" element={<ChatWrapper />} />
-                <Route path="*" element={<NotFound />} />
+                  {/* chat */}
+                  <Route path="/chat/:peerId" element={<ChatWrapper />} />
+                  <Route path="*" element={<NotFound />} />
 
-                {/* ------------------------------------------------------------------------------------------- */}
-                <Route path="/admin/user_manage" element={<UserManage />} />
-                <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
-                <Route path="/admin/orders_manage" element={<OrderManage />} />
-                <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
-                {/* ------------------------------------------------------------------------------------------- */}
+                  {/* ------------------------------------------------------------------------------------------- */}
+                  <Route path="/admin/user_manage" element={<UserManage />} />
+                  <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
+                  <Route path="/admin/orders_manage" element={<OrderManage />} />
+                  <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
+                  {/* ------------------------------------------------------------------------------------------- */}
 
-                {/* Protected Routes Group */}
-                {/* <Route element={<ProtectedRoute />}>s
+                  {/* Protected Routes Group */}
+                  {/* <Route element={<ProtectedRoute />}>s
             <Route path={AppRoutes.CartPage} element={<Cart />} />
             <Route path={AppRoutes.ProfilePage} element={<Profile />} />
           </Route> */}

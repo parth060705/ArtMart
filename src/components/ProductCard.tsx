@@ -56,7 +56,7 @@ export default function ProductCard({
           {safeTags.map((tag) => (
             <span
               key={tag}
-              className="bg-[var(--primary)]/80 text-[var(--primary-foreground)] px-2 py-1 rounded-full text-xs font-medium shadow"
+              className="bg-[var(--accent)]/80 text-[var(--accent-foreground)] px-2 py-1 rounded-full text-xs font-medium shadow"
             >
               {tag}
             </span>
@@ -71,7 +71,7 @@ export default function ProductCard({
               <img
                 src={artist.profileImage || "/avatar-placeholder.png"}
                 alt={artist.username}
-                className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+                className="w-10 h-10 rounded-full border-2 border-[var(--accent)] object-cover shadow"
               />
               <span
                 className="font-semibold text-white text-base drop-shadow"

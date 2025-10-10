@@ -190,7 +190,7 @@ const ArtworkDetail = () => {
               <img
                 src={artwork.artist.profileImage}
                 alt={artwork.artist.username}
-                className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+                className="w-14 h-14 rounded-full border-2 border-[var(--accent)] object-cover shadow"
               />
               <div className="ml-3">
                 {artwork.artist.id === userProfile?.id ? 'You' : <p className="font-semibold text-lg hover:underline">{artwork.artist.username}</p>}
@@ -264,7 +264,7 @@ const ArtworkDetail = () => {
           </div>
           {/* Show price only if artwork is for sale  */}
           {artwork.forSale && (
-            <div className="text-2xl font-extrabold text-[var(--primary)]">
+            <div className="text-2xl font-extrabold text-[var(--accent)]">
               ₹{artwork.price}
             </div>
           )}
@@ -274,7 +274,7 @@ const ArtworkDetail = () => {
           {artwork?.tags && artwork.tags.length > 0 && (
             <div className="mt-3 text-sm text-[var(--muted-foreground)]">
               {artwork.tags.map((tag: string, idx: number) => (
-                <span key={idx} className="text-[var(--primary)] font-medium">
+                <span key={idx} className="text-[var(--accent)] font-medium">
                   {tag}{idx < artwork.tags.length - 1 && <span className="text-[var(--muted-foreground)]">, </span>}
                 </span>
               ))}
@@ -341,7 +341,7 @@ const ArtworkDetail = () => {
               <img
                 src={userProfile?.profileImage || placeholderProfileImage}
                 alt="me"
-                className="w-11 h-11 rounded-full border-2 border-[var(--primary)] object-cover shadow"
+                className="w-11 h-11 rounded-full border-2 border-[var(--accent)] object-cover shadow"
 
               />
               <div className="flex-1 flex items-center rounded-full border px-2 py-2 bg-[var(--background)]">
@@ -375,7 +375,7 @@ const ArtworkDetail = () => {
                     <img
                       src={comment.user?.profileImage || placeholderProfileImage}
                       alt={comment.user?.username || "user"}
-                      className="w-10 h-10 rounded-full border-2 border-[var(--primary)] object-cover shadow cursor-pointer"
+                      className="w-10 h-10 rounded-full border-2 border-[var(--accent)] object-cover shadow cursor-pointer"
                       onClick={() => navigate(`${Routes.ProfilePublicPage}/${comment?.user_id}`)}
                     />
                     <div className="flex flex-col">

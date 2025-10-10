@@ -101,7 +101,7 @@ const Navbar = ({
                 <img
                   src={userProfile?.profileImage || '/default-avatar.png'}
                   alt="Profile"
-                  className="w-10 h-10 rounded-full border-2 border-[var(--primary)] mr-4 object-cover"
+                  className="w-10 h-10 rounded-full border-2 border-[var(--accent)] mr-4 object-cover"
                 />
                 <span className="text-base">Profile</span>
               </Link>
@@ -196,7 +196,7 @@ const Navbar = ({
               <img
                 src={userProfile?.profileImage || profilePlaceHolderImage}
                 alt="Profile"
-                className="w-7 h-7 rounded-full border-2 border-[var(--primary)] object-cover mb-1"
+                className="w-7 h-7 rounded-full border-2 border-[var(--accent)] object-cover mb-1"
 
               />
               Profile

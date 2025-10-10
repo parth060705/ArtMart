@@ -37,12 +37,11 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">
       {/* Profile Banner */}
-      <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff]
- rounded-3xl shadow-lg p-6 md:p-10 mb-10">
+      <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff] rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
           src={userProfile?.profileImage}
           alt={userProfile?.name}
-          className="w-32 h-32 rounded-full border-4 border-[var(--primary)] object-cover shadow-lg -mt-16 md:mt-0"
+          className="w-32 h-32 rounded-full border-4 border-[var(--accent)] object-cover shadow-lg -mt-16 md:mt-0"
         />
         <div className="flex-1 flex flex-col items-center md:items-start">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-1" style={{ fontFamily: 'Poppins' }}>{userProfile?.name}</h2>

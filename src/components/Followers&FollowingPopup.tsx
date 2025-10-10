@@ -65,7 +65,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       <img
                         src={user.profileImage || placeholderProfileImage}
                         alt={user.username}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--primary)]"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--accent)]"
                       />
                       <div className="flex flex-col">
                         <p className="text-sm text-gray-500">
@@ -103,7 +103,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       <img
                         src={user.profileImage || placeholderProfileImage}
                         alt={user.username}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--primary)]"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-[var(--accent)]"
                       />
                       <div className="flex flex-col">
                         <p className="text-sm text-gray-500">

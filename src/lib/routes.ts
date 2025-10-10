@@ -1,10 +1,11 @@
-import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark } from "lucide-react";
+import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark, PlusCircle } from "lucide-react";
 import { ComponentType } from "react";
 
 interface NavItem {
     title: string;
     url: string;
     icon: ComponentType<{ className?: string }>;
+    customClass?: string;     
 }
 
 interface NavbarRoutes {
@@ -13,6 +14,7 @@ interface NavbarRoutes {
         [key: string]: {
             title: string;
             url: string;
+            customClass?: string; 
         };
     };
 }
@@ -43,6 +45,7 @@ interface NavbarRoutes {
         [key: string]: {
             title: string;
             url: string;
+            customClass?: string; 
         };
     };
 }
@@ -58,6 +61,14 @@ export const navbarRoutes: NavbarRoutes = {
             title: "Discover",
             url: '/products',
             icon: Box
+        },
+        {
+            title: "Add",
+            url: `/${Routes.UploadProductPage}`,
+            icon: PlusCircle,
+            // isCreateButton: true,
+            customClass:
+                "absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg text-3xl font-bold hover:scale-105 transition-transform",
         },
         {
             title: "Artists",

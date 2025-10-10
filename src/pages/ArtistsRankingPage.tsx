@@ -21,7 +21,7 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse; rank: number
                     <img
                         src={artist.profileImage}
                         alt={artist.username}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-[var(--primary)]"
+                        className="w-16 h-16 rounded-full object-cover border-2 border-[var(--accent)]"
                     />
                 ) : (
                     <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center border-2 border-[var(--primary)]">

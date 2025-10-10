@@ -82,7 +82,7 @@ const Navbar = ({
             <Link
               key={item.title}
               to={item.url}
-              className={`flex items-center px-4 py-3 rounded-lg text-foreground hover:bg-muted/50 transition-colors ${window.location.pathname === item.url ? 'font-semibold text-primary' : ''}`}
+              className={`flex items-center px-4 py-3 rounded-lg text-foreground hover:bg-muted/50 transition-colors ${window.location.pathname === item.url ? 'font-semibold text-accent' : ''}`}
             >
               {item.icon && <item.icon className="w-6 h-6 mr-4" />}
               <span className="text-base">{item.title}</span>
@@ -154,7 +154,7 @@ const Navbar = ({
             {/* Home */}
             <Link
               to="/"
-              className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground'}`}
+              className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground'}`}
             >
               <Home className="w-6 h-6 mb-1" />
               Home
@@ -163,7 +163,7 @@ const Navbar = ({
             {/* Products */}
             <Link
               to="/products"
-              className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-primary' : 'text-foreground'}`}
+              className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-accent' : 'text-foreground'}`}
             >
               <Box className="w-6 h-6 mb-1" />
               Discover
@@ -173,7 +173,7 @@ const Navbar = ({
             {/* Artists */}
             <Link
               to={Routes.ArtistsRankingPage}
-              className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-primary' : 'text-foreground"
+              className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground"
             >
               <Bookmark className="w-6 h-6 mb-1" />
               Artists
@@ -190,7 +190,7 @@ const Navbar = ({
             {/* Profile */}
             <div
               onClick={handleProfileClick}
-              className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-primary' : 'text-foreground'
+              className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-accent' : 'text-foreground'
                 }`}
             >
               <img

@@ -35,7 +35,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8">
+    <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8 mb-20 md:mb-0">
       {/* Profile Banner */}
       <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff] rounded-3xl shadow-lg p-6 md:p-10 mb-10">
         <img
@@ -53,9 +53,6 @@ const Profile = () => {
             <Link to={`/${Routes.UploadProductPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Plus /></Button>
             </Link>
-            {/* <Link to={`/${Routes.CartPage}`}>
-              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><ShoppingCart /></Button>
-            </Link> */}
             <Button
               variant="ghost"
               className="bg-red-600 text-white rounded-full px-3 font-semibold cursor-pointer md:hidden"

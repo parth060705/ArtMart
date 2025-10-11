@@ -15,7 +15,7 @@ import { useUploadProduct } from '@/hooks/useUploadProduct';
 import { uploadProductSchema } from '@/lib/validation-schemas';
 import type { z } from 'zod';
 import { Routes } from '@/lib/routes';
-import CircularLoader from '@/components/CircularLoader';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const categories = [
   'Painting',
@@ -404,7 +404,7 @@ const UploadProduct = () => {
               >
                 {isUploading ? (
                   <>
-                    <CircularLoader />
+                    <LoadingSpinner />
                     Uploading...
                   </>
                 ) : (

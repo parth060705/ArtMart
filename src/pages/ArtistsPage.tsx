@@ -11,7 +11,6 @@ import ArtistCard from '@/components/ArtistCard';
 
 const ArtistsPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [isSearching, setIsSearching] = useState(false);
     const { data: topArtists, isLoading } = useGetTopArtists();
     const { data: searchResults, isLoading: isSearchingUsers } = useUserSearch(searchQuery);
 
@@ -19,14 +18,8 @@ const ArtistsPage = () => {
         document.title = 'Top Artists | Auroraa';
     }, []);
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSearching(!!searchQuery.trim());
-    };
-
     const clearSearch = () => {
         setSearchQuery('');
-        setIsSearching(false);
     };
     return (
         <div className="container mx-auto px-4 py-6 max-w-xl sm:max-w-3xl mb-20 md:mb-0">
@@ -41,35 +34,30 @@ const ArtistsPage = () => {
 
             {/* Search Bar */}
             <div className="mb-6">
-                <form onSubmit={handleSearch} className="relative">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
-                        <Input
-                            type="text"
-                            placeholder="Search artists by name or username..."
-                            className="pl-10 pr-10 py-5 w-full rounded-lg"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        {searchQuery && (
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6"
-                                onClick={clearSearch}
-                            >
-                                <X className="h-4 w-4" />
-                            </Button>
-                        )}
-                    </div>
-                    <Button type="submit" className="mt-2 w-full sm:w-auto">
-                        Search
-                    </Button>
-                </form>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+                    <Input
+                        type="text"
+                        placeholder="Search artists by name or username..."
+                        className="pl-10 pr-10 py-5 w-full rounded-lg"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {searchQuery && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6"
+                            onClick={clearSearch}
+                        >
+                            <X className="h-4 w-4" />
+                        </Button>
+                    )}
+                </div>
             </div>
 
-            {isSearching && searchQuery.trim() ? (
+            {searchQuery.trim() ? (
                 <div className="space-y-3">
                     {isSearchingUsers ? (
                         <div className="space-y-3">

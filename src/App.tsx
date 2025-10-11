@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
 import { register } from './serviceWorkerRegistration';
 import { useNetworkStatus } from './hooks/useNetworkStatus';
 import { useServiceWorkerUpdate } from './hooks/useServiceWorkerUpdate';
+import { Routes as AppRoutes } from './lib/routes';
 
 // Providers
 import { ThemeProvider } from './components/ui/theme-provider';
@@ -14,6 +15,7 @@ import { queryClient } from './lib/client';
 
 // Layouts
 import MainLayout from './Layout/Mainlayout';
+import LoadingSpinner from './components/LoadingSpinner';
 
 // Pages
 const NotFound = React.lazy(() => import('./pages/NotFound'));
@@ -47,20 +49,25 @@ const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dash
 const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoutes'));
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
 // Simple loading spinner component
-const LoadingSpinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => (
-  <div className={`flex items-center justify-center ${size === 'lg' ? 'h-12 w-12' : size === 'sm' ? 'h-4 w-4' : 'h-6 w-6'}`}>
-    <div className={`${size === 'lg' ? 'h-8 w-8' : size === 'sm' ? 'h-3 w-3' : 'h-5 w-5'} animate-spin rounded-full border-2 border-solid border-current border-r-transparent`} />
-  </div>
-);
 
-// Constants
-import { Routes as AppRoutes } from './lib/routes';
 // Loading component for Suspense fallback
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-screen">
     <LoadingSpinner size="lg" />
   </div>
 );
+
+// Component to handle scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Scroll to top when pathname changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 function App() {
   const { waitingWorker, isUpdateAvailable, updateServiceWorker } = useServiceWorkerUpdate();
@@ -83,6 +90,7 @@ function App() {
           {/* Update notification is now handled by useServiceWorkerUpdate toast */}
           <Suspense fallback={<PageLoader />}>
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 <Route path="/auth" element={<MainLayout />}>
                   <Route index element={<Loginpage />} />

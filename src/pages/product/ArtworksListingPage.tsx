@@ -14,7 +14,7 @@ const ArtworksListingPage = () => {
   }, []);
 
   return (
-    <div className="p-1">
+    <div className="p-1 mb-24 md:mb-0">
       <MasonryFeed data={products} isLoading={isLoading} className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full" />
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex">

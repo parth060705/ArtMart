@@ -4,7 +4,7 @@ import { Product } from "@/lib/types";
 import { useNavigate } from "react-router-dom";
 import { useProductSearchContext } from "@/context/ProductSearchContext";
 import { Routes } from "@/lib/routes";
-import CircularLoader from "./CircularLoader";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface IMasonaryFeed {
   className?: string;
@@ -31,7 +31,7 @@ export default function MasonryFeed({ className, length, url, data, isLoading }:
 
   return (
     <div className={className}>
-      {isLoading ? <div className="min-h-[30vh] w-[calc(100vw-4rem)] flex items-center justify-center"><CircularLoader /></div> : filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product) => (
+      {isLoading ? <div className="min-h-[30vh] flex items-center justify-center"><LoadingSpinner /></div> : filteredProducts?.length ? filteredProducts.slice(0, length).map((prod: Product) => (
         <div key={prod.id} className="break-inside-avoid">
           <ProductCard
             {...prod}

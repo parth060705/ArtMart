@@ -24,7 +24,7 @@ import { useDisLikeProduct } from '@/hooks/like_dislike/useDislikeProduct';
 import { useAddToCart } from '@/hooks/useAddToCart';
 import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
-import CircularLoader from '@/components/CircularLoader';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAddToWishList } from '@/hooks/useAddToWishList';
 import { Button } from '@/components/ui/button';
 import { Routes } from '@/lib/routes';
@@ -166,7 +166,7 @@ const ArtworkDetail = () => {
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
-        <CircularLoader />
+        <LoadingSpinner />
       </div>
     );
   }
@@ -328,7 +328,7 @@ const ArtworkDetail = () => {
       </div>
 
       {/* Right Pane (1/3) */}
-      <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6">
+      <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6 mb-20 md:mb-0">
         <Tabs defaultValue="comments">
           <TabsList className={`grid ${artwork.forSale ? 'grid-cols-2' : 'grid-cols-1'} mb-4`}>
             <TabsTrigger value="comments">Comments</TabsTrigger>
@@ -366,7 +366,7 @@ const ArtworkDetail = () => {
             </div>
 
             {/* Comments List */}
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1 pb-20">
+            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
               {comments.length > 0 ? (
                 comments.map((comment: any) => (
                   <div

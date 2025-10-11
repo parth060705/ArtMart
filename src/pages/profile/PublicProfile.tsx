@@ -136,20 +136,7 @@ const Profile = () => {
                 handlePostReview={handlePostReview}
                 showTextArea={false}
             />
-
-            {/* Login Prompt */}
             <div className="mt-6">
-                {!isAuthenticated && (
-                    <div className="mt-4 text-center">
-                        <p className="text-sm text-gray-600 mb-2">Log in to leave a review</p>
-                        <Link
-                            to="/login"
-                            className="text-sm font-medium text-blue-600 hover:underline"
-                        >
-                            Log In
-                        </Link>
-                    </div>
-                )}
                 <MasonryFeed
                     length={products?.length}
                     data={products}

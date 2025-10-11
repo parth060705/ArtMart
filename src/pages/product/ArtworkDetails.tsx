@@ -339,12 +339,6 @@ const ArtworkDetail = () => {
           <TabsContent value="comments" className="h-full flex flex-col">
             {/* Add Comment Input (on top) */}
             <div className="border-b mb-3 pb-3 flex items-center gap-3">
-              <img
-                src={userProfile?.profileImage || placeholderProfileImage}
-                alt="me"
-                className="w-11 h-11 rounded-full border-2 border-[var(--accent)] object-cover shadow"
-
-              />
               <div className="flex-1 flex items-center rounded-full border px-2 py-2 bg-[var(--background)]">
                 <input
                   value={commentText}

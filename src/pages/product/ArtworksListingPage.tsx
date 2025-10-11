@@ -3,6 +3,7 @@ import FilterSidebar from '@/components/FilterSidebar';
 import { useProductSearchContext } from '@/context/ProductSearchContext';
 import MasonryFeed from '@/components/MasonryFeed';
 import { useProductsList } from '@/hooks/useProductsList';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const ArtworksListingPage = () => {
   const { selectedCategory, selectedLocation, priceRange, setSelectedCategory, setSelectedLocation, setPriceRange } = useProductSearchContext();
@@ -15,7 +16,7 @@ const ArtworksListingPage = () => {
 
   return (
     <div className="p-1 mb-24 md:mb-0">
-      <MasonryFeed data={products} isLoading={isLoading} className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full" />
+      {isLoading ? <div className='w-[80vw] h-screen flex items-center justify-center'><LoadingSpinner /></div> : <MasonryFeed data={products} isLoading={isLoading} className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full" />}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setSidebarOpen(false)} aria-label="Close filters" />

@@ -8,27 +8,19 @@ import { useUserFollowersList } from '@/hooks/user/useUserFollowersList';
 import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { Edit, Plus, ShoppingCart } from 'lucide-react';
+import { Edit, Plus, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 
 const Profile = () => {
-  const { logout } = useAuth();
   const { data: userProfile } = useUserProfile();
   const { data: products, isLoading } = useProductsList("/auth/artworks/me");
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    toast.success('Logged out successfully!');
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 500);
-  };
+
 
   useEffect(() => {
     document.title = 'Profile | Auroraa';
@@ -53,15 +45,9 @@ const Profile = () => {
             <Link to={`/${Routes.UploadProductPage}`}>
               <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Plus /></Button>
             </Link>
-            <Button
-              variant="ghost"
-              className="bg-red-600 text-white rounded-full px-3 font-semibold cursor-pointer md:hidden"
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
-            <ThemeSwitcher />
-
+            <Link to={`${Routes.SettingsPage}`}>
+              <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Settings /></Button>
+            </Link>
           </div>
         </div>
       </div>

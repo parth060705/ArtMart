@@ -105,20 +105,6 @@ const Navbar = ({
                 />
                 <span className="text-base">Profile</span>
               </Link>
-              {/* <Link
-                to={navbarRoutes.auth.addtoCart.url}
-                className="flex items-center px-4 py-3 rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <ShoppingCart className="w-6 h-6 mr-4" />
-                <span className="text-base">Cart</span>
-              </Link> */}
-              <Button
-                variant="ghost"
-                className="w-full bg-red-600 text-base text-white text-center px-4 py-2 rounded"
-                onClick={handleLogout}
-              >
-                Log Out
-              </Button>
             </div>
           ) : (
             <div className="space-y-2 px-4">
@@ -138,10 +124,6 @@ const Navbar = ({
               <Button variant="ghost" size="sm">Privacy Policy</Button>
             </Link>
           </div>
-          {/* Theme Toggle */}
-          {/* <div className="mt-4 px-4">
-            <ThemeSwitcher />
-          </div> */}
         </div>
       </div>
 

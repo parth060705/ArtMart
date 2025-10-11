@@ -142,12 +142,12 @@ const Chat: React.FC<ChatProps> = ({
 
   return (
     <div className="flex items-start md:items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-      <div className="w-full max-w-2xl h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300">
+      <div className="w-full max-w-2xl h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300 relative">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white absolute top-0 left-0 right-0 z-20">
           <div className="flex items-center space-x-3">
             {/* back arrow  */}
-            <ChevronLeft onClick={() => navigate(-1)} />
+            <ChevronLeft onClick={() => navigate(-1)} s/>
             <div className="relative">
               <img
                 src={peerData?.profileImage || "/default-avatar.png"}
@@ -193,7 +193,7 @@ const Chat: React.FC<ChatProps> = ({
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50  my-20">
           <AnimatePresence>
             {combinedMessages.map((msg) => {
               const isMine = msg.sender_id === currentUserId;
@@ -255,7 +255,7 @@ const Chat: React.FC<ChatProps> = ({
         </div>
 
         {/* Input Area */}
-        <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
+        <form onSubmit={handleSubmit} className="p-4 border-t bg-white absolute bottom-0 left-0 right-0">
           <div className="relative flex items-center">
             <div className="flex md:space-x-2 md:mr-2">
               <button

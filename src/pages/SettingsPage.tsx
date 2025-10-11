@@ -169,12 +169,12 @@ const SettingsPage = () => {
                         </Card>
                     </div>
                 )}
-                <Button
+                {userProfile && <Button
                     onClick={handleLogout}
                     className="w-max bg-red-600"
                 >
                     Logout
-                </Button>
+                </Button>}
             </div>
         </div>
     );

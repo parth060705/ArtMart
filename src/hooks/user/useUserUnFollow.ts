@@ -10,7 +10,9 @@ export const useUserUnFollow = (userId: string) => {
       return data;
     },
     onSuccess: () => {
+      // Invalidate both the follow status and the isFollowing check
       queryClient.invalidateQueries({ queryKey: ["userFollow"] });
+      queryClient.invalidateQueries({ queryKey: ["useUserIsFollowingCheck", userId] });
     },
   });
 };

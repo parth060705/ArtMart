@@ -19,16 +19,71 @@ import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
+import { usePostArtistReview } from '@/hooks/reviews/usePostArtistReview';
+import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
+import { ReviewPopup } from '@/components/ReviewPopup';
 
 const Profile = () => {
     const { isAuthenticated } = useAuth();
     const { userId } = useParams<{ userId: string }>();
     const { data: userProfile } = useGetUserProfilePublic(userId || '');
     const { data: products, isLoading } = useProductsList('/' + userId + '/artworks');
-    const [isFollowing, setIsFollowing] = useState<boolean>(false);
-    const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
-    const { mutate: followUser } = useUserFollow(userId || '');
-    const { mutate: unfollowUser } = useUserUnFollow(userId || '');
+    const [rating, setRating] = useState<number>(0);
+    const [hoverRating, setHoverRating] = useState<number>(0);
+    const [reviewText, setReviewText] = useState<string>('');
+    const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+    const [isReviewOpen, setIsReviewOpen] = useState(false);
+    const { data: isFollowingCheck } = useUserIsFollowingCheck(userId || '');
+    const { mutateAsync: postReview } = usePostArtistReview(userId || '');
+    const { mutate: followUser, isPending: isFollowing } = useUserFollow(userId || '');
+    const { mutate: unfollowUser, isPending: isUnfollowing } = useUserUnFollow(userId || '');
+
+    const isFollowLoading = isFollowing || isUnfollowing;
+
+    const handlePostReview = async () => {
+        try {
+            if (!isAuthenticated) {
+                toast.error('Please log in to submit a review');
+                return;
+            }
+
+            if (!userId) {
+                throw new Error('Artist ID is required');
+            }
+            await postReview({
+                artistId: userId,
+                rating,
+                comment: reviewText
+            });
+
+            // Reset the form
+            setRating(0);
+            setReviewText('');
+            setIsSubmittingReview(false);
+
+            // Show success message or refresh reviews
+            toast.success('Review submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            toast.error('Failed to submit review');
+            setIsSubmittingReview(false);
+        }
+    }
+
+    const handleFollowClick = () => {
+        if (!isAuthenticated) {
+            toast.error('Please log in to follow users');
+            return;
+        }
+        if (isFollowLoading) return;
+
+        const action = isFollowingCheck?.is_following ? unfollowUser : followUser;
+        action(undefined, {
+            onError: () => {
+                toast.error('Failed to update follow status');
+            }
+        });
+    }
 
     useEffect(() => {
         document.title = 'Profile | Auroraa';
@@ -46,37 +101,55 @@ const Profile = () => {
                 <div className="flex-1 flex flex-col items-center md:items-start">
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-1" style={{ fontFamily: 'Poppins' }}>{userProfile?.name}</h2>
                     <p className="text-gray-600 text-center md:text-left mb-3">{userProfile?.bio}</p>
-                    <Button
-                        className='px-4 py-1.5 rounded-full text-sm font-medium'
-                        onClick={() => {
-                            if (!isAuthenticated) {
-                                toast.error('Please log in to follow users');
-                                return;
-                            }
-                            if (isFollowLoading) return;
-                            setIsFollowLoading(true);
-                            const action = isFollowing ? unfollowUser : followUser;
-                            action(undefined, {
-                                onSuccess: () => {
-                                    setIsFollowing(!isFollowing);
-                                    setIsFollowLoading(false);
-                                },
-                                onError: () => {
-                                    setIsFollowLoading(false);
-                                    toast.error('Failed to update follow status');
-                                }
-                            });
-                        }}
-                        disabled={isFollowLoading}
-                    >
-                        {isFollowing ? 'Following' : 'Follow'}
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button
+                            className='px-4 py-1.5 rounded-full text-sm font-medium'
+                            onClick={handleFollowClick}
+                            disabled={isFollowLoading}
+                        >
+                            {isFollowingCheck?.is_following ? 'Unfollow' : 'Follow'}
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className='px-4 py-1.5 rounded-full text-sm font-medium'
+                            onClick={() => setIsReviewOpen(true)}
+                            disabled={!isAuthenticated}
+                        >
+                            Review Artist
+                        </Button>
+                    </div>
+
                 </div>
             </div>
 
-            {/* Uploaded Products Grid */}
-            <div>
-                <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: 'Poppins' }}>Uploaded Artworks</h3>
+            {/* Review Popup */}
+            <ReviewPopup
+                isOpen={isReviewOpen}
+                onOpenChange={setIsReviewOpen}
+                rating={rating}
+                setRating={setRating}
+                hoverRating={hoverRating}
+                setHoverRating={setHoverRating}
+                reviewText={reviewText}
+                setReviewText={setReviewText}
+                isReviewing={isSubmittingReview}
+                handlePostReview={handlePostReview}
+                showTextArea={false}
+            />
+
+            {/* Login Prompt */}
+            <div className="mt-6">
+                {!isAuthenticated && (
+                    <div className="mt-4 text-center">
+                        <p className="text-sm text-gray-600 mb-2">Log in to leave a review</p>
+                        <Link
+                            to="/login"
+                            className="text-sm font-medium text-blue-600 hover:underline"
+                        >
+                            Log In
+                        </Link>
+                    </div>
+                )}
                 <MasonryFeed
                     length={products?.length}
                     data={products}
@@ -86,6 +159,6 @@ const Profile = () => {
             </div>
         </div>
     );
-};
+}
 
 export default Profile;

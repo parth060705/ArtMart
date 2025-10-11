@@ -32,7 +32,7 @@ const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
 const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
 const WishList = React.lazy(() => import('./pages/product/WishList'));
 const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
-const ArtistsRankingPage = React.lazy(() => import('./pages/ArtistsRankingPage'));
+const ArtistsPage = React.lazy(() => import('./pages/ArtistsPage'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
@@ -102,7 +102,7 @@ function App() {
                   <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
                   <Route path={AppRoutes.WishListPage} element={<WishList />} />
                   <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
-                  <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsRankingPage />} />
+                  <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
                   <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
                   <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
                   <Route path={AppRoutes.SettingsPage} element={<SettingsPage />} />

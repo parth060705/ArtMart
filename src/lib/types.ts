@@ -42,6 +42,29 @@ export interface TopArtsistResponse {
   profileImage: string;
 }
 
+export interface UserSearchResult {
+  id: string;
+  name: string;
+  username: string;
+  profileImage?: string;
+  avgRating: number;
+  reviewCount: number;
+  bio: string;
+  rank: number;
+}
+
+export interface PostReviewProps {
+  rating: number;
+  setRating: (rating: number) => void;
+  hoverRating: number;
+  setHoverRating: (rating: number) => void;
+  reviewText: string;
+  setReviewText: (text: string) => void;
+  isReviewing: boolean;
+  handlePostReview: () => void;
+  showTextArea: boolean;
+}
+
 // ------------------ IMAGE ------------------
 
 export type Image = {

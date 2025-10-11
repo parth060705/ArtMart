@@ -31,6 +31,7 @@ import { Routes } from '@/lib/routes';
 import placeholderProfileImage from '@/assets/placeholder-profile-image.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
+import PostReview from '@/components/PostReview';
 
 const ArtworkDetail = () => {
   const navigate = useNavigate();
@@ -399,34 +400,17 @@ const ArtworkDetail = () => {
           {/* Reviews */}
           <TabsContent value="reviews">
             <div className="space-y-4">
-              <div>
-                <div className="flex gap-1 mb-2">
-                  {[1, 2, 3, 4, 5].map(star => (
-                    <button
-                      key={star}
-                      onClick={() => setRating(star)}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      className={(hoverRating || rating) >= star ? 'text-amber-400' : 'text-gray-400'}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
-                <textarea
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                  placeholder="Write your review..."
-                  className="w-full p-2 rounded border bg-[var(--muted)]"
-                />
-                <button
-                  onClick={handlePostReview}
-                  disabled={isReviewing}
-                  className="mt-2 px-4 py-1 bg-[var(--primary)] text-white rounded"
-                >
-                  {isReviewing ? 'Submitting...' : 'Submit Review'}
-                </button>
-              </div>
+              <PostReview
+                rating={rating}
+                setRating={setRating}
+                hoverRating={hoverRating}
+                setHoverRating={setHoverRating}
+                reviewText={reviewText}
+                setReviewText={setReviewText}
+                isReviewing={isReviewing}
+                handlePostReview={handlePostReview}
+                showTextArea={true}
+              />
               {reviews.map((r: Review) => (
                 <ReviewCard key={r.id} item={r} />
               ))}

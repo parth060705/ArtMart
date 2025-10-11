@@ -1,26 +1,24 @@
-import React, { useEffect } from 'react';
-import { useGetTopArtists } from '@/hooks/useGetTopArtists';
-import { TopArtsistResponse } from '@/lib/types';
-import { Link } from 'react-router-dom';
-import { Star, StarHalf, User, Award } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { TopArtsistResponse, UserSearchResult } from "@/lib/types";
+import { useUserSearch } from "@/hooks/useUserSearch";
+import { Award, Star, StarHalf, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const rankColors = ['bg-yellow-400', 'bg-gray-400', 'bg-amber-700'];
 
-const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse; rank: number }) => {
+const ArtistCard = ({ artist }: { artist: TopArtsistResponse | UserSearchResult }) => {
+    const { data } = useUserSearch(artist.username);
     const fullStars = Math.floor(artist.avgRating);
     const hasHalfStar = artist.avgRating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-    const isTop3 = rank <= 3;
-    const rankColorClass = isTop3 ? rankColors[rank - 1] : 'bg-[var(--muted)]';
+    const isTop3 = artist.rank <= 3;
+    const rankColorClass = isTop3 ? rankColors[artist.rank - 1] : 'bg-[var(--muted)]';
 
     return (
         <div className="relative flex flex-row items-center p-3 bg-white dark:bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm sm:shadow-md">
-            
+
             {/* Rank Badge */}
             <div className={`absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shadow ${rankColorClass}`}>
-                {rank === 1 ? <Award className="w-4 h-4" /> : rank}
+                {artist.rank === 1 ? <Award className="w-4 h-4" /> : artist.rank}
             </div>
 
             {/* Profile */}
@@ -67,48 +65,4 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse; rank: number
     );
 };
 
-const ArtistsRankingPage = () => {
-    const { data: topArtists, isLoading } = useGetTopArtists();
-
-    useEffect(() => {
-        document.title = 'Top Artists | Auroraa';
-    }, []);
-
-    return (
-        <div className="container mx-auto px-4 py-6 max-w-xl sm:max-w-3xl">
-            <div className="mb-6 text-center">
-                <h1 className="text-2xl sm:text-3xl font-bold mb-1">Top Artists</h1>
-                <p className="text-[var(--muted-foreground)] text-sm sm:text-base">Discover the most talented artists on Auroraa</p>
-            </div>
-
-            {isLoading ? (
-                <div className="space-y-3">
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} className="flex flex-row items-center p-3 rounded-xl border border-[var(--border)] bg-white dark:bg-[var(--card)] animate-pulse">
-                            <Skeleton className="w-10 h-10 rounded-full mr-3" />
-                            <div className="flex-1 flex flex-col space-y-1">
-                                <Skeleton className="h-3 w-[50%]" />
-                                <Skeleton className="h-2 w-[30%]" />
-                            </div>
-                            <Skeleton className="w-10 h-4 ml-2" />
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div className="space-y-3">
-                    {topArtists?.length ? (
-                        topArtists.map((artist: TopArtsistResponse, index: number) => (
-                            <ArtistCard key={artist.artistId} artist={artist} rank={index + 1} />
-                        ))
-                    ) : (
-                        <div className="text-center py-8">
-                            <p className="text-[var(--muted-foreground)]">No artists found</p>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    );
-};
-
-export default ArtistsRankingPage;
+export default ArtistCard;

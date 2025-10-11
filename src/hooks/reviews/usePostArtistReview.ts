@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 
-export const usePostReviews = (id: string) => {
+export const usePostArtistReview = (id: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ rating, comment, artworkId, artistId }: { rating: number; comment: string; artworkId: string; artistId: string }) => {
-            const { data: review } = await axiosClient.post(`/auth/reviews`, { rating, comment, artworkId, artistId });
+        mutationFn: async ({ rating, comment, artistId }: { rating: number; comment: string; artistId: string }) => {
+            const { data: review } = await axiosClient.post(`/auth/artistreview`, { rating, comment, artistId });
             return review;
         },
         onSuccess: () => {

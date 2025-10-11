@@ -142,12 +142,12 @@ const Chat: React.FC<ChatProps> = ({
 
   return (
     <div className="flex items-start md:items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-      <div className="w-full max-w-2xl h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300 relative">
+      <div className="w-full max-w-2xl h-dvh flex flex-col bg-white overflow-hidden transform transition-all duration-300 relative">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white absolute top-0 left-0 right-0 z-20">
           <div className="flex items-center space-x-3">
             {/* back arrow  */}
-            <ChevronLeft onClick={() => navigate(-1)} s/>
+            <ChevronLeft onClick={() => navigate(-1)} s />
             <div className="relative">
               <img
                 src={peerData?.profileImage || "/default-avatar.png"}

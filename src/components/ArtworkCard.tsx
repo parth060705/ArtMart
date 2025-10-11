@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
-import { useAddToWishList } from '@/hooks/useAddToWishList';
+import { useSaveArtwork } from '@/hooks/useSaveArtworks';
 
 
 const ArtworkCard = ({
@@ -38,7 +38,7 @@ const ArtworkCard = ({
     const { mutate: likeProduct } = useLikeProduct(id || '');
     const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
 
-    const { mutateAsync: addToWishList, isPending: isWishListPending } = useAddToWishList(id || '');
+    const { mutateAsync: addToWishList, isPending: isWishListPending } = useSaveArtwork(id || '');
 
     useEffect(() => {
         if (!justOptimisticallyLiked) {
@@ -155,12 +155,12 @@ const ArtworkCard = ({
                             <Send size={24} />
                         </button> */}
                     </div>
-                    <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100" onClick={handleSaveButtonClick}>
-                        <Bookmark size={24} className={`w-7 h-7 ${isWishList
-                            ? "fill-red-500 text-red-500"
-                            : "text-[var(--muted-foreground)]"
-                            }`} />
-                    </button>
+                    <Bookmark size={24} className={`w-7 h-7 ${isWishList
+                        ? "fill-red-500 text-red-500"
+                        : "text-[var(--muted-foreground)]"
+                        }`}
+                        onClick={handleSaveButtonClick}
+                    />
                 </div>
 
                 {/* Likes and Description */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, Palette, User, ArrowRight, Check, X } from 'lucide-react';
+import { Lock, Mail, Palette, User, ArrowRight, Check, X, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -73,8 +73,11 @@ const SettingsPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl mb-20 md:mb-0">
+        <div className="container mx-auto px-4 pb-8 md:pt-8 max-w-4xl mb-20 md:mb-0">
             <div className="flex flex-col gap-4">
+                <button onClick={() => navigate(-1)} className='md:hidden'>
+                    <ArrowLeft />
+                </button>
                 <Card>
                     <CardContent>
                         <div className="flex items-center justify-between py-2">

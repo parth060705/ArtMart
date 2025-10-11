@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import CommentCard from '@/components/CommentCard';
-import { Bookmark, Heart } from 'lucide-react';
+import { ArrowLeft, Bookmark, Heart } from 'lucide-react';
 import { useProductDetails } from '@/hooks/useProductDetails';
 import { Comment, Review } from '@/lib/types';
 import { useCommentsList } from '@/hooks/comments/useCommentsList';
@@ -25,13 +25,13 @@ import { useAddToCart } from '@/hooks/useAddToCart';
 import { useUserFollow } from '@/hooks/user/usesUserFollow';
 import { useUserUnFollow } from '@/hooks/user/useUserUnFollow';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useAddToWishList } from '@/hooks/useAddToWishList';
 import { Button } from '@/components/ui/button';
 import { Routes } from '@/lib/routes';
 import placeholderProfileImage from '@/assets/placeholder-profile-image.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
 import PostReview from '@/components/PostReview';
+import { useSaveArtwork } from '@/hooks/useSaveArtworks';
 
 const ArtworkDetail = () => {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ const ArtworkDetail = () => {
   const { data: isFollowingCheck } = useUserIsFollowingCheck(artwork?.artistId);
   const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
   const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
-  const { mutateAsync: addToWishList, isPending: isWishListPending } = useAddToWishList(id || '');
+  const { mutateAsync: addToWishList, isPending: isWishListPending } = useSaveArtwork(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
 
@@ -180,8 +180,8 @@ const ArtworkDetail = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
-
+    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 pby-10">
+     
       {/* Left Pane (2/3) */}
       <div className="lg:col-span-2 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-8 space-y-6">
         {/* Artist */}

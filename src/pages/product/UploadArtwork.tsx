@@ -20,16 +20,14 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 const categories = [
   'Painting',
   'Digital Art',
-  'Photography',
   'Sculpture',
   'Illustration',
   'Sketch',
-  'Other'
 ] as const;
 
 type FormData = z.infer<typeof uploadProductSchema>;
 
-const UploadProduct = () => {
+const UploadArtwork = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
@@ -215,7 +213,7 @@ const UploadProduct = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto md:px-4 md:py-8 max-w-4xl mb-24 md:mb-0">
       <Card className="border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Upload Artwork</CardTitle>
@@ -302,6 +300,49 @@ const UploadProduct = () => {
               )}
             </div>
 
+            {/* Tags */}
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags (comma separated)</Label>
+              <Input
+                id="tags"
+                placeholder="#abstract, #colorful"
+                onChange={(e) => {
+                  const inputTags = e.target.value
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag.length > 0);
+
+                  setValue('tags', inputTags, { shouldValidate: true });
+                }}
+              />
+              {errors.tags && (
+                <p className="text-sm text-red-500">{errors.tags.message}</p>
+              )}
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <Label htmlFor="category">Category *</Label>
+              <Select
+                onValueChange={(value) => setValue('category', value, { shouldValidate: true })}
+                {...register('category')}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.category && (
+                <p className="text-sm text-red-500">{errors.category.message}</p>
+              )}
+            </div>
+
             {/* For Sale Toggle */}
             <div className="flex items-center space-x-2">
               <input
@@ -352,49 +393,6 @@ const UploadProduct = () => {
               </div>
             )}
 
-            {/* Tags */}
-            <div className="space-y-2">
-              <Label htmlFor="tags">Tags (comma separated)</Label>
-              <Input
-                id="tags"
-                placeholder="#abstract, #colorful"
-                onChange={(e) => {
-                  const inputTags = e.target.value
-                    .split(',')
-                    .map(tag => tag.trim())
-                    .filter(tag => tag.length > 0);
-
-                  setValue('tags', inputTags, { shouldValidate: true });
-                }}
-              />
-              {errors.tags && (
-                <p className="text-sm text-red-500">{errors.tags.message}</p>
-              )}
-            </div>
-
-            {/* Category */}
-            <div className="space-y-2">
-              <Label htmlFor="category">Category *</Label>
-              <Select
-                onValueChange={(value) => setValue('category', value, { shouldValidate: true })}
-                {...register('category')}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.category && (
-                <p className="text-sm text-red-500">{errors.category.message}</p>
-              )}
-            </div>
-
             {/* Submit */}
             <div className="pt-4">
               <Button
@@ -422,4 +420,4 @@ const UploadProduct = () => {
   );
 };
 
-export default UploadProduct;
+export default UploadArtwork;

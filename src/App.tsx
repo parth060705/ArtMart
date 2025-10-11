@@ -28,7 +28,6 @@ const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordP
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const Profile = React.lazy(() => import('./pages/profile/Profile'));
 const ProfileUpdate = React.lazy(() => import('./pages/profile/ProfileUpdate'));
-const UploadProduct = React.lazy(() => import('./pages/product/UploadProduct'));
 const SearchProduct = React.lazy(() => import('./pages/product/SearchProduct'));
 const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
 const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
@@ -38,6 +37,7 @@ const ArtistsPage = React.lazy(() => import('./pages/ArtistsPage'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
+const UploadArtwork = React.lazy(() => import('./pages/product/UploadArtwork'));
 
 // Admin Pages
 const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
@@ -107,7 +107,7 @@ function App() {
                   <Route path={AppRoutes.CartPage} element={<Cart />} />
                   <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
                   <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
-                  <Route path={AppRoutes.UploadProductPage} element={<UploadProduct />} />
+                  <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
                   <Route path={AppRoutes.WishListPage} element={<WishList />} />
                   <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
                   <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
@@ -137,7 +137,7 @@ function App() {
               <InstallButton />
             </BrowserRouter>
           </Suspense>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom" />
+          {/* <ReactQueryDevtools initialIsOpen={false} position="bottom" /> */}
         </QueryClientProvider>
       </ProductSearchProvider>
     </ThemeProvider>

@@ -1,4 +1,4 @@
-import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon } from "lucide-react";
+import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
@@ -28,6 +28,7 @@ const Navbar = ({
   const { isAuthenticated, username, userProfile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const chatPage = location.pathname.includes('/chat')
 
   const handleLogout = () => {
     logout();
@@ -52,7 +53,7 @@ const Navbar = ({
     <div className="">
 
       {/* mobile header  */}
-      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && <div>
+      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !chatPage && <div>
         <div className="px-4 py-6 md:hidden flex justify-between items-center">
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {logo.title}
@@ -128,7 +129,7 @@ const Navbar = ({
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <div className="block lg:hidden">
+      {chatPage ? null : <div className="block lg:hidden">
         {/* Bottom nav bar for mobile */}
         <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md">
           <div className="flex justify-between items-center px-6 py-2 relative">
@@ -157,7 +158,7 @@ const Navbar = ({
               to={Routes.ArtistsRankingPage}
               className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground"
             >
-              <Bookmark className="w-6 h-6 mb-1" />
+              <Users className="w-6 h-6 mb-1" />
               Artists
             </Link>
 
@@ -199,7 +200,7 @@ const Navbar = ({
               />
             </SheetContent>
           </Sheet> */}
-      </div>
+      </div>}
 
     </div>
   );

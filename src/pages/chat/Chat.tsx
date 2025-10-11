@@ -12,18 +12,16 @@ type ChatMessage = MessageOut & {
 };
 import { FiPaperclip, FiSend, FiSmile, FiImage } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ChatProps {
   chatUserId: string;
-  chatUserAvatar?: UserProfile | null;
-  chatUserStatus?: string;
   messages: ChatMessage[];
 }
 
 const Chat: React.FC<ChatProps> = ({
   chatUserId,
-  chatUserAvatar,
-  chatUserStatus = "Active now",
   messages: initialMessages,
 }) => {
   const { data: currentUser } = useUserProfile();
@@ -50,6 +48,7 @@ const Chat: React.FC<ChatProps> = ({
 
   // Combine chat history with real-time messages
   const [combinedMessages, setCombinedMessages] = useState<ChatMessage[]>(initialMessages || []);
+  const navigate = useNavigate();
 
   // Update combined messages when any source changes
   useEffect(() => {
@@ -143,29 +142,18 @@ const Chat: React.FC<ChatProps> = ({
 
   return (
     <div className="flex items-start md:items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-      <div className="w-full max-w-2xl h-[90vh] md:h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300">
+      <div className="w-full max-w-2xl h-screen flex flex-col bg-white overflow-hidden transform transition-all duration-300">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
           <div className="flex items-center space-x-3">
+            {/* back arrow  */}
+            <ChevronLeft onClick={() => navigate(-1)} />
             <div className="relative">
               <img
                 src={peerData?.profileImage || "/default-avatar.png"}
                 alt={peerData?.username || "user"}
                 className="w-12 h-12 rounded-full object-cover border-2 border-white shadow"
               />
-              {/* Animated status indicator */}
-              {/* <motion.span 
-                className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-400'} border-2 border-white`}
-                animate={isConnected ? {
-                  scale: [1, 1.2, 1],
-                  opacity: [0.8, 1, 0.8],
-                } : {}}
-                transition={{
-                  duration: 2,
-                  repeat: isConnected ? Infinity : 0,
-                  ease: 'easeInOut',
-                }}
-              /> */}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center">
@@ -190,7 +178,7 @@ const Chat: React.FC<ChatProps> = ({
                   <div className="flex items-center">
                     <span
                       className={`inline-block w-2 h-2 rounded-full mr-1.5 ${peerStatus === 'online' ? 'bg-green-400' :
-                          peerStatus === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                        peerStatus === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         } ${peerStatus === 'online' ? 'animate-pulse' : ''}`}
                     ></span>
                     <span className="text-xs text-indigo-100 font-medium capitalize">
@@ -269,7 +257,7 @@ const Chat: React.FC<ChatProps> = ({
         {/* Input Area */}
         <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
           <div className="relative flex items-center">
-            <div className="flex space-x-2 mr-2">
+            <div className="flex md:space-x-2 md:mr-2">
               <button
                 type="button"
                 className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
@@ -277,20 +265,6 @@ const Chat: React.FC<ChatProps> = ({
               >
                 <FiSmile className="w-5 h-5" />
               </button>
-              {/* <button
-                type="button"
-                className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
-                onClick={() => inputRef.current?.focus()}
-              >
-                <FiPaperclip className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                className="p-2 text-gray-500 hover:text-indigo-600 transition-colors"
-                onClick={() => inputRef.current?.focus()}
-              >
-                <FiImage className="w-5 h-5" />
-              </button> */}
             </div>
             <input
               ref={inputRef}
@@ -299,12 +273,12 @@ const Chat: React.FC<ChatProps> = ({
               onChange={handleTyping}
               onKeyDown={handleKeyDown}
               placeholder="Type a message..."
-              className="flex-1 py-2 px-4 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200"
+              className="flex-1 py-2 sm:py-2.5 px-3 sm:px-4 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-200 text-sm sm:text-base"
             />
             <button
               type="submit"
               disabled={!input.trim()}
-              className="ml-2 p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="ml-1 sm:ml-2 p-1.5 sm:p-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
             >
               <FiSend className="w-5 h-5" />
             </button>

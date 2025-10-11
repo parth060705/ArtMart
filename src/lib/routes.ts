@@ -1,4 +1,4 @@
-import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark, PlusCircle } from "lucide-react";
+import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark, PlusCircle, User, Group, Users } from "lucide-react";
 import { ComponentType } from "react";
 
 interface NavItem {
@@ -73,7 +73,7 @@ export const navbarRoutes: NavbarRoutes = {
         {
             title: "Artists",
             url: '/artists-ranking',
-            icon: Bookmark
+            icon: Users
         },
         {
             title: "Settings",

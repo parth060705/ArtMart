@@ -53,6 +53,19 @@ const Profile = () => {
     setIsFollowersOpen(true);
   }
 
+  const getRankBgColor = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return 'bg-yellow-500';
+      case 2:
+        return 'bg-slate-200';
+      case 3:
+        return 'bg-orange-500';
+      default:
+        return 'bg-gray-500';
+    }
+  }
+
   return (
     <>
       <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8 mb-20 md:mb-0">
@@ -72,10 +85,6 @@ const Profile = () => {
                 <span className="text-xs font-medium text-amber-800 dark:text-amber-200">
                   {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 'N/A'}
                 </span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200 rounded-full px-3 py-1 text-xs font-medium">
-                <Trophy className="w-3.5 h-3.5" />
-                <span>Rank #{userProfile?.rank || 'N/A'}</span>
               </div>
               <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-200 rounded-full px-3 py-1 text-xs font-medium">
                 <div className="relative w-3.5 h-3.5">
@@ -97,6 +106,12 @@ const Profile = () => {
               <Link to={`${Routes.SettingsPage}`} className='md:hidden'>
                 <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Settings /></Button>
               </Link>
+            </div>
+          </div>
+          <div className='absolute top-0 right-0'>
+            <div className={`flex items-center gap-1.5 text-white rounded-bl-sm px-3 py-1 text-xs font-medium ${getRankBgColor(userProfile?.rank || 0)}`}>
+              <Trophy className="w-3.5 h-3.5" />
+              <span>Rank {userProfile?.rank || 'N/A'}</span>
             </div>
           </div>
         </div>

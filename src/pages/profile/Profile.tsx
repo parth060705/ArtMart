@@ -16,6 +16,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useUserReview } from '@/hooks/user/useUserReview';
 import ReviewCard from '@/components/ReviewCard';
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg"
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -64,6 +65,14 @@ const Profile = () => {
       default:
         return 'bg-gray-500';
     }
+  }
+
+  if (!userProfile) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (

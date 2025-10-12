@@ -24,6 +24,7 @@ import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import PostReview from '@/components/PostReview';
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg"
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Profile = () => {
     const { isAuthenticated } = useAuth();
@@ -102,6 +103,14 @@ const Profile = () => {
     useEffect(() => {
         document.title = 'Profile | Auroraa';
     }, []);
+
+    if (!userProfile) {
+        return (
+            <div className="min-h-[70vh] flex items-center justify-center">
+                <LoadingSpinner />
+            </div>
+        );
+    }
 
     return (
         <>

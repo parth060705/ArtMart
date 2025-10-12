@@ -148,9 +148,9 @@ const ArtworkCard = ({
                             />
                             <span className="text-lg">{localLikeCount}</span>
                         </button>
-                        <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100">
+                        {/* <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100">
                             <MessageCircle size={24} />
-                        </button>
+                        </button> */}
                         {/* <button className="p-1.5 text-gray-700 rounded-full hover:bg-gray-100">
                             <Send size={24} />
                         </button> */}

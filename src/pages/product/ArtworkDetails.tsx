@@ -181,7 +181,7 @@ const ArtworkDetail = () => {
 
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 pby-10">
-     
+
       {/* Left Pane (2/3) */}
       <div className="lg:col-span-2 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-8 space-y-6">
         {/* Artist */}
@@ -227,7 +227,7 @@ const ArtworkDetail = () => {
             }}
             disabled={isFollowLoading}
           >
-            {isFollowingCheck?.is_following ? 'Following' : 'Follow'}
+            {isFollowingCheck?.is_following ? 'Unfollow' : 'Follow'}
           </Button>}
         </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, Palette, User, ArrowRight, Check, X, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Lock, Mail, Palette, User, ArrowRight, Check, X, ArrowLeft, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -169,12 +169,16 @@ const SettingsPage = () => {
                         </Card>
                     </div>
                 )}
-                {userProfile && <Button
-                    onClick={handleLogout}
-                    className="w-max bg-red-600"
-                >
-                    Logout
-                </Button>}
+                {userProfile && <div className='flex flex-col gap-2'>
+                    <Link to={`/me/profile/${userProfile?.username}/update`}>
+                        <Button variant="default" className="px-6 font-semibold cursor-pointer">Update Profile </Button>
+                    </Link>
+                    <Button
+                        onClick={handleLogout}
+                        className="w-max bg-red-600"
+                    >
+                        Logout
+                    </Button></div>}
             </div>
         </div>
     );

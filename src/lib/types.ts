@@ -1,7 +1,7 @@
 // ------------------ USERS ------------------
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   username: string;
   profileImage: string;
@@ -15,6 +15,10 @@ export interface User {
   updatedAt: string;
   followers: number;
   following: number;
+  rank: number;
+  reviewCount: number;
+  avgRating: number;
+  profile_completion: number;
 }
 
 export interface UserUpdate {
@@ -50,7 +54,7 @@ export interface UserSearchResult {
   avgRating: number;
   reviewCount: number;
   bio: string;
-  rank: number;
+  rank?: number;
 }
 
 export interface PostReviewProps {

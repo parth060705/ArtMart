@@ -114,7 +114,7 @@ const ArtistsPage = () => {
                     <div className="space-y-3">
                         {topArtists?.length ? (
                             topArtists.map((artist: TopArtsistResponse, index: number) => (
-                                <ArtistCard key={artist.artistId} artist={artist} />
+                                <ArtistCard key={artist.artistId} artist={artist} rank={index + 1} />
                             ))
                         ) : (
                             <div className="text-center py-8">

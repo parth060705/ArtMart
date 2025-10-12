@@ -147,7 +147,7 @@ const Chat: React.FC<ChatProps> = ({
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white absolute top-0 left-0 right-0 z-20">
           <div className="flex items-center space-x-3">
             {/* back arrow  */}
-            <ChevronLeft onClick={() => navigate(-1)} s />
+            <ChevronLeft onClick={() => navigate(-1)}/>
             <div className="relative">
               <img
                 src={peerData?.profileImage || "/default-avatar.png"}

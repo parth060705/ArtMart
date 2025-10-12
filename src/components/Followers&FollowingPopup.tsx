@@ -11,6 +11,7 @@ interface FollowersAndFollowingPopupProps {
   onOpenChange: (open: boolean) => void;
   followers: User[];
   following: User[];
+  defaultTab?: "followers" | "following";
 }
 
 const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
@@ -18,6 +19,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
   onOpenChange,
   followers,
   following,
+  defaultTab = "followers"
 }) => {
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:w-full w-[450px] rounded-xl shadow-lg bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff] text-[var(--foreground)] p-2 md:p-10">
         <div className="flex flex-col pt-8">
-          <Tabs defaultValue="followers" className="flex-1">
+          <Tabs defaultValue={defaultTab} className="flex-1">
             <TabsList className="grid w-full grid-cols-2 rounded-xl overflow-hidden bg-[var(--muted)] p-1">
               <TabsTrigger
                 value="followers"

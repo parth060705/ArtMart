@@ -46,7 +46,6 @@ const OrderManage = React.lazy(() => import('./admin-panel/orders_manage'));
 const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dashboard'));
 
 // Components
-const ProtectedRoute = React.lazy(() => import('./components/ProtectedRoutes'));
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
 // Simple loading spinner component
 
@@ -137,7 +136,7 @@ function App() {
               <InstallButton />
             </BrowserRouter>
           </Suspense>
-          {/* <ReactQueryDevtools initialIsOpen={false} position="bottom" /> */}
+          <ReactQueryDevtools initialIsOpen={false} position="bottom" />
         </QueryClientProvider>
       </ProductSearchProvider>
     </ThemeProvider>

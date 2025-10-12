@@ -114,7 +114,7 @@ const ArtworkDetail = () => {
 
   const handleLikeButtonClick = () => {
     if (!isAuthenticated) {
-      toast.error('Please login to like this product');
+      toast.error('Please login to like this artwork');
       return;
     }
 
@@ -153,7 +153,7 @@ const ArtworkDetail = () => {
 
   const handleSaveButtonClick = () => {
     if (!isAuthenticated) {
-      toast.error('Please login to save this product');
+      toast.error('Please login to save this artwork');
       return;
     }
     addToWishList(artwork.id)

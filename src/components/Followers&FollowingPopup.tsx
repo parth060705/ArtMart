@@ -4,7 +4,7 @@ import { User } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { MessageSquare } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg";
 interface FollowersAndFollowingPopupProps {
   open: boolean;
@@ -70,9 +70,9 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                         className="w-12 h-12 rounded-full object-cover border-2 border-[var(--accent)]"
                       />
                       <div className="flex flex-col">
-                        <p className="text-sm text-gray-500">
+                        <Link to={`/profile/${user.id}`} className="text-sm text-gray-500">
                           @{user.username}
-                        </p>
+                        </Link>
                         <h3 className="text-[10px] md:text-base artwfont-semibold">{user.name}</h3>
                       </div>
                       <Button

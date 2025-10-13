@@ -89,29 +89,31 @@ const Profile = () => {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-1" style={{ fontFamily: 'Poppins' }}>{userProfile?.name}</h2>
             <p className="text-gray-600 text-center md:text-left mb-3">{userProfile?.bio}</p>
             <div className='flex flex-wrap justify-center md:justify-start gap-2'>
-              <div onClick={handleReviewClick} className="flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-full px-2 py-1 cursor-pointer">
+              {userProfile && <><div onClick={handleReviewClick} className="flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-full px-2 py-1 cursor-pointer">
                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                 <span className="text-xs font-medium text-amber-800 dark:text-amber-200">
                   {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 0}
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-200 rounded-full px-3 py-1 text-xs font-medium">
-                <div className="relative w-3.5 h-3.5">
-                  <Circle className="absolute w-full h-full text-emerald-200 dark:text-emerald-700" />
-                  <Circle className="absolute w-full h-full text-emerald-500" style={{ clipPath: `inset(0 ${100 - (userProfile?.profile_completion || 0)}% 0 0)` }} />
-                </div>
-                <span>Profile {userProfile?.profile_completion || 0}%</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200 rounded-full px-3 py-1 text-xs font-medium cursor-pointer transition-colors" onClick={() => handleFollowersFollowingClick('followers')}>
+                <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-200 rounded-full px-3 py-1 text-xs font-medium">
+                  <div className="relative w-3.5 h-3.5">
+                    <Circle className="absolute w-full h-full text-emerald-200 dark:text-emerald-700" />
+                    <Circle className="absolute w-full h-full text-emerald-500" style={{ clipPath: `inset(0 ${100 - (userProfile?.profile_completion || 0)}% 0 0)` }} />
+                  </div>
+                  <span>Profile {userProfile?.profile_completion || 0}%</span>
+                </div></>}
+              {followers && (<div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200 rounded-full px-3 py-1 text-xs font-medium cursor-pointer transition-colors" onClick={() => handleFollowersFollowingClick('followers')}>
                 <Users className="w-3.5 h-3.5" />
                 <span className="font-medium">{followers?.users?.length || 0}</span>
                 <span className="text-slate-500 dark:text-slate-400">Followers</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200 rounded-full px-3 py-1 text-xs font-medium cursor-pointer transition-colors" onClick={() => handleFollowersFollowingClick('following')}>
-                <UserPlus2 className="w-3.5 h-3.5" />
-                <span className="font-medium">{following?.users?.length || 0}</span>
-                <span className="text-slate-500 dark:text-slate-400">Following</span>
-              </div>
+              </div>)}
+              {following && (
+                <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200 rounded-full px-3 py-1 text-xs font-medium cursor-pointer transition-colors" onClick={() => handleFollowersFollowingClick('following')}>
+                  <UserPlus2 className="w-3.5 h-3.5" />
+                  <span className="font-medium">{following?.users?.length || 0}</span>
+                  <span className="text-slate-500 dark:text-slate-400">Following</span>
+                </div>
+              )}
               <Link to={`${Routes.SettingsPage}`} className='md:hidden'>
                 <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Settings /></Button>
               </Link>

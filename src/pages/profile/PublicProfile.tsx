@@ -160,7 +160,6 @@ const Profile = () => {
                                 variant="outline"
                                 className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
                                 onClick={handleReviewClick}
-                                disabled={!isAuthenticated}
                             >
                                 Review Artist
                             </Button>
@@ -168,7 +167,6 @@ const Profile = () => {
                                 variant="outline"
                                 className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
                                 onClick={handleChatClick}
-                                disabled={!isAuthenticated}
                             >
                                 <MessageCircle className="w-4 h-4" />
                                 Chat

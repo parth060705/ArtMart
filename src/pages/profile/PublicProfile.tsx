@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ProductCard from '@/components/ProductCard';
 import { useAuth } from '../../hooks/user/auth/UseAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
 import { useProductsList } from '@/hooks/useProductsList';
 import { Product, User } from '@/lib/types';
@@ -12,7 +12,7 @@ import { useUserFollowingList } from '@/hooks/user/useUserFollowingList';
 import { Routes } from '@/lib/routes';
 import MasonryFeed from '@/components/MasonryFeed';
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { Edit, Plus, ShoppingCart, Star, Trophy, Upload } from 'lucide-react';
+import { Edit, MessageCircle, Plus, ShoppingCart, Star, Trophy, Upload } from 'lucide-react';
 import { useGetUserProfilePublic } from '@/hooks/user/useUserProfilePublic';
 import { useParams } from 'react-router-dom';
 import { useUserFollow } from '@/hooks/user/usesUserFollow';
@@ -27,6 +27,7 @@ import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg"
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Profile = () => {
+    const navigate = useNavigate()
     const { isAuthenticated } = useAuth();
     const { userId } = useParams<{ userId: string }>();
     const { data: userProfile } = useGetUserProfilePublic(userId || '');
@@ -141,11 +142,20 @@ const Profile = () => {
                             </Button>
                             <Button
                                 variant="outline"
-                                className='px-4 py-1.5 rounded-full text-sm font-medium'
+                                className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
                                 onClick={() => setIsReviewOpen(true)}
                                 disabled={!isAuthenticated}
                             >
                                 Review Artist
+                            </Button>
+                            <Button
+                                variant="outline"
+                                className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
+                                onClick={() => navigate(`/chat/${userProfile?.id}`)}
+                                disabled={!isAuthenticated}
+                            >
+                                <MessageCircle className="w-4 h-4" />
+                                Chat
                             </Button>
                         </div>
 

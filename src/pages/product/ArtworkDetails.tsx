@@ -332,7 +332,7 @@ const ArtworkDetail = () => {
         <Tabs defaultValue="comments">
           <TabsList className={`grid ${artwork.forSale ? 'grid-cols-2' : 'grid-cols-1'} mb-4`}>
             <TabsTrigger value="comments">Comments</TabsTrigger>
-            {artwork.forSale && <TabsTrigger value="reviews">Reviews</TabsTrigger>}
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
 
           {/* Comments */}

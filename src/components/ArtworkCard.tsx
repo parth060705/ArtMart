@@ -108,7 +108,7 @@ const ArtworkCard = ({
                             className="w-full h-full object-cover rounded-full"
                         />
                     </div>
-                    <Link to={`${Routes.ProfilePublicPage}/${artist.id}`} className="font-semibold text-gray-800 hover:underline">{artist.username}</Link>
+                    <Link to={`${Routes.ProfilePublicPage}/${artist.username}`} className="font-semibold text-gray-800 hover:underline">{artist.username}</Link>
                 </div>
                 {/* <button className="text-gray-500 hover:text-gray-800">
                     <MoreHorizontal size={20} />

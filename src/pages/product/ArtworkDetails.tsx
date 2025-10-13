@@ -187,7 +187,7 @@ const ArtworkDetail = () => {
         {/* Artist */}
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <Link to={artwork.artist.id !== userProfile?.id ? `${Routes.ProfilePublicPage}/${artwork.artist.id}` : `/me/profile/${artwork.artist.username}`} className="font-semibold text-gray-800 flex items-center">
+            <Link to={artwork.artist.id !== userProfile?.id ? `${Routes.ProfilePublicPage}/${artwork.artist.username}` : `/me/profile/${artwork.artist.username}`} className="font-semibold text-gray-800 flex items-center">
               <img
                 src={artwork.artist.profileImage}
                 alt={artwork.artist.username}

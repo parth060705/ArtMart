@@ -265,7 +265,7 @@ const ArtworkDetail = () => {
           </div>
           {/* Show price only if artwork is for sale  */}
           {artwork.forSale && (
-            <div className="text-2xl font-extrabold text-[var(--accent)]">
+            <div className="text-2xl font-extrabold text-[var(--accent)] hidden">
               ₹{artwork.price}
             </div>
           )}

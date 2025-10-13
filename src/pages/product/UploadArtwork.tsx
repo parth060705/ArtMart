@@ -344,7 +344,7 @@ const UploadArtwork = () => {
             </div>
 
             {/* For Sale Toggle */}
-            <div className="flex items-center space-x-2">
+            <div className=" items-center space-x-2 hidden">
               <input
                 type="checkbox"
                 id="forSale"
@@ -355,7 +355,7 @@ const UploadArtwork = () => {
             </div>
 
             {watchForSale && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <div className=" grid-cols-1 md:grid-cols-2 gap-6 mt-4 hidden">
                 {/* Price */}
                 <div className="space-y-2">
                   <Label htmlFor="price">Price (₹) *</Label>

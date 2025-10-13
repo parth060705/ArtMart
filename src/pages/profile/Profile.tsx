@@ -92,7 +92,7 @@ const Profile = () => {
               <div onClick={handleReviewClick} className="flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-full px-2 py-1 cursor-pointer">
                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                 <span className="text-xs font-medium text-amber-800 dark:text-amber-200">
-                  {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 'N/A'}
+                  {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 0}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-200 rounded-full px-3 py-1 text-xs font-medium">

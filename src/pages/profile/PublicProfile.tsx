@@ -35,10 +35,10 @@ const Profile = () => {
     const [hoverRating, setHoverRating] = useState<number>(0);
     const [reviewText, setReviewText] = useState<string>('');
     const [isReviewOpen, setIsReviewOpen] = useState(false);
-    const { data: isFollowingCheck } = useUserIsFollowingCheck(userId || '');
+    const { data: isFollowingCheck } = useUserIsFollowingCheck(userProfile?.id || '');
     const { mutateAsync: postReview, isPending: isReviewing } = usePostArtistReview(userId || '');
-    const { mutate: followUser, isPending: isFollowing } = useUserFollow(userId || '');
-    const { mutate: unfollowUser, isPending: isUnfollowing } = useUserUnFollow(userId || '');
+    const { mutate: followUser, isPending: isFollowing } = useUserFollow(userProfile?.id || '');
+    const { mutate: unfollowUser, isPending: isUnfollowing } = useUserUnFollow(userProfile?.id || '');
 
     const isFollowLoading = isFollowing || isUnfollowing;
 
@@ -129,7 +129,7 @@ const Profile = () => {
                             <div className="flex items-center gap-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-full px-2 py-1">
                                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                                 <span className="text-xs font-medium text-amber-800 dark:text-amber-200">
-                                    {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 'N/A'}
+                                    {userProfile?.avgRating ? userProfile.avgRating.toFixed(1) : 0}
                                 </span>
                             </div>
                             <Button

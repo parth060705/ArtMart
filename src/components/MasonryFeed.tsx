@@ -39,7 +39,7 @@ export default function MasonryFeed({ className, length, url, data, isLoading }:
           />
         </div>
       )) : (
-        <div className="col-span-full text-center text-lg text-muted-foreground py-12">No products found.</div>
+        <div className="col-span-full text-center text-lg text-muted-foreground py-12">No Artworks yet.</div>
       )}
     </div>
   );

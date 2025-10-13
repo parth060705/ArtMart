@@ -101,6 +101,22 @@ const Profile = () => {
         }
     }
 
+    const handleReviewClick = () => {
+        if (!isAuthenticated) {
+            toast.error('Please log in to review users');
+            return;
+        }
+        setIsReviewOpen(true);
+    }
+
+    const handleChatClick = () => {
+        if (!isAuthenticated) {
+            toast.error('Please log in to chat with users');
+            return;
+        }
+        navigate(`/chat/${userProfile?.id}`);
+    }
+
     useEffect(() => {
         document.title = 'Profile | Auroraa';
     }, []);
@@ -143,7 +159,7 @@ const Profile = () => {
                             <Button
                                 variant="outline"
                                 className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
-                                onClick={() => setIsReviewOpen(true)}
+                                onClick={handleReviewClick}
                                 disabled={!isAuthenticated}
                             >
                                 Review Artist
@@ -151,7 +167,7 @@ const Profile = () => {
                             <Button
                                 variant="outline"
                                 className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
-                                onClick={() => navigate(`/chat/${userProfile?.id}`)}
+                                onClick={handleChatClick}
                                 disabled={!isAuthenticated}
                             >
                                 <MessageCircle className="w-4 h-4" />

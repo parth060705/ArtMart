@@ -114,7 +114,7 @@ const Profile = () => {
 
     return (
         <>
-            <div className="max-w-4xl mx-auto p-1 pt-8 md:px-4 md:py-8">
+            <div className="max-w-4xl mx-auto p-1 pt-16 pb-20 md:px-4 md:py-8 mb-20 md:mb-0">
                 {/* Profile Banner */}
                 <div className="relative flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 bg-gradient-to-r from-[#d9fdf8] via-[#e3e3fc] to-[#f9efff] rounded-sm shadow-lg p-6 md:p-10 mb-4">
                     <img

@@ -101,7 +101,7 @@ export type Product = {
   artistid: string;
   likes: number;
   comments: number;
-  isWishList: boolean;
+  isSaved: boolean;
   location: string;
   createdAt: string;
 };

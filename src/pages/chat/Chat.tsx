@@ -14,18 +14,17 @@ import { FiPaperclip, FiSend, FiSmile, FiImage } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useGetChatHistory } from "@/hooks/chat/useGetChatHistory";
 
 interface ChatProps {
-  chatUserId: string;
-  messages: ChatMessage[];
+  peerData: UserProfile;
 }
 
 const Chat: React.FC<ChatProps> = ({
-  chatUserId,
-  messages: initialMessages,
+  peerData,
 }) => {
   const { data: currentUser } = useUserProfile();
-  const { data: peerData } = useGetUserProfilePublic(chatUserId);
+  const { data: initialMessages } = useGetChatHistory(peerData?.id || "");
   const currentUserId: string = currentUser?.id.toString() || '';
   const accessToken = localStorage.getItem('accessToken') || '';
   const [input, setInput] = useState("");
@@ -42,7 +41,7 @@ const Chat: React.FC<ChatProps> = ({
     peerStatus
   } = useChat({
     accessToken,
-    peerId: chatUserId,
+    peerId: peerData?.id,
     userId: currentUserId
   });
 
@@ -70,7 +69,7 @@ const Chat: React.FC<ChatProps> = ({
     };
 
     // Add all historical messages
-    initialMessages.forEach(addMessageToMap);
+    initialMessages && initialMessages.forEach(addMessageToMap);
 
     // Add real-time messages (these will overwrite any messages with the same key)
     realtimeMessages.forEach(addMessageToMap);
@@ -97,7 +96,7 @@ const Chat: React.FC<ChatProps> = ({
     if (messageContent) {
       const tempMessage: ChatMessage = {
         sender_id: currentUserId,
-        receiver_id: chatUserId,
+        receiver_id: peerData?.id,
         content: messageContent,
         timestamp: new Date().toISOString(),
         status: 'sending',
@@ -147,7 +146,7 @@ const Chat: React.FC<ChatProps> = ({
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white absolute top-0 left-0 right-0 z-20">
           <div className="flex items-center space-x-3">
             {/* back arrow  */}
-            <ChevronLeft onClick={() => navigate(-1)}/>
+            <ChevronLeft onClick={() => navigate(-1)} />
             <div className="relative">
               <img
                 src={peerData?.profileImage || "/default-avatar.png"}

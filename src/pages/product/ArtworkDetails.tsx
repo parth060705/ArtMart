@@ -59,9 +59,10 @@ const ArtworkDetail = () => {
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
   const { data: comments = [] } = useCommentsList(id || '');
   const { data: isFollowingCheck } = useUserIsFollowingCheck(artwork?.artistId);
+  const [isLocalSaved, setIsLocalSaved] = useState<boolean>(artwork?.isSaved || false);
   const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
   const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
-  const { mutateAsync: addToWishList, isPending: isWishListPending } = useSaveArtwork(id || '');
+  const { mutateAsync: addToSaved, isPending: isSavePending } = useSaveArtwork(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
 
@@ -156,8 +157,21 @@ const ArtworkDetail = () => {
       toast.error('Please login to save this artwork');
       return;
     }
-    addToWishList(artwork.id)
+
+    // Toggle the saved state
+    const newSavedState = !isLocalSaved;
+    setIsLocalSaved(newSavedState);
+
+    // Call the API to save/unsave
+    addToSaved(undefined, {
+      onError: () => {
+        // Revert on error
+        setIsLocalSaved(!newSavedState);
+        toast.error('Failed to update save status. Please try again.');
+      }
+    });
   }
+
 
   useEffect(() => {
     document.title = 'Artwork Details | Auroraa';
@@ -299,9 +313,13 @@ const ArtworkDetail = () => {
             />
             <span className="text-lg">{localLikeCount}</span>
           </button>
-          <button className="flex items-center gap-2 text-[var(--muted-foreground)]" onClick={handleSaveButtonClick}>
-            <Bookmark size={24} className={`w-7 h-7 ${artwork.isWishList
-              ? "fill-red-500 text-red-500"
+          <button
+            className="flex items-center gap-2 text-[var(--muted-foreground)]"
+            onClick={handleSaveButtonClick}
+            disabled={isSavePending}
+          >
+            <Bookmark size={24} className={`w-7 h-7 ${artwork.isSaved || isLocalSaved
+              ? "fill-black text-black"
               : "text-[var(--muted-foreground)]"
               }`} />
             Save

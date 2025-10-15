@@ -16,6 +16,7 @@ import { queryClient } from './lib/client';
 // Layouts
 import MainLayout from './Layout/Mainlayout';
 import LoadingSpinner from './components/LoadingSpinner';
+import Chat from './pages/chat/Chat';
 
 // Pages
 const NotFound = React.lazy(() => import('./pages/NotFound'));

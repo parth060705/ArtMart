@@ -1,18 +1,14 @@
 // src/pages/chat/ChatWrapper.tsx
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { chatMessage, UserProfile } from "@/lib/types";
 import Chat from "./Chat";
-import { useGetChatHistory } from "@/hooks/chat/useGetChatHistory";
+import { useGetUserProfilePublic } from "@/hooks/user/useUserProfilePublic";
 
 const ChatWrapper = () => {
   const { peerId } = useParams<{ peerId: string }>();
-  const [peer, setPeer] = useState<UserProfile | null>(null);
-  const { data: chatHistory } = useGetChatHistory(peerId || "");
+  const { data: peerData } = useGetUserProfilePublic(peerId || "");
+  if (!peerId || !peerData) return <div>Loading chat...</div>;
 
-  if (!chatHistory || !peerId) return <div>Loading chat...</div>;
-
-  return <Chat chatUserId={peerId} messages={chatHistory} />;
+  return <Chat peerData={peerData} />;
 };
 
 export default ChatWrapper;

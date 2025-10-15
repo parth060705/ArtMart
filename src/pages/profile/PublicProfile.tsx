@@ -114,7 +114,7 @@ const Profile = () => {
             toast.error('Please log in to chat with users');
             return;
         }
-        navigate(`/chat/${userProfile?.id}`);
+        navigate(`/chat/${userProfile?.username}`);
     }
 
     useEffect(() => {
@@ -150,7 +150,7 @@ const Profile = () => {
                                 </span>
                             </div>
                             <Button
-                                className='px-4 py-1.5 rounded-full text-sm font-medium'
+                                className='px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer'
                                 onClick={handleFollowClick}
                                 disabled={isFollowLoading}
                             >

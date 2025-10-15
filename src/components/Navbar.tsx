@@ -53,12 +53,12 @@ const Navbar = ({
     <div className="">
 
       {/* mobile header  */}
-      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !chatPage && <div>
+      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !chatPage &&   <div>
         <div className="px-4 py-6 md:hidden flex justify-between items-center">
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {logo.title}
           </Link>
-          <div className="relative">
+          <div className="relative">r
             <MessageCircleIcon className="w-6 h-6" />
             <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
               3

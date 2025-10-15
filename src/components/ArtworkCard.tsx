@@ -11,6 +11,7 @@ import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useSaveArtwork } from '@/hooks/useSaveArtworks';
+import ArtworkDetail from '@/pages/product/ArtworkDetails';
 
 
 const ArtworkCard = ({
@@ -24,21 +25,20 @@ const ArtworkCard = ({
     createdAt,
     how_many_like,
     id,
-    isWishList
+    isSaved
 }: Product) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
-    // likes
     const [likeAnimating, setLikeAnimating] = useState(false);
     const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
     const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
     const [localLikeCount, setLocalLikeCount] = useState<number>(0);
+    const [isLocalSaved, setIsLocalSaved] = useState<boolean>(isSaved || false);
     const { data: likeStatus } = useUserLikeStatus(id || '');
     const { mutate: likeProduct } = useLikeProduct(id || '');
     const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
-
-    const { mutateAsync: addToWishList, isPending: isWishListPending } = useSaveArtwork(id || '');
+    const { mutateAsync: addToSaved, isPending: isWishListPending } = useSaveArtwork(id || '');
 
     useEffect(() => {
         if (!justOptimisticallyLiked) {
@@ -93,7 +93,19 @@ const ArtworkCard = ({
             toast.error('Please login to save this artwork');
             return;
         }
-        addToWishList()
+
+        // Toggle the saved state
+        const newSavedState = !isLocalSaved;
+        setIsLocalSaved(newSavedState);
+
+        // Call the API to save/unsave
+        addToSaved(undefined, {
+            onError: () => {
+                // Revert on error
+                setIsLocalSaved(!newSavedState);
+                toast.error('Failed to update save status. Please try again.');
+            }
+        });
     }
 
     return (
@@ -155,8 +167,8 @@ const ArtworkCard = ({
                             <Send size={24} />
                         </button> */}
                     </div>
-                    <Bookmark size={24} className={`w-7 h-7 ${isWishList
-                        ? "fill-red-500 text-red-500"
+                    <Bookmark size={24} className={`w-7 h-7 ${isSaved || isLocalSaved
+                        ? "fill-black text-black"
                         : "text-[var(--muted-foreground)]"
                         }`}
                         onClick={handleSaveButtonClick}

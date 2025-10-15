@@ -23,7 +23,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleChat = (userId: number) => {
+  const handleChat = (userId: string) => {
     onOpenChange(false); // close popup
     navigate(`/chat/${userId}`);
   };
@@ -70,7 +70,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                         className="w-12 h-12 rounded-full object-cover border-2 border-[var(--accent)]"
                       />
                       <div className="flex flex-col">
-                        <Link to={`/profile/${user.id}`} className="text-sm text-gray-500">
+                        <Link to={`/profile/${user.username}`} className="text-sm text-gray-500">
                           @{user.username}
                         </Link>
                         <h3 className="text-[10px] md:text-base artwfont-semibold">{user.name}</h3>
@@ -78,7 +78,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       <Button
                         size="sm"
                         className="flex items-center gap-1 ml-auto bg-blue-400 text-white hover:bg-blue-600"
-                        onClick={() => handleChat(user.id)}
+                        onClick={() => handleChat(user.username)}
                       >
                         <MessageSquare className="w-4 h-4" />
                       </Button>

@@ -205,3 +205,28 @@ export type chatMessage = {
 //   is_read: boolean;
 //   message_type: "text" | "image" | "video" | "file";
 // };
+
+// ------------------ PASSWORD MANAGEMENT ------------------
+
+// forgot-password
+export interface UseForgotPasswordState {
+  loading: boolean;
+  error: string | null;
+  message: string;
+}
+
+export interface UseForgotPasswordReturn extends UseForgotPasswordState {
+  forgotPassword: (email: string) => Promise<void>;
+}
+
+// resetPassword
+export interface ResetPasswordRequest {
+  email: string;
+  otp: string;
+  new_password: string;
+}
+
+// API response
+export interface ResetPasswordResponse {
+  message: string;
+}

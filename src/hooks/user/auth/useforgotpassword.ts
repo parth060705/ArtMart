@@ -7,6 +7,8 @@ import {
   ResetPasswordResponse,
 } from "@/lib/types"; // Adjust path as needed
 
+const API_BASE = import.meta.env.VITE_API_URL
+
 // ------------------ Forgot Password Hook ------------------
 export function useForgotPassword(): UseForgotPasswordReturn {
   const [loading, setLoading] = useState<UseForgotPasswordState["loading"]>(false);
@@ -17,7 +19,7 @@ export function useForgotPassword(): UseForgotPasswordReturn {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post<{ message: string }>("/forgotpassword", { email });
+      const { data } = await axios.post<{ message: string }>(`${API_BASE}/forgot-password`, { email });
       setMessage(data.message);
     } catch (err: any) {
       setError(err.response?.data?.detail || err.message);
@@ -39,7 +41,7 @@ export function useResetPassword() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post<ResetPasswordResponse>("/resetpassword", data);
+      const response = await axios.post<ResetPasswordResponse>(`${API_BASE}/resetpassword`, data);
       setMessage(response.data.message);
     } catch (err: any) {
       setError(err.response?.data?.detail || err.message);

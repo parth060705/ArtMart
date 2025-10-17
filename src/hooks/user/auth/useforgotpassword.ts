@@ -17,7 +17,7 @@ export function useForgotPassword(): UseForgotPasswordReturn {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post<{ message: string }>("/api/forgot-password", { email });
+      const { data } = await axios.post<{ message: string }>("/forgotpassword", { email });
       setMessage(data.message);
     } catch (err: any) {
       setError(err.response?.data?.detail || err.message);
@@ -39,7 +39,7 @@ export function useResetPassword() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post<ResetPasswordResponse>("/api/reset-password", data);
+      const response = await axios.post<ResetPasswordResponse>("/resetpassword", data);
       setMessage(response.data.message);
     } catch (err: any) {
       setError(err.response?.data?.detail || err.message);

@@ -1,191 +1,3 @@
-// import React, { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { Lock, Mail, Palette, User, ArrowRight, Check, X, ArrowLeft, Edit } from 'lucide-react';
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { Label } from '@/components/ui/label';
-// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import { toast } from 'sonner';
-// import { useAuth } from '@/hooks/user/auth/UseAuth';
-// import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-
-// const SettingsPage = () => {
-//     const { userProfile } = useAuth();
-//     const [currentPassword, setCurrentPassword] = useState('');
-//     const [newPassword, setNewPassword] = useState('');
-//     const [confirmPassword, setConfirmPassword] = useState('');
-//     const [isLoading, setIsLoading] = useState(false);
-//     const [resetEmail, setResetEmail] = useState('');
-//     const [activeTab, setActiveTab] = useState('appearance');
-//     const navigate = useNavigate();
-//     const { logout } = useAuth();
-
-
-//     const handlePasswordUpdate = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         if (newPassword !== confirmPassword) {
-//             toast.error('Passwords do not match');
-//             return;
-//         }
-
-//         try {
-//             setIsLoading(true);
-//             // TODO: Implement password update logic
-//             console.log('Update password:', { currentPassword, newPassword });
-//             toast.success('Password updated successfully');
-//             setCurrentPassword('');
-//             setNewPassword('');
-//             setConfirmPassword('');
-//         } catch (error) {
-//             toast.error(error instanceof Error ? error.message : 'Failed to update password');
-//         } finally {
-//             setIsLoading(false);
-//         }
-//     };
-
-//     const handlePasswordReset = async (e: React.FormEvent) => {
-//         e.preventDefault();
-//         if (!resetEmail) {
-//             toast.error('Please enter your email address');
-//             return;
-//         }
-
-//         try {
-//             setIsLoading(true);
-//             // TODO: Implement password reset email logic
-//             console.log('Send password reset email to:', resetEmail);
-//             toast.success('Check your email for a password reset link');
-//             setResetEmail('');
-//         } catch (error) {
-//             toast.error(error instanceof Error ? error.message : 'Failed to send reset email');
-//         } finally {
-//             setIsLoading(false);
-//         }
-//     };
-
-//     const handleLogout = () => {
-//         logout();
-//         toast.success('Logged out successfully!');
-//         setTimeout(() => {
-//             window.location.href = "/";
-//         }, 500);
-//     };
-
-//     return (
-//         <div className="container mx-auto px-4 pb-8 md:pt-8 max-w-4xl mb-20 md:mb-0">
-//             <div className="flex flex-col gap-4">
-//                 <button onClick={() => navigate(-1)} className='md:hidden'>
-//                     <ArrowLeft />
-//                 </button>
-//                 <Card>
-//                     <CardContent>
-//                         <div className="flex items-center justify-between py-2">
-//                             <div>
-//                                 <h3 className="font-medium">Theme</h3>
-//                                 <p className="text-sm text-[var(--muted-foreground)]">
-//                                     Choose between light and dark themes
-//                                 </p>
-//                             </div>
-//                             <ThemeSwitcher />
-//                         </div>
-//                     </CardContent>
-//                 </Card>
-//                 {userProfile && (
-//                     <div className="space-y-6">
-//                         {/* Change Password */}
-//                         <Card>
-//                             <CardHeader>
-//                                 <CardTitle>Change Password</CardTitle>
-//                                 <CardDescription>Update your password associated with your account.</CardDescription>
-//                             </CardHeader>
-//                             <form onSubmit={handlePasswordUpdate}>
-//                                 <CardContent className="space-y-4">
-//                                     <div>
-//                                         <Label htmlFor="current-password">Current Password</Label>
-//                                         <Input
-//                                             id="current-password"
-//                                             type="password"
-//                                             value={currentPassword}
-//                                             onChange={(e) => setCurrentPassword(e.target.value)}
-//                                             required
-//                                         />
-//                                     </div>
-//                                     <div>
-//                                         <Label htmlFor="new-password">New Password</Label>
-//                                         <Input
-//                                             id="new-password"
-//                                             type="password"
-//                                             value={newPassword}
-//                                             onChange={(e) => setNewPassword(e.target.value)}
-//                                             required
-//                                             minLength={8}
-//                                         />
-//                                     </div>
-//                                     <div>
-//                                         <Label htmlFor="confirm-password">Confirm New Password</Label>
-//                                         <Input
-//                                             id="confirm-password"
-//                                             type="password"
-//                                             value={confirmPassword}
-//                                             onChange={(e) => setConfirmPassword(e.target.value)}
-//                                             required
-//                                         />
-//                                     </div>
-//                                 </CardContent>
-//                                 <CardFooter>
-//                                     <Button type="submit" disabled={isLoading}>
-//                                         {isLoading ? 'Updating...' : 'Update Password'}
-//                                     </Button>
-//                                 </CardFooter>
-//                             </form>
-//                         </Card>
-//                         {/* Forgot Password */}
-//                         <Card>
-//                             <CardHeader>
-//                                 <CardTitle>Forgot Password</CardTitle>
-//                                 <CardDescription>Request a password reset link to your email.</CardDescription>
-//                             </CardHeader>
-//                             <form onSubmit={handlePasswordReset}>
-//                                 <CardContent>
-//                                     <div>
-//                                         <Label htmlFor="reset-email">Email Address</Label>
-//                                         <div className="flex gap-2 mt-2">
-//                                             <Input
-//                                                 id="reset-email"
-//                                                 type="email"
-//                                                 placeholder="Enter your email"
-//                                                 value={resetEmail}
-//                                                 onChange={(e) => setResetEmail(e.target.value)}
-//                                                 required
-//                                             />
-//                                             <Button type="submit" variant="outline" disabled={isLoading}>
-//                                                 {isLoading ? 'Sending...' : 'Send Link'}
-//                                             </Button>
-//                                         </div>
-//                                     </div>
-//                                 </CardContent>
-//                             </form>
-//                         </Card>
-//                     </div>
-//                 )}
-//                 {userProfile && <div className='flex flex-col gap-2'>
-//                     <Link to={`/me/profile/${userProfile?.username}/update`}>
-//                         <Button variant="default" className="px-6 font-semibold cursor-pointer">Update Profile </Button>
-//                     </Link>
-//                     <Button
-//                         onClick={handleLogout}
-//                         className="w-max bg-red-600"
-//                     >
-//                         Logout
-//                     </Button></div>}
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default SettingsPage;
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -196,87 +8,31 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { useForgotPassword, useResetPassword } from '@/hooks/user/auth/useforgotpassword'; // Adjust path
+import { useChangePassword } from '@/hooks/user/useChangePassword';
 
 const SettingsPage = () => {
     const { userProfile, logout } = useAuth();
     const navigate = useNavigate();
-
-    // Password change state
+    const { mutateAsync: changePasswordMutation, isPending: changePasswordPending } = useChangePassword();
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    // OTP reset state
-    const [resetEmail, setResetEmail] = useState('');
-    const [otp, setOtp] = useState('');
-    const [otpNewPassword, setOtpNewPassword] = useState('');
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const { forgotPassword } = useForgotPassword();
-    const { resetPassword } = useResetPassword();
-
-    // Update password with current password
-    const handlePasswordUpdate = async (e: React.FormEvent) => {
+    const handleChangePassword = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            toast.error('Passwords do not match');
+            toast.error('New Passwords and Confirm Password do not match');
             return;
         }
 
         try {
-            setIsLoading(true);
-            console.log('Update password:', { currentPassword, newPassword });
+            await changePasswordMutation({
+                old_password: currentPassword,
+                new_password: newPassword
+            });
             toast.success('Password updated successfully');
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
         } catch (error) {
             toast.error(error instanceof Error ? error.message : 'Failed to update password');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // Send OTP to email
-    const handleSendOtp = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!resetEmail) {
-            toast.error('Please enter your email address');
-            return;
-        }
-
-        try {
-            setIsLoading(true);
-            await forgotPassword(resetEmail);
-            toast.success('OTP sent to your email');
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to send OTP');
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // Submit OTP + new password
-    const handleOtpSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!resetEmail || !otp || !otpNewPassword) {
-            toast.error('Please fill in all fields');
-            return;
-        }
-
-        try {
-            setIsLoading(true);
-            await resetPassword({ email: resetEmail, otp, new_password: otpNewPassword });
-            toast.success('Password reset successfully');
-            setResetEmail('');
-            setOtp('');
-            setOtpNewPassword('');
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to reset password');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -315,7 +71,7 @@ const SettingsPage = () => {
                                 <CardTitle>Change Password</CardTitle>
                                 <CardDescription>Update your password associated with your account.</CardDescription>
                             </CardHeader>
-                            <form onSubmit={handlePasswordUpdate}>
+                            <form onSubmit={handleChangePassword}>
                                 <CardContent className="space-y-4">
                                     <Label htmlFor="current-password">Current Password</Label>
                                     <Input id="current-password" type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
@@ -327,44 +83,7 @@ const SettingsPage = () => {
                                     <Input id="confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
                                 </CardContent>
                                 <CardFooter>
-                                    <Button type="submit" disabled={isLoading}>{isLoading ? 'Updating...' : 'Update Password'}</Button>
-                                </CardFooter>
-                            </form>
-                        </Card>
-
-                        {/* Forgot Password (Send OTP) */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Forgot Password</CardTitle>
-                                <CardDescription>Request an OTP to reset your password.</CardDescription>
-                            </CardHeader>
-                            <form onSubmit={handleSendOtp}>
-                                <CardContent>
-                                    <Label htmlFor="reset-email">Email Address</Label>
-                                    <div className="flex gap-2 mt-2">
-                                        <Input id="reset-email" type="email" placeholder="Enter your email" value={resetEmail} onChange={e => setResetEmail(e.target.value)} required />
-                                        <Button type="submit" variant="outline" disabled={isLoading}>{isLoading ? 'Sending...' : 'Send OTP'}</Button>
-                                    </div>
-                                </CardContent>
-                            </form>
-                        </Card>
-
-                        {/* OTP Reset Password */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Reset Password with OTP</CardTitle>
-                                <CardDescription>Enter the OTP received and your new password.</CardDescription>
-                            </CardHeader>
-                            <form onSubmit={handleOtpSubmit}>
-                                <CardContent className="space-y-4">
-                                    <Label htmlFor="otp">OTP</Label>
-                                    <Input id="otp" type="text" placeholder="Enter OTP" value={otp} onChange={e => setOtp(e.target.value)} maxLength={6} required />
-
-                                    <Label htmlFor="otp-new-password">New Password</Label>
-                                    <Input id="otp-new-password" type="password" placeholder="Enter new password" value={otpNewPassword} onChange={e => setOtpNewPassword(e.target.value)} required />
-                                </CardContent>
-                                <CardFooter>
-                                    <Button type="submit" disabled={isLoading}>{isLoading ? 'Resetting...' : 'Reset Password'}</Button>
+                                    <Button type="submit" disabled={changePasswordPending}>{changePasswordPending ? 'Updating...' : 'Update Password'}</Button>
                                 </CardFooter>
                             </form>
                         </Card>

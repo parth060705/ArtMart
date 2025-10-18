@@ -69,15 +69,11 @@ export interface PostReviewProps {
   showTextArea: boolean;
 }
 
-// ------------------ IMAGE ------------------
-
 export type Image = {
   id: string;
   url: string;
   public_id: string;
 };
-
-// ------------------ PRODUCT ------------------
 
 export type Product = {
   id: string;
@@ -225,8 +221,15 @@ export interface ResetPasswordRequest {
   otp: string;
   new_password: string;
 }
-
-// API response
 export interface ResetPasswordResponse {
+  message: string;
+}
+
+export interface ChangePasswordRequest {
+  new_password: string;
+  old_password: string;
+}
+
+export interface ChangePasswordResponse {
   message: string;
 }

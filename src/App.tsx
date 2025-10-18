@@ -25,7 +25,6 @@ const Loginpage = React.lazy(() => import('./pages/auth/Loginpage'));
 const Cart = React.lazy(() => import('./pages/Cart'));
 const ArtworkDetail = React.lazy(() => import('./pages/product/ArtworkDetails'));
 const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
-const ForgotPasswordPage = React.lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const Profile = React.lazy(() => import('./pages/profile/Profile'));
 const ProfileUpdate = React.lazy(() => import('./pages/profile/ProfileUpdate'));
@@ -96,7 +95,6 @@ function App() {
                   <Route index element={<Loginpage />} />
                   <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
                   <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
-                  <Route path={AppRoutes.AuthForgotPasswordPage} element={<ForgotPasswordPage />} />
                   <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
                 </Route>
                 <Route path="/" element={<MainLayout />}>

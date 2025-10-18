@@ -24,9 +24,8 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import { useSendOTP } from '@/hooks/user/auth/useSendOTP'
-import { useResetPassword } from '@/hooks/user/auth/useResetPassword'
-import { ArrowRight } from 'lucide-react'
+import { useSendOTP } from '@/hooks/user/useSendOTP'
+import { useResetPassword } from '@/hooks/user/useResetPassword'
 
 const sendOTPFormSchema = z.object({
     email: z.string().email('Please enter a valid email address'),

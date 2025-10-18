@@ -92,10 +92,15 @@ const SettingsPage = () => {
 
                 {userProfile && (
                     <div className='flex flex-col gap-2'>
+                        <Link to={`/reset-password`}>
+                            <Button className="cursor-pointer">Reset Password</Button>
+                        </Link>
                         <Link to={`/me/profile/${userProfile?.username}/update`}>
-                            <Button variant="default" className="px-6 font-semibold cursor-pointer">Update Profile</Button>
+                            <Button variant="default" className="cursor-pointer">Update Profile</Button>
                         </Link>
                         <Button onClick={handleLogout} className="w-max bg-red-600">Logout</Button>
+
+
                     </div>
                 )}
             </div>

@@ -95,10 +95,10 @@ function App() {
                   <Route index element={<Loginpage />} />
                   <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
                   <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
-                  <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
                 </Route>
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<Home />} />
+                  <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
                   <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
                   <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
                   <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />

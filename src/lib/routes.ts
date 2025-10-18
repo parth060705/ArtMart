@@ -30,7 +30,7 @@ export class Routes {
     static AuthLoginPage = "/auth/login"
     static AuthRegisterPage = "/auth/register"
     static AuthForgotPasswordPage = "/auth/forgot-password"
-    static AuthResetPasswordPage = "/auth/reset-password"
+    static AuthResetPasswordPage = "/reset-password"
     static CartPage = "/auth/cart"
     static WishListPage = "/auth/wishlist"
     static ArtistsRankingPage = "/artists-ranking"

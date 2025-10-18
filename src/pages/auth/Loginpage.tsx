@@ -126,7 +126,7 @@ const LoginPage = () => {
                       <div className="flex justify-between items-center">
                         <FormLabel htmlFor="password">Password</FormLabel>
                         <Link
-                          to="#"
+                          to="/reset-password"
                           className="ml-auto inline-block text-sm underline"
                         >
                           Forgot your password?

@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { useChangePassword } from '@/hooks/user/useChangePassword';
+import { Routes } from '@/lib/routes';
 
 const SettingsPage = () => {
     const { userProfile, logout } = useAuth();
@@ -92,6 +93,9 @@ const SettingsPage = () => {
 
                 {userProfile && (
                     <div className='flex flex-col gap-2'>
+                        <Link to={Routes.SavedPage} className='md:hidden'>
+                            <Button className="cursor-pointer">Saved Artworks</Button>
+                        </Link>
                         <Link to={`/reset-password`}>
                             <Button className="cursor-pointer">Reset Password</Button>
                         </Link>

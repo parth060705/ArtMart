@@ -32,7 +32,6 @@ const SearchProduct = React.lazy(() => import('./pages/product/SearchProduct'));
 const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
 const ChatList = React.lazy(() => import('./pages/chat/ChatList'));
 const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
-const WishList = React.lazy(() => import('./pages/product/WishList'));
 const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
 const ArtistsPage = React.lazy(() => import('./pages/ArtistsPage'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
@@ -108,7 +107,6 @@ function App() {
                   <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
                   <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                   <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
-                  <Route path={AppRoutes.WishListPage} element={<WishList />} />
                   <Route path={AppRoutes.SavedPage} element={<SavedArtworksPage />} />
                   <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
                   <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />

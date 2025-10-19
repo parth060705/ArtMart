@@ -11,6 +11,8 @@ import { loginFormSchema } from '../../lib/validation-schemas';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useLogin } from '@/hooks/user/auth/useLogin';
 import { useEffect } from 'react';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { useGoogleLoginRegister } from '@/hooks/user/auth/useGoogleLoginRegister';
 
 const formSchema = loginFormSchema
 
@@ -19,6 +21,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const loginMutation = useLogin();
   const { login, isAuthenticated } = useAuth();
+  const { mutate: googleLoginRegister } = useGoogleLoginRegister();
   const fromUpload = location.state?.from?.pathname === '/upload';
   const fromProfile = location.state?.from === '/me/profile';
 
@@ -48,13 +51,28 @@ const LoginPage = () => {
       },
       onError: (error: any) => {
         console.error('Login error:', error);
-        const errorMessage = error?.response?.data?.message || 
-                           error?.response?.data?.detail || 
-                           error?.message || 
-                           'Login failed. Please try again.';
+        const errorMessage = error?.response?.data?.message ||
+          error?.response?.data?.detail ||
+          error?.message ||
+          'Login failed. Please try again.';
         toast.error(errorMessage);
       },
     });
+  }
+
+  const googleOnSuccessHandler = (response: CredentialResponse) => {
+    console.log(response)
+    if (response.credential) {
+      console.log('Google login successful', response);
+      googleLoginRegister(response.credential)
+    } else {
+      console.error('No credential received from Google');
+    }
+  }
+
+  const googleOnErrorHandler = () => {
+    console.error('Google login failed');
+    toast.error('Google login failed');
   }
 
   useEffect(() => {
@@ -157,6 +175,16 @@ const LoginPage = () => {
               Sign up
             </Link>
           </div>
+          <div className="my-4 text-center text-sm">OR</div>
+          <GoogleLogin
+            onSuccess={googleOnSuccessHandler}
+            onError={googleOnErrorHandler}
+            useOneTap  // Optional: enables the one-tap sign-up
+            text="continue_with"  // Shows "Continue with Google"
+            shape="rectangular"  // Or "circle" for a circular button
+            size="large"  // Or "medium" or "small"
+            width="100%"  // Makes it full width like your other buttons
+          />
         </CardContent>
       </Card>
     </div>

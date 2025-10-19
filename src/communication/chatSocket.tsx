@@ -252,7 +252,7 @@ class ChatSocket {
 
     try {
       // Construct WebSocket URL with token
-      const baseUrl = `wss://fastapi-app-61yp.onrender.com/api/auth/chat/ws?token=${accessToken}`;
+      const baseUrl = `ws://127.0.0.1:8000/api/auth/chat/ws?token=${accessToken}`;
       this.socket = new WebSocket(baseUrl);
       this.reconnectAttempts++;
 

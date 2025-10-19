@@ -54,7 +54,7 @@ export const InstallButton = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-background/95 p-3 rounded-lg shadow-lg border animate-in fade-in slide-in-from-bottom-4">
+    <div className="bottom-4 right-4 z-50 flex items-center gap-2 bg-background/95 p-3 rounded-lg shadow-lg border">
       <div className="flex-1">
         <p className="text-sm font-medium">Install Auroraa</p>
         <p className="text-xs text-muted-foreground">Add to your home screen for a better experience</p>

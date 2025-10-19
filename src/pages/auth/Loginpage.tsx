@@ -21,7 +21,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const loginMutation = useLogin();
   const { login, isAuthenticated } = useAuth();
-  const { mutate: googleLoginRegister } = useGoogleLoginRegister();
+  const googleLoginRegister = useGoogleLoginRegister();
   const fromUpload = location.state?.from?.pathname === '/upload';
   const fromProfile = location.state?.from === '/me/profile';
 
@@ -61,10 +61,27 @@ const LoginPage = () => {
   }
 
   const googleOnSuccessHandler = (response: CredentialResponse) => {
-    console.log(response)
     if (response.credential) {
-      console.log('Google login successful', response);
-      googleLoginRegister(response.credential)
+      googleLoginRegister.mutate(response.credential, {
+        onSuccess: (data) => {
+          if (!data.tokens?.access_token) {
+            throw new Error('No access token received');
+          }
+          login(data?.tokens?.access_token, data?.tokens?.refresh_token);
+          toast.success('Login successful!');
+          // Redirect to the previous page or home
+          const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : '/';
+          navigate(redirectTo);
+        },
+        onError: (error: any) => {
+          console.error('Login error:', error);
+          const errorMessage = error?.response?.data?.message ||
+            error?.response?.data?.detail ||
+            error?.message ||
+            'Login failed. Please try again.';
+          toast.error(errorMessage);
+        },
+      })
     } else {
       console.error('No credential received from Google');
     }
@@ -179,11 +196,11 @@ const LoginPage = () => {
           <GoogleLogin
             onSuccess={googleOnSuccessHandler}
             onError={googleOnErrorHandler}
-            useOneTap  // Optional: enables the one-tap sign-up
-            text="continue_with"  // Shows "Continue with Google"
-            shape="rectangular"  // Or "circle" for a circular button
-            size="large"  // Or "medium" or "small"
-            width="100%"  // Makes it full width like your other buttons
+            useOneTap 
+            text="continue_with" 
+            shape="rectangular" 
+            size="large" 
+            width="100%" 
           />
         </CardContent>
       </Card>

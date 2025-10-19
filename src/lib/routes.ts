@@ -1,4 +1,4 @@
-import { Home, Box, Menu, ShoppingCart, Sliders, BookMarked, Bookmark, PlusCircle, User, Group, Users } from "lucide-react";
+import { Home, Box, Sliders, Bookmark, PlusCircle, Users, MessageCircle } from "lucide-react";
 import { ComponentType } from "react";
 
 interface NavItem {
@@ -33,6 +33,7 @@ export class Routes {
     static AuthResetPasswordPage = "/reset-password"
     static CartPage = "/auth/cart"
     static WishListPage = "/auth/wishlist"
+    static SavedPage = "/auth/saved"
     static ArtistsRankingPage = "/artists-ranking"
     static PrivacyPolicyPage = "/privacy-policy"
     static TermsAndConditionsPage = "/terms-and-conditions"
@@ -75,6 +76,16 @@ export const navbarRoutes: NavbarRoutes = {
             title: "Artists",
             url: '/artists-ranking',
             icon: Users
+        },
+        {
+            title: "Chat",
+            url: Routes.ChatPage,
+            icon: MessageCircle,
+        },
+        {
+            title: "Saved",
+            url: Routes.SavedPage,
+            icon: Bookmark,
         },
         {
             title: "Settings",

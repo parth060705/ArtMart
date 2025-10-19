@@ -39,6 +39,7 @@ const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
 const UploadArtwork = React.lazy(() => import('./pages/product/UploadArtwork'));
+const SavedArtworksPage = React.lazy(() => import('./pages/SavedArtworksPage'));
 
 // Admin Pages
 const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
@@ -108,6 +109,7 @@ function App() {
                   <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
                   <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
                   <Route path={AppRoutes.WishListPage} element={<WishList />} />
+                  <Route path={AppRoutes.SavedPage} element={<SavedArtworksPage />} />
                   <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
                   <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
                   <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />

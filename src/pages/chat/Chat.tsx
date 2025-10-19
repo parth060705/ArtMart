@@ -476,7 +476,11 @@ const Chat: React.FC<ChatProps> = ({
     }
   }, [isConnected, combinedMessages.length, scrollToBottom]);
 
-  console.log(combinedMessages)
+  console.log('🔍 Combined Messages:', combinedMessages.map(m => ({
+    content: m.content?.substring(0, 20),
+    timestamp: m.timestamp,
+    parsed: new Date(m.timestamp).toString()
+  })))
 
 
   // Loading state

@@ -289,6 +289,7 @@ export const useChat = ({ accessToken, peerId, userId }: UseChatProps) => {
 
       // Handle message read receipts
       if (data.action === 'read' && data.sender_id === currentPeerId) {
+        console.log('📖 Read receipt received');
         setMessages(prev => prev.map(msg => ({
           ...msg,
           is_read: msg.receiver_id === currentPeerId ? true : msg.is_read
@@ -296,8 +297,31 @@ export const useChat = ({ accessToken, peerId, userId }: UseChatProps) => {
         return;
       }
 
-      // Handle regular messages
-      const msg = data as MessageOut;
+      console.log('✅ Past all early returns, processing regular message');
+      
+      // Handle regular messages - Normalize timestamp FIRST
+      console.log('📨 Processing message:', data);
+      
+      const rawMsg = data as MessageOut;
+      
+      // Normalize timestamp - add 'Z' if it doesn't have timezone info
+      const normalizedTimestamp = rawMsg.timestamp && typeof rawMsg.timestamp === 'string'
+        ? (rawMsg.timestamp.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(rawMsg.timestamp)
+            ? rawMsg.timestamp
+            : rawMsg.timestamp + 'Z')
+        : rawMsg.timestamp;
+      
+      const msg: MessageOut = {
+        ...rawMsg,
+        timestamp: normalizedTimestamp
+      };
+      
+      console.log('🔧 Normalized message:', { 
+        original: rawMsg.timestamp, 
+        normalized: msg.timestamp,
+        content: msg.content 
+      });
+      
       if (
         (msg.sender_id === currentUserId && msg.receiver_id === currentPeerId) ||
         (msg.sender_id === currentPeerId && msg.receiver_id === currentUserId)

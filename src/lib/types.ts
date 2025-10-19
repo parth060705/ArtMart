@@ -236,12 +236,12 @@ export interface ChangePasswordResponse {
 
 
 export interface ChatListResponse {
-  lastMessage:string;
-  lastMessageAt:string;
-  lastMessageType:string;
-  name:string;
-  profileImage:string;
-  unreadCount:number;
-  user_id:string;
-  username:string;
+  lastMessage: string;
+  lastMessageAt: string;
+  lastMessageType: string;
+  name: string;
+  profileImage: string;
+  unreadCount: number;
+  user_id: string;
+  username: string;
 }

@@ -442,14 +442,14 @@ const Chat: React.FC<ChatProps> = ({
     if (messageContent && peerData.id && isConnected) {
       setInput("");
       sendMessage(messageContent, 'text')
-        // .then(() => {
-        //   // Message sent successfully
-        //   scrollToBottom();
-        // })
-        // .catch((err) => {
-        //   console.error('Failed to send message:', err);
-        //   // Optionally show error to user
-        // });
+      // .then(() => {
+      //   // Message sent successfully
+      //   scrollToBottom();
+      // })
+      // .catch((err) => {
+      //   console.error('Failed to send message:', err);
+      //   // Optionally show error to user
+      // });
     } else if (!isConnected) {
       console.warn('Cannot send message: WebSocket not connected');
       // Optionally show reconnection UI
@@ -475,6 +475,8 @@ const Chat: React.FC<ChatProps> = ({
       scrollToBottom();
     }
   }, [isConnected, combinedMessages.length, scrollToBottom]);
+
+  console.log(combinedMessages)
 
 
   // Loading state

@@ -304,25 +304,35 @@ export const useChat = ({ accessToken, peerId, userId }: UseChatProps) => {
       ) {
         // Update or add the message
         setMessages(prev => {
-          const existingMsgIndex = prev.findIndex(m => m.id === msg.id ||
-            (m.sender_id === msg.sender_id && m.timestamp === msg.timestamp));
+          // First, try to find by server-provided ID
+          let existingMsgIndex = msg.id ? prev.findIndex(m => m.id === msg.id) : -1;
+          
+          // If not found by ID, try to find temp message by content and timestamp proximity
+          if (existingMsgIndex < 0) {
+            existingMsgIndex = prev.findIndex(m => 
+              m.sender_id === msg.sender_id &&
+              m.receiver_id === msg.receiver_id &&
+              m.content === msg.content &&
+              m.id?.startsWith('temp-') &&
+              Math.abs(new Date(m.timestamp).getTime() - new Date(msg.timestamp).getTime()) < 5000 // Within 5 seconds
+            );
+          }
 
           if (existingMsgIndex >= 0) {
-            // Update existing message
+            // Update existing message (replace temp with server message)
             const newMessages = [...prev];
             newMessages[existingMsgIndex] = {
-              ...newMessages[existingMsgIndex],
               ...msg,
-              // Preserve sending status for outgoing messages
-              status: msg.sender_id === currentUserId ? (msg.status || 'sent') : 'sent'
+              status: msg.sender_id === currentUserId ? 'sent' : 'sent',
+              is_read: msg.is_read || (msg.sender_id === currentUserId)
             };
             return newMessages;
           } else {
             // Add new message
             return [...prev, {
               ...msg,
-              status: msg.sender_id === currentUserId ? (msg.status || 'sent') : 'sent',
-              is_read: msg.sender_id === currentUserId // Outgoing messages are read by default
+              status: msg.sender_id === currentUserId ? 'sent' : 'sent',
+              is_read: msg.is_read || (msg.sender_id === currentUserId)
             }];
           }
         });

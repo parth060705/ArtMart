@@ -368,7 +368,8 @@ class ChatSocket {
     this.send({
       action: "typing",
       sender_id: this.userId,
-      receiver_id: receiverId
+      receiver_id: receiverId,
+      is_typing: true
     });
   }
 

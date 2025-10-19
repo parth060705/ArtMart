@@ -30,6 +30,7 @@ const Profile = React.lazy(() => import('./pages/profile/Profile'));
 const ProfileUpdate = React.lazy(() => import('./pages/profile/ProfileUpdate'));
 const SearchProduct = React.lazy(() => import('./pages/product/SearchProduct'));
 const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
+const ChatList = React.lazy(() => import('./pages/chat/ChatList'));
 const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
 const WishList = React.lazy(() => import('./pages/product/WishList'));
 const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
@@ -115,7 +116,8 @@ function App() {
 
                   {/* chat */}
                   <Route path="/chat/:peerId" element={<ChatWrapper />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path={AppRoutes.ChatPage} element={<ChatList />} />
+
 
                   {/* ------------------------------------------------------------------------------------------- */}
                   <Route path="/admin/user_manage" element={<UserManage />} />
@@ -123,6 +125,8 @@ function App() {
                   <Route path="/admin/orders_manage" element={<OrderManage />} />
                   <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
                   {/* ------------------------------------------------------------------------------------------- */}
+
+                  <Route path="*" element={<NotFound />} />
 
                   {/* Protected Routes Group */}
                   {/* <Route element={<ProtectedRoute />}>s

@@ -28,7 +28,8 @@ const Navbar = ({
   const { isAuthenticated, username, userProfile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const chatPage = location.pathname.includes('/chat')
+  const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
+  const isChatListPage = location.pathname === '/chat-list';
 
   const handleLogout = () => {
     logout();
@@ -53,16 +54,18 @@ const Navbar = ({
     <div className="">
 
       {/* mobile header  */}
-      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !chatPage &&   <div>
+      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !isChatPage && <div>
         <div className="px-4 py-6 md:hidden flex justify-between items-center">
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {logo.title}
           </Link>
-          <div className="relative">r
-            <MessageCircleIcon className="w-6 h-6" />
-            <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
+          <div className="relative">
+            <Link to={Routes.ChatPage}>
+              <MessageCircleIcon className="w-6 h-6" />
+            </Link>
+            {/* <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
               3
-            </Badge>
+            </Badge> */}
           </div>
         </div>
       </div>}
@@ -128,10 +131,10 @@ const Navbar = ({
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation */}
-      {chatPage ? null : <div className="block lg:hidden">
+      {/* Mobile Bottom Navigation - Hide only on chat page but show on chat list page */}
+      {isChatPage ? null : <div className="block lg-hidden">
         {/* Bottom nav bar for mobile */}
-        <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md">
+        <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md md:hidden">
           <div className="flex justify-between items-center px-6 py-2 relative">
 
             {/* Home */}

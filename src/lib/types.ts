@@ -233,3 +233,15 @@ export interface ChangePasswordRequest {
 export interface ChangePasswordResponse {
   message: string;
 }
+
+
+export interface ChatListResponse {
+  lastMessage:string;
+  lastMessageAt:string;
+  lastMessageType:string;
+  name:string;
+  profileImage:string;
+  unreadCount:number;
+  user_id:string;
+  username:string;
+}

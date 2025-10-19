@@ -25,9 +25,11 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import PostReview from '@/components/PostReview';
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg"
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Profile = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { isAuthenticated } = useAuth();
     const { userId } = useParams<{ userId: string }>();
     const { data: userProfile } = useGetUserProfilePublic(userId || '');
@@ -40,6 +42,8 @@ const Profile = () => {
     const { mutateAsync: postReview, isPending: isReviewing } = usePostArtistReview(userId || '');
     const { mutate: followUser, isPending: isFollowing } = useUserFollow(userProfile?.id || '');
     const { mutate: unfollowUser, isPending: isUnfollowing } = useUserUnFollow(userProfile?.id || '');
+    const [isLocalFollowing, setIsLocalFollowing] = useState<boolean>(false);
+    const [justOptimisticallyFollowed, setJustOptimisticallyFollowed] = useState(false);
 
     const isFollowLoading = isFollowing || isUnfollowing;
 
@@ -73,18 +77,47 @@ const Profile = () => {
         }
     }
 
+    useEffect(() => {
+        if (!justOptimisticallyFollowed && isFollowingCheck) {
+            setIsLocalFollowing(isFollowingCheck.is_following);
+        }
+    }, [isFollowingCheck, justOptimisticallyFollowed]);
+
     const handleFollowClick = () => {
         if (!isAuthenticated) {
             toast.error('Please log in to follow users');
             return;
         }
         if (isFollowLoading) return;
+        setJustOptimisticallyFollowed(true);
 
-        const action = isFollowingCheck?.is_following ? unfollowUser : followUser;
-        action(undefined, {
+        const wasFollowing = isLocalFollowing;
+        
+        // Optimistic update
+        setIsLocalFollowing(!wasFollowing);
+
+        // Update React Query cache
+        queryClient.setQueryData(['useUserIsFollowingCheck', userProfile?.id], {
+            is_following: !wasFollowing
+        });
+
+        const mutation = wasFollowing ? unfollowUser : followUser;
+        mutation(undefined, {
             onError: () => {
+                // Rollback on error
+                setIsLocalFollowing(wasFollowing);
+                queryClient.setQueryData(['useUserIsFollowingCheck', userProfile?.id], {
+                    is_following: wasFollowing
+                });
                 toast.error('Failed to update follow status');
-            }
+            },
+            onSettled: () => {
+                // Cleanup and refresh
+                setJustOptimisticallyFollowed(false);
+                queryClient.invalidateQueries({ queryKey: ['useUserIsFollowingCheck', userProfile?.id] });
+                queryClient.invalidateQueries({ queryKey: ['user-followers'] });
+                queryClient.invalidateQueries({ queryKey: ['userFollow'] });
+            },
         });
     }
 
@@ -154,7 +187,7 @@ const Profile = () => {
                                 onClick={handleFollowClick}
                                 disabled={isFollowLoading}
                             >
-                                {isFollowingCheck?.is_following ? 'Unfollow' : 'Follow'}
+                                {isLocalFollowing ? 'Unfollow' : 'Follow'}
                             </Button>
                             <Button
                                 variant="outline"

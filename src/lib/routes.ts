@@ -37,6 +37,7 @@ export class Routes {
     static PrivacyPolicyPage = "/privacy-policy"
     static TermsAndConditionsPage = "/terms-and-conditions"
     static SettingsPage = "/settings"
+    static ChatPage = "/auth/chat-list"
 }
 
 interface NavbarRoutes {

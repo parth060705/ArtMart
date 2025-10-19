@@ -49,6 +49,8 @@ const ArtworkDetail = () => {
   const [localLikeCount, setLocalLikeCount] = useState<number>(0);
   const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
   const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
+  const [isLocalFollowing, setIsLocalFollowing] = useState<boolean>(false);
+  const [justOptimisticallyFollowed, setJustOptimisticallyFollowed] = useState(false);
 
   // Queries
   const { data: artwork, isLoading, error } = useProductDetails(id || '');
@@ -74,6 +76,12 @@ const ArtworkDetail = () => {
       }
     }
   }, [likeStatus, artwork, justOptimisticallyLiked]);
+
+  useEffect(() => {
+    if (!justOptimisticallyFollowed && isFollowingCheck) {
+      setIsLocalFollowing(isFollowingCheck.is_following);
+    }
+  }, [isFollowingCheck, justOptimisticallyFollowed]);
 
   const handlePostComment = async () => {
     if (!isAuthenticated) {
@@ -170,7 +178,48 @@ const ArtworkDetail = () => {
         toast.error('Failed to update save status. Please try again.');
       }
     });
-  }
+  };
+
+  const handleFollowClick = () => {
+    if (!isAuthenticated) {
+      toast.error('Please log in to follow users');
+      return;
+    }
+
+    if (isFollowLoading) return;
+    setIsFollowLoading(true);
+    setJustOptimisticallyFollowed(true);
+
+    const wasFollowing = isLocalFollowing;
+    
+    // Optimistic update
+    setIsLocalFollowing(!wasFollowing);
+
+    // Update React Query cache
+    queryClient.setQueryData(['useUserIsFollowingCheck', artwork?.artistId], {
+      is_following: !wasFollowing
+    });
+
+    const mutation = wasFollowing ? unfollowUser : followUser;
+    mutation(undefined, {
+      onError: () => {
+        // Rollback on error
+        setIsLocalFollowing(wasFollowing);
+        queryClient.setQueryData(['useUserIsFollowingCheck', artwork?.artistId], {
+          is_following: wasFollowing
+        });
+        toast.error('Failed to update follow status');
+      },
+      onSettled: () => {
+        // Cleanup and refresh
+        setJustOptimisticallyFollowed(false);
+        setIsFollowLoading(false);
+        queryClient.invalidateQueries({ queryKey: ['useUserIsFollowingCheck', artwork?.artistId] });
+        queryClient.invalidateQueries({ queryKey: ['user-followers'] });
+        queryClient.invalidateQueries({ queryKey: ['userFollow'] });
+      },
+    });
+  };
 
 
   useEffect(() => {
@@ -218,30 +267,10 @@ const ArtworkDetail = () => {
 
           {artwork.artist.id !== userProfile?.id && <Button
             className='px-4 py-1.5 rounded-full text-sm font-medium'
-            onClick={() => {
-              if (!isAuthenticated) {
-                toast.error('Please log in to follow users');
-                return;
-              }
-              if (isFollowLoading) return;
-              setIsFollowLoading(true);
-              const action = isFollowingCheck?.is_following ? unfollowUser : followUser;
-              action(undefined, {
-                onSuccess: () => {
-                  queryClient.invalidateQueries({
-                    queryKey: ["useUserIsFollowingCheck", artwork?.artistId]
-                  });
-                  setIsFollowLoading(false);
-                },
-                onError: () => {
-                  setIsFollowLoading(false);
-                  toast.error('Failed to update follow status');
-                }
-              });
-            }}
+            onClick={handleFollowClick}
             disabled={isFollowLoading}
           >
-            {isFollowingCheck?.is_following ? 'Unfollow' : 'Follow'}
+            {isLocalFollowing ? 'Unfollow' : 'Follow'}
           </Button>}
         </div>
 

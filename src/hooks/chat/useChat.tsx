@@ -338,24 +338,34 @@ export const useChat = ({ accessToken, peerId, userId }: UseChatProps) => {
               m.receiver_id === msg.receiver_id &&
               m.content === msg.content &&
               m.id?.startsWith('temp-') &&
-              Math.abs(new Date(m.timestamp).getTime() - new Date(msg.timestamp).getTime()) < 5000 // Within 5 seconds
+              Math.abs(new Date(m.timestamp).getTime() - new Date(msg.timestamp).getTime()) < 10000 // Within 10 seconds
             );
           }
 
           if (existingMsgIndex >= 0) {
             // Update existing message (replace temp with server message)
+            console.log('✅ Replacing temp message with server message:', {
+              tempId: prev[existingMsgIndex].id,
+              serverId: msg.id,
+              content: msg.content
+            });
             const newMessages = [...prev];
             newMessages[existingMsgIndex] = {
               ...msg,
-              status: msg.sender_id === currentUserId ? 'sent' : 'sent',
+              status: 'sent',
               is_read: msg.is_read || (msg.sender_id === currentUserId)
             };
             return newMessages;
           } else {
             // Add new message
+            console.log('➕ Adding new message:', {
+              id: msg.id,
+              content: msg.content,
+              status: msg.sender_id === currentUserId ? 'sent' : 'sent'
+            });
             return [...prev, {
               ...msg,
-              status: msg.sender_id === currentUserId ? 'sent' : 'sent',
+              status: 'sent',
               is_read: msg.is_read || (msg.sender_id === currentUserId)
             }];
           }

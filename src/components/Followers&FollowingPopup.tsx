@@ -116,7 +116,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
                       <Button
                         size="sm"
                         className="flex items-center gap-1 ml-auto bg-blue-500 text-white hover:bg-blue-600"
-                        onClick={() => handleChat(user.id)}
+                        onClick={() => handleChat(user.username)}
                       >
                         <MessageSquare className="w-4 h-4" />
                       </Button>

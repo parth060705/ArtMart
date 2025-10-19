@@ -32,7 +32,7 @@ class ChatSocket {
   private reconnectAttempts: number = 0;
   private readonly maxReconnectAttempts: number = 5;
 
-  
+
 
   public connect(accessToken: string, userId: string): void { // Added userId parameter
     if (this.isConnecting || this.socket?.readyState === WebSocket.OPEN) {
@@ -47,7 +47,7 @@ class ChatSocket {
     try {
       // Construct WebSocket URL with token
       console.log(import.meta.env.VITE_API_WS_URL)
-      const baseUrl = `${import.meta.env.VITE_API_WS_URL}/auth/ chat/ws?token=${accessToken}`;
+      const baseUrl = `${import.meta.env.VITE_API_WS_URL}/auth/chat/ws?token=${accessToken}`;
       this.socket = new WebSocket(baseUrl);
       this.reconnectAttempts++;
 

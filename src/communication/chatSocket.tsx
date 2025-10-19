@@ -32,6 +32,8 @@ class ChatSocket {
   private reconnectAttempts: number = 0;
   private readonly maxReconnectAttempts: number = 5;
 
+  
+
   public connect(accessToken: string, userId: string): void { // Added userId parameter
     if (this.isConnecting || this.socket?.readyState === WebSocket.OPEN) {
       console.log('WebSocket already connected or connecting');

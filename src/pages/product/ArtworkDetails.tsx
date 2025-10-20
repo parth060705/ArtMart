@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserIsFollowingCheck } from '@/hooks/user/useUserIsFollowingCheck';
 import PostReview from '@/components/PostReview';
 import { useSaveArtwork } from '@/hooks/useSaveArtworks';
+import { useUnSaveArtworks } from '@/hooks/useUnSaveArtworks';
 
 const ArtworkDetail = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const ArtworkDetail = () => {
   // States
   const [likeAnimating, setLikeAnimating] = useState<boolean>(false);
   const [isFollowLoading, setIsFollowLoading] = useState<boolean>(false);
+  const [isSaveLoading, setIsSaveLoading] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>('');
   const [reviewText, setReviewText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
@@ -65,6 +67,7 @@ const ArtworkDetail = () => {
   const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
   const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
   const { mutateAsync: addToSaved, isPending: isSavePending } = useSaveArtwork(id || '');
+  const { mutateAsync: removeFromSaved, isPending: isUnSavePending } = useUnSaveArtworks(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
 
@@ -165,18 +168,32 @@ const ArtworkDetail = () => {
       toast.error('Please login to save this artwork');
       return;
     }
-
-    // Toggle the saved state
-    const newSavedState = !isLocalSaved;
+    if (isSaveLoading || isUnSavePending) return;
+    
+    const wasSaved = isLocalSaved;
+    const newSavedState = !wasSaved;
+    
+    // Optimistic update
     setIsLocalSaved(newSavedState);
-
-    // Call the API to save/unsave
-    addToSaved(undefined, {
+    setIsSaveLoading(true);
+    
+    // Call the appropriate mutation based on the current state
+    const mutation = wasSaved ? removeFromSaved : addToSaved;
+    
+    mutation(undefined, {
       onError: () => {
         // Revert on error
-        setIsLocalSaved(!newSavedState);
-        toast.error('Failed to update save status. Please try again.');
-      }
+        setIsLocalSaved(wasSaved);
+        toast.error(`Failed to ${wasSaved ? 'unsave' : 'save'} artwork. Please try again.`);
+      },
+      onSuccess: () => {
+        toast.success(`Artwork ${wasSaved ? 'removed from' : 'saved to'} your collection`);
+      },
+      onSettled: () => {
+        setIsSaveLoading(false);
+        queryClient.invalidateQueries({ queryKey: ['productDetails', id] });
+        queryClient.invalidateQueries({ queryKey: ['save', id] });
+      },
     });
   };
 
@@ -345,13 +362,16 @@ const ArtworkDetail = () => {
           <button
             className="flex items-center gap-2 text-[var(--muted-foreground)]"
             onClick={handleSaveButtonClick}
-            disabled={isSavePending}
+            disabled={isSavePending || isUnSavePending}
           >
-            <Bookmark size={24} className={`w-7 h-7 ${artwork.isSaved || isLocalSaved
-              ? "fill-black text-black"
-              : "text-[var(--muted-foreground)]"
-              }`} />
-            Save
+            <Bookmark 
+              size={24} 
+              className={`w-7 h-7 ${artwork.isSaved || isLocalSaved
+                ? "fill-[var(--accent)] text-[var(--accent)]"
+                : "text-[var(--muted-foreground)]"
+              }`} 
+            />
+            {artwork.isSaved || isLocalSaved ? 'Saved' : 'Save'}
           </button>
         </div>
 

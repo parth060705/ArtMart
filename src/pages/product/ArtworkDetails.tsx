@@ -375,7 +375,7 @@ const ArtworkDetail = () => {
       </div>
 
       {/* Right Pane (1/3) */}
-      <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6 mb-20 md:mb-0">
+      <div className="lg:col-span-1 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-6 mb-28 md:mb-0">
         <Tabs defaultValue="comments">
           <TabsList className={`grid ${artwork.forSale ? 'grid-cols-2' : 'grid-cols-1'} mb-4`}>
             <TabsTrigger value="comments">Comments</TabsTrigger>

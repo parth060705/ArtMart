@@ -11,7 +11,7 @@ import { useUserLikeStatus } from '@/hooks/like_dislike/useUserLikeStatus';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useSaveArtwork } from '@/hooks/useSaveArtworks';
-import ArtworkDetail from '@/pages/product/ArtworkDetails';
+import { useUnSaveArtworks } from '@/hooks/useUnSaveArtworks';
 
 
 const ArtworkCard = ({
@@ -35,10 +35,12 @@ const ArtworkCard = ({
     const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
     const [localLikeCount, setLocalLikeCount] = useState<number>(0);
     const [isLocalSaved, setIsLocalSaved] = useState<boolean>(isSaved || false);
+    const [isSaveLoading, setIsSaveLoading] = useState<boolean>(false);
     const { data: likeStatus } = useUserLikeStatus(id || '');
     const { mutate: likeProduct } = useLikeProduct(id || '');
     const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
     const { mutateAsync: addToSaved, isPending: isWishListPending } = useSaveArtwork(id || '');
+    const { mutateAsync: removeFromSaved, isPending: isUnSavePending } = useUnSaveArtworks(id || '');
 
     useEffect(() => {
         if (!justOptimisticallyLiked) {
@@ -93,20 +95,34 @@ const ArtworkCard = ({
             toast.error('Please login to save this artwork');
             return;
         }
+        if (isSaveLoading || isUnSavePending) return;
 
-        // Toggle the saved state
-        const newSavedState = !isLocalSaved;
+        const wasSaved = isLocalSaved;
+        const newSavedState = !wasSaved;
+
+        // Optimistic update
         setIsLocalSaved(newSavedState);
+        setIsSaveLoading(true);
 
-        // Call the API to save/unsave
-        addToSaved(undefined, {
+        // Call the appropriate mutation based on the current state
+        const mutation = wasSaved ? removeFromSaved : addToSaved;
+
+        mutation(undefined, {
             onError: () => {
                 // Revert on error
-                setIsLocalSaved(!newSavedState);
-                toast.error('Failed to update save status. Please try again.');
-            }
+                setIsLocalSaved(wasSaved);
+                toast.error(`Failed to ${wasSaved ? 'unsave' : 'save'} artwork. Please try again.`);
+            },
+            onSuccess: () => {
+                toast.success(`Artwork ${wasSaved ? 'removed from' : 'saved to'} your collection`);
+            },
+            onSettled: () => {
+                setIsSaveLoading(false);
+                queryClient.invalidateQueries({ queryKey: ['productDetails', id] });
+                queryClient.invalidateQueries({ queryKey: ['save', id] });
+            },
         });
-    }
+    };
 
     return (
         <div className="md:bg-white md:rounded-xl mb-8  overflow-hidden min-w-full md:min-w-[500px] md:max-w-[500px]">

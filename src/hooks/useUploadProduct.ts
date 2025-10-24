@@ -27,10 +27,8 @@ export const useUploadProduct = () => {
             formData.append('files', file);
           });
         } else if (key === 'tags' && Array.isArray(value)) {
-          // Handle tags array
-          value.forEach((tag, index) => {
-            formData.append(`tags[${index}]`, tag);
-          });
+          // Convert tags array to comma-separated string
+          formData.append('tags', value.join(','));
         } else if (value !== undefined && value !== null) {
           // Convert other values to string and append
           formData.append(key, String(value));

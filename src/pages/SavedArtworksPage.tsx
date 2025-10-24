@@ -28,6 +28,9 @@ const SavedArtworksPage = () => {
 
     return (
         <div className="p-1 mb-24 md:mb-0">
+            <h2 className="text-2xl md:text-4xl font-semibold text-center mb-4 capitalize tracking-wide">
+                your curated space
+            </h2>
             {isLoading ? <div className='w-[80vw] h-screen flex items-center justify-center'><LoadingSpinner /></div> : <MasonryFeed data={transformedArtworks} isLoading={isLoading} className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full" />}
         </div>
     )

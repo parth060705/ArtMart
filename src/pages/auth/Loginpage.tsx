@@ -88,7 +88,6 @@ const LoginPage = () => {
   }
 
   const googleOnErrorHandler = () => {
-    console.error('Google login failed');
     toast.error('Google login failed');
   }
 

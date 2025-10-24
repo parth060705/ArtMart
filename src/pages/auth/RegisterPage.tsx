@@ -33,6 +33,8 @@ import { useRegister } from '@/hooks/user/auth/useRegister'
 import { useEffect } from 'react'
 import { useAuth } from '@/hooks/user/auth/UseAuth'
 import { Routes } from '@/lib/routes'
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
+import { useGoogleLoginRegister } from '@/hooks/user/auth/useGoogleLoginRegister'
 
 // Extend the register form schema with additional fields
 const formSchema = registerFormSchema.extend({
@@ -86,6 +88,10 @@ const formSchema = registerFormSchema.extend({
 
 export default function RegisterPage() {
     const [isUploading, setIsUploading] = useState(false);
+    const navigate = useNavigate();
+    const registerMutation = useRegister();
+    const { login, isAuthenticated } = useAuth();
+    const googleLoginRegister = useGoogleLoginRegister();
 
     type FormValues = {
         name: string;
@@ -113,10 +119,6 @@ export default function RegisterPage() {
         },
     })
 
-    const navigate = useNavigate();
-    const registerMutation = useRegister();
-    const { isAuthenticated } = useAuth();
-
     async function onSubmit(values: FormValues) {
         setIsUploading(true);
         const formData = new FormData();
@@ -142,6 +144,37 @@ export default function RegisterPage() {
         });
     }
 
+    const googleOnSuccessHandler = (response: CredentialResponse) => {
+        if (response.credential) {
+            googleLoginRegister.mutate(response.credential, {
+                onSuccess: (data) => {
+                    if (!data.tokens?.access_token) {
+                        throw new Error('No access token received');
+                    }
+                    login(data?.tokens?.access_token, data?.tokens?.refresh_token);
+                    toast.success('Login successful!');
+                    // Redirect to the previous page or home
+                    navigate('/');
+                },
+                onError: (error: any) => {
+                    console.error('Login error:', error);
+                    const errorMessage = error?.response?.data?.message ||
+                        error?.response?.data?.detail ||
+                        error?.message ||
+                        'Login failed. Please try again.';
+                    toast.error(errorMessage);
+                },
+            })
+        } else {
+            console.error('No credential received from Google');
+        }
+    }
+
+    const googleOnErrorHandler = () => {
+        console.error('Google login failed');
+        toast.error('Google login failed');
+    }
+
     useEffect(() => {
         document.title = 'Register | Auroraa';
     }, []);
@@ -156,9 +189,9 @@ export default function RegisterPage() {
         <div className="flex min-h-screen w-full items-center justify-center p-4 sm:p-6 pb-20 md:pb-6">
             <Card className="w-full max-w-md sm:max-w-lg md:max-w-2xl">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Register</CardTitle>
+                    <CardTitle className="text-2xl">Create an account</CardTitle>
                     <CardDescription>
-                        Create a new account by filling out the form below.
+                        Create a new account by filling out the form below or continue with Google
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -329,6 +362,16 @@ export default function RegisterPage() {
                             Sign in
                         </Link>
                     </div>
+                    <div className="my-4 text-center text-sm">OR</div>
+                    <GoogleLogin
+                        onSuccess={googleOnSuccessHandler}
+                        onError={googleOnErrorHandler}
+                        useOneTap
+                        text="continue_with"
+                        shape="rectangular"
+                        size="large"
+                        containerProps={{ style: { width: '50%', margin: 'auto' } }}
+                    />
                 </CardContent>
             </Card>
         </div>

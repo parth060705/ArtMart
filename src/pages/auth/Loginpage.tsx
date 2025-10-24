@@ -88,7 +88,6 @@ const LoginPage = () => {
   }
 
   const googleOnErrorHandler = () => {
-    console.error('Google login failed');
     toast.error('Google login failed');
   }
 
@@ -192,7 +191,7 @@ const LoginPage = () => {
               Sign up
             </Link>
           </div>
-          {/* <div className="my-4 text-center text-sm">OR</div>
+          <div className="my-4 text-center text-sm">OR</div>
           <GoogleLogin
             onSuccess={googleOnSuccessHandler}
             onError={googleOnErrorHandler}
@@ -201,7 +200,7 @@ const LoginPage = () => {
             shape="rectangular" 
             size="large" 
             width="100%" 
-          /> */}
+          />
         </CardContent>
       </Card>
     </div>

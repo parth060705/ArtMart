@@ -31,14 +31,6 @@ const Navbar = ({
   const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
   const isChatListPage = location.pathname === '/chat-list';
 
-  const handleLogout = () => {
-    logout();
-    toast.success('Logged out successfully!');
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 500);
-  };
-
   const handleProfileClick = () => {
     if (isAuthenticated) {
       navigate(`/me/profile/${username}`);
@@ -103,7 +95,7 @@ const Navbar = ({
                 className="flex items-center px-4 py-3 rounded-lg hover:bg-muted/50 transition-colors"
               >
                 <img
-                  src={userProfile?.profileImage || '/default-avatar.png'}
+                  src={userProfile?.profileImage || profilePlaceHolderImage}
                   alt="Profile"
                   className="w-10 h-10 rounded-full border-2 border-[var(--accent)] mr-4 object-cover"
                 />

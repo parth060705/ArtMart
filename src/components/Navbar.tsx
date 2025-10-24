@@ -31,14 +31,6 @@ const Navbar = ({
   const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
   const isChatListPage = location.pathname === '/chat-list';
 
-  const handleLogout = () => {
-    logout();
-    toast.success('Logged out successfully!');
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 500);
-  };
-
   const handleProfileClick = () => {
     if (isAuthenticated) {
       navigate(`/me/profile/${username}`);
@@ -78,7 +70,6 @@ const Navbar = ({
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent pl-6">
             {logo.title}
           </Link>
-          <Button onClick={handleLogout} className="w-max bg-red-600">Logout</Button>
         </div>
 
         {/* Main Navigation */}

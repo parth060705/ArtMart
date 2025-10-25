@@ -83,7 +83,7 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="system" storageKey="theme">
+    <ThemeProvider defaultTheme="light" storageKey="theme">
       <ProductSearchProvider>
         <QueryClientProvider client={queryClient}>
           <Toaster richColors position="top-center" />

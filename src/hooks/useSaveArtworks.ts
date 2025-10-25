@@ -10,7 +10,9 @@ export const useSaveArtwork = (artworkId: string) => {
             return searchData;
         },
         onSuccess: () => {
+            // Invalidate both the specific save and the saved artworks list
             queryClient.invalidateQueries({ queryKey: ["save", artworkId] });
+            queryClient.invalidateQueries({ queryKey: ["get-saved-artworks"] });
         },
         onError: () => {
             queryClient.invalidateQueries({ queryKey: ["save", artworkId] });

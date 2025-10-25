@@ -44,6 +44,7 @@ export interface TopArtsistResponse {
   reviewCount: number;
   username: string;
   profileImage: string;
+  rank?: number;
 }
 
 export interface UserSearchResult {

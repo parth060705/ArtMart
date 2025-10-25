@@ -60,7 +60,7 @@
   /* --background: oklch(0.3211 0 0); */
   --background: oklch(0 0 0);
   --foreground: oklch(1.0000 0 0);
-  --card: oklch(0.3867 0 0);
+  --card: oklch(0.2 0 0);
   --card-foreground: oklch(1.0000 0 0);
   --popover: oklch(0.3867 0 0);
   --popover-foreground: oklch(1.0000 0 0);

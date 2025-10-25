@@ -8,14 +8,14 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse | UserSearchR
     const fullStars = Math.floor(artist.avgRating);
     const hasHalfStar = artist.avgRating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    const isTop3 = rank ? rank <= 3 : artist.rank <= 3;
-    const rankColorClass = isTop3 ? rankColors[rank - 1] : 'bg-[var(--muted)]';
+    const isTop3 = rank ? rank <= 3 : artist.rank ? artist.rank <= 3 : false;
+    const rankColorClass = isTop3 ? rankColors[(rank ?? artist.rank) - 1] : 'bg-[var(--muted)]';
 
     return (
         <div className="relative flex flex-row items-center p-3 bg-white dark:bg-[var(--card)] rounded-sm border border-[var(--border)] shadow-sm sm:shadow-md">
             {/* Rank Badge */}
             <div className={`absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shadow ${rankColorClass}`}>
-                {rank ? rank : artist.rank === 1 ? <Award className="w-4 h-4" /> : artist.rank}
+                {(rank ?? artist.rank) === 1 ? <Award className="w-4 h-4" /> : (rank ?? artist.rank)}
             </div>
 
             {/* Profile */}

@@ -79,8 +79,8 @@ const ArtistsPage = () => {
                                     artist={{
                                         ...user,
                                         artistId: user.id,
-                                        avgRating: 0, // Default values as these might not be available in search results
-                                        reviewCount: 0,
+                                        avgRating: user.avgRating,
+                                        reviewCount: user.reviewCount,
                                         username: user.username
                                     }}
                                 />

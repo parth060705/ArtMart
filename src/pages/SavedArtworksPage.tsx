@@ -7,7 +7,7 @@ import { Routes } from '@/lib/routes'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 const SavedArtworksPage = () => {
-    const { data: artworks, isLoading } = useProductsList('/auth/Saved')
+    const { data: artworks, isLoading } = useProductsList('/auth/Saved', 'get-saved-artworks')
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();

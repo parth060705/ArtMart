@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
 
-export const useProductsList = (endpoint: string) => {
+export const useProductsList = (endpoint: string, key?: string) => {
   return useQuery({
-    queryKey: ["products", endpoint],
+    queryKey: [key ? key : "products", endpoint],
     queryFn: async () => {
       const { data } = await axiosClient.get(endpoint);
       return data;      

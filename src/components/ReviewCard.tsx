@@ -5,9 +5,10 @@ import { Star } from 'lucide-react'
 
 interface IReviewCardProps {
     item: Review
+    handleRedirectToProfile: (username: string) => void
 }
 
-const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item }) => {
+const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item, handleRedirectToProfile }) => {
     return (
         <div className="bg-white dark:bg-[var(--card)] rounded-2xl p-5 shadow-sm border border-[var(--border)] hover:shadow-md transition-shadow duration-200">
             <div className="flex items-start gap-4">
@@ -15,7 +16,8 @@ const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item }) => {
                     <img
                         src={item.reviewer.profileImage}
                         alt={item.reviewer.username}
-                        className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover"
+                        className="w-14 h-14 rounded-full border-2 border-[var(--primary)] object-cover cursor-pointer"
+                        onClick={() => handleRedirectToProfile(item.reviewer.username)}
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.src = '/placeholder-avatar.jpg';
@@ -24,7 +26,7 @@ const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                        <h4 className="font-semibold text-[var(--foreground)] truncate">{item.reviewer.username}</h4>
+                        <h4 className="font-semibold text-[var(--foreground)] truncate cursor-pointer" onClick={() => handleRedirectToProfile(item.reviewer.username)}>{item.reviewer.username}</h4>
                         <div className="flex items-center bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 px-2 py-1 rounded-full">
                             <Star className="w-3.5 h-3.5 fill-amber-400 mr-1" />
                             <span className="text-sm font-medium">{item.rating}.0</span>
@@ -32,9 +34,9 @@ const ReviewCard: FunctionComponent<IReviewCardProps> = ({ item }) => {
                     </div>
                     <div className="flex items-center gap-1 mt-1">
                         {[...Array(5)].map((_, i) => (
-                            <Star 
-                                key={i} 
-                                className={`w-4 h-4 ${i < item.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-600'}`} 
+                            <Star
+                                key={i}
+                                className={`w-4 h-4 ${i < item.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
                             />
                         ))}
                     </div>

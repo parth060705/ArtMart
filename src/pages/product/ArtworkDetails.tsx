@@ -63,28 +63,13 @@ const ArtworkDetail = () => {
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
   const { data: comments = [] } = useCommentsList(id || '');
   const { data: isFollowingCheck } = useUserIsFollowingCheck(artwork?.artistId);
-  const [isLocalSaved, setIsLocalSaved] = useState<boolean>(artwork?.isSaved || false);
+  const [isLocalSaved, setIsLocalSaved] = useState<boolean>(false);
   const { mutateAsync: postComment, isPending: isPosting } = usePostComment(id || '');
   const { mutateAsync: postReview, isPending: isReviewing } = usePostReviews(id || '');
   const { mutateAsync: addToSaved, isPending: isSavePending } = useSaveArtwork(id || '');
   const { mutateAsync: removeFromSaved, isPending: isUnSavePending } = useUnSaveArtworks(id || '');
   const { mutate: likeProduct } = useLikeProduct(id || '');
   const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
-
-  useEffect(() => {
-    if (!justOptimisticallyLiked) {
-      if (likeStatus) setIsLocalLiked(likeStatus.has_liked);
-      if (artwork?.how_many_like?.like_count !== undefined) {
-        setLocalLikeCount(artwork.how_many_like.like_count);
-      }
-    }
-  }, [likeStatus, artwork, justOptimisticallyLiked]);
-
-  useEffect(() => {
-    if (!justOptimisticallyFollowed && isFollowingCheck) {
-      setIsLocalFollowing(isFollowingCheck.is_following);
-    }
-  }, [isFollowingCheck, justOptimisticallyFollowed]);
 
   const handlePostComment = async () => {
     if (!isAuthenticated) {
@@ -169,17 +154,17 @@ const ArtworkDetail = () => {
       return;
     }
     if (isSaveLoading || isUnSavePending) return;
-    
+
     const wasSaved = isLocalSaved;
     const newSavedState = !wasSaved;
-    
+
     // Optimistic update
     setIsLocalSaved(newSavedState);
     setIsSaveLoading(true);
-    
+
     // Call the appropriate mutation based on the current state
     const mutation = wasSaved ? removeFromSaved : addToSaved;
-    
+
     mutation(undefined, {
       onError: () => {
         // Revert on error
@@ -208,7 +193,7 @@ const ArtworkDetail = () => {
     setJustOptimisticallyFollowed(true);
 
     const wasFollowing = isLocalFollowing;
-    
+
     // Optimistic update
     setIsLocalFollowing(!wasFollowing);
 
@@ -238,10 +223,35 @@ const ArtworkDetail = () => {
     });
   };
 
+  const handleRedirectToProfile = (username: string) => {
+    navigate(`${Routes.ProfilePublicPage}/${username}`);
+  };
+
 
   useEffect(() => {
     document.title = 'Artwork Details | Auroraa';
   }, []);
+
+  useEffect(() => {
+    if (!justOptimisticallyLiked) {
+      if (likeStatus) setIsLocalLiked(likeStatus.has_liked);
+      if (artwork?.how_many_like?.like_count !== undefined) {
+        setLocalLikeCount(artwork.how_many_like.like_count);
+      }
+    }
+  }, [likeStatus, artwork, justOptimisticallyLiked]);
+
+  useEffect(() => {
+    if (artwork?.isSaved) {
+      setIsLocalSaved(true);
+    }
+  }, [artwork]);
+
+  useEffect(() => {
+    if (!justOptimisticallyFollowed && isFollowingCheck) {
+      setIsLocalFollowing(isFollowingCheck.is_following);
+    }
+  }, [isFollowingCheck, justOptimisticallyFollowed]);
 
   if (isLoading) {
     return (
@@ -260,7 +270,7 @@ const ArtworkDetail = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 pby-10">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
 
       {/* Left Pane (2/3) */}
       <div className="lg:col-span-2 lg:bg-white dark:bg-[var(--card)] lg:rounded-2xl lg:shadow lg:p-8 space-y-6">
@@ -359,20 +369,12 @@ const ArtworkDetail = () => {
             />
             <span className="text-lg">{localLikeCount}</span>
           </button>
-          <button
-            className="flex items-center gap-2 text-[var(--muted-foreground)]"
+          <Bookmark size={24} className={`w-7 h-7 ${artwork.isSaved || isLocalSaved
+            ? "fill-black text-black"
+            : "text-[var(--muted-foreground)]"
+            }`}
             onClick={handleSaveButtonClick}
-            disabled={isSavePending || isUnSavePending}
-          >
-            <Bookmark 
-              size={24} 
-              className={`w-7 h-7 ${artwork.isSaved || isLocalSaved
-                ? "fill-[var(--accent)] text-[var(--accent)]"
-                : "text-[var(--muted-foreground)]"
-              }`} 
-            />
-            {artwork.isSaved || isLocalSaved ? 'Saved' : 'Save'}
-          </button>
+          />
         </div>
 
         {/* Action Buttons */}
@@ -438,10 +440,10 @@ const ArtworkDetail = () => {
                       src={comment.user?.profileImage || placeholderProfileImage}
                       alt={comment.user?.username || "user"}
                       className="w-10 h-10 rounded-full border-2 border-[var(--accent)] object-cover shadow cursor-pointer"
-                      onClick={() => navigate(`${Routes.ProfilePublicPage}/${comment?.user_id}`)}
+                      onClick={() => handleRedirectToProfile(comment?.user.username)}
                     />
                     <div className="flex flex-col">
-                      <span className="font-semibold text-sm cursor-pointer hover:underline" onClick={() => navigate(`${Routes.ProfilePublicPage}/${comment?.user_id}`)}>{comment?.user?.username}</span>
+                      <span className="font-semibold text-sm cursor-pointer hover:underline" onClick={() => handleRedirectToProfile(comment?.user.username)}>{comment?.user?.username}</span>
                       <p className="text-sm text-[var(--foreground)]">{comment.content}</p>
                       {/* Optional timestamp */}
                       {/* <span className="text-xs text-[var(--muted-foreground)] mt-1">
@@ -473,7 +475,7 @@ const ArtworkDetail = () => {
                 showTextArea={true}
               />
               {reviews.map((r: Review) => (
-                <ReviewCard key={r.id} item={r} />
+                <ReviewCard key={r.id} item={r} handleRedirectToProfile={handleRedirectToProfile} />
               ))}
             </div>
           </TabsContent>

@@ -55,7 +55,7 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse | UserSearchR
 
             {/* Score */}
             <div className="flex-shrink-0 text-right ml-2 sm:ml-4">
-                <div className="text-sm sm:text-base font-bold text-[var(--primary)]">{artist.weightedRating.toFixed(1)}</div>
+                <div className="text-sm sm:text-base font-bold text-[var(--primary)]">{artist.avgRating.toFixed(1)}</div>
                 <div className="text-[10px] sm:text-xs text-[var(--muted-foreground)]">{artist.reviewCount} reviews</div>
             </div>
         </div>

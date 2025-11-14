@@ -183,6 +183,17 @@ export type Orders = {
   createdAt: Date;
 };
 
+export type adminauditLogs = {
+  method: string;
+  path: string;
+  action: string;
+  description: string;
+  ip_address: string;
+  id: string;
+  admin_id: string;
+  timestamp: Date;
+}
+
 // ------------------ MESSAGES ------------------
 
 export type chatMessage = {

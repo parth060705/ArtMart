@@ -120,9 +120,9 @@ function App() {
 
 
                   {/* ------------------------------------------------------------------------------------------- */}
-                  <Route path="/admin/user_manage" element={<UserManage />} />
+                  {/* <Route path="/admin/user_manage" element={<UserManage />} />
                   <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
-                  <Route path="/admin/orders_manage" element={<OrderManage />} />
+                  <Route path="/admin/orders_manage" element={<OrderManage />} /> */}
                   <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
                   {/* ------------------------------------------------------------------------------------------- */}
 

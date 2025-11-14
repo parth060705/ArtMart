@@ -11,6 +11,7 @@ export const useAdminOrders = () =>
       return data;
     },
     staleTime: 1000 * 60 * 5,
+    refetchInterval: 10000,
   });
 
 // DELETE ORDER

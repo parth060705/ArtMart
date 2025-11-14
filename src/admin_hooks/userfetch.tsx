@@ -17,6 +17,7 @@ export const useAdminUsers = (
     staleTime: 1000 * 60 * 5,
     retry: 1,
     ...options,
+    refetchInterval: 10000,
   });
 };
 

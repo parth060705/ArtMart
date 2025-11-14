@@ -11,6 +11,7 @@ export const useAdminArtworks = () =>
       return data;
     },
     staleTime: 1000 * 60 * 5,
+    refetchInterval: 10000,
   });
 
 // DELETE ARTWORK

@@ -41,6 +41,7 @@ export interface UserProfile extends User {
 export interface TopArtsistResponse {
   artistId: string;
   avgRating: number;
+  weightedRating: number;
   reviewCount: number;
   username: string;
   profileImage: string;
@@ -53,6 +54,7 @@ export interface UserSearchResult {
   username: string;
   profileImage?: string;
   avgRating: number;
+  weightedRating: number;
   reviewCount: number;
   bio: string;
   rank?: number;
@@ -183,7 +185,7 @@ export type Orders = {
   createdAt: Date;
 };
 
-export type adminauditLogs = {
+export type AdminauditLogs = {
   method: string;
   path: string;
   action: string;

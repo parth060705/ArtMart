@@ -1,5 +1,9 @@
 // ------------------ USERS ------------------
 
+import { SubmitHandler } from "react-hook-form";
+import z from "zod";
+import { uploadProductSchema } from "./validation-schemas";
+
 export interface User {
   id: string;
   name: string;
@@ -45,6 +49,7 @@ export interface TopArtsistResponse {
   username: string;
   profileImage: string;
   rank?: number;
+  weightedRating: number;
 }
 
 export interface UserSearchResult {
@@ -56,6 +61,8 @@ export interface UserSearchResult {
   reviewCount: number;
   bio: string;
   rank?: number;
+  weightedRating: number;
+
 }
 
 export interface PostReviewProps {
@@ -246,4 +253,34 @@ export interface ChatListResponse {
   unreadCount: number;
   user_id: string;
   username: string;
+}
+
+export enum PostCategories {
+  Painting = 'Painting',
+  DigitalArt = 'Digital Art',
+  Sculpture = 'Sculpture',
+  Illustration = 'Illustration',
+  Sketch = 'Sketch'
+}
+
+export enum SUPPORTED_IMAGE_TYPES {
+  JPEG = 'image/jpeg',
+  PNG = 'image/png',
+  WEBP = 'image/webp',
+}
+
+export interface IPostFormProps {
+  type: 'upload' | 'edit';
+  defaultValues?: z.infer<typeof uploadProductSchema>;
+}
+
+export interface ProductFormData {
+  title: string;
+  description: string;
+  price?: number;
+  category: string;
+  quantity: number;
+  forSale?: boolean;
+  tags: string[];
+  files: File[];
 }

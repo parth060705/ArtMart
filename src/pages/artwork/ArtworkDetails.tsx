@@ -227,6 +227,10 @@ const ArtworkDetail = () => {
     navigate(`${Routes.ProfilePublicPage}/${username}`);
   };
 
+  const handleRedirectToEditor = () => {
+    navigate(`/${Routes.EditArtworkPage}/${artwork?.id}`);
+  };
+
 
   useEffect(() => {
     document.title = 'Artwork Details | Auroraa';
@@ -292,12 +296,17 @@ const ArtworkDetail = () => {
             </Link>
           </div>
 
-          {artwork.artist.id !== userProfile?.id && <Button
+          {artwork.artist.id !== userProfile?.id ? <Button
             className='px-4 py-1.5 rounded-full text-sm font-medium'
             onClick={handleFollowClick}
             disabled={isFollowLoading}
           >
             {isLocalFollowing ? 'Unfollow' : 'Follow'}
+          </Button> : <Button
+            className='px-4 py-1.5 rounded-full text-sm font-medium'
+            onClick={handleRedirectToEditor}
+          >
+            Edit
           </Button>}
         </div>
 

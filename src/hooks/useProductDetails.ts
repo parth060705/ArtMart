@@ -6,7 +6,7 @@ export const useProductDetails = (id:string) => {
     queryKey: ["productDetails", id],
     queryFn: async () => {
       const { data } = await axiosClient.get(`/artworks/${id}`);
-      return data;
+      return data
     },
     staleTime: 1000 * 60 * 10, // 10 minutes
     retry: 1,

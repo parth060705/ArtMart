@@ -17,19 +17,27 @@ import { useUserReview } from '@/hooks/user/useUserReview';
 import ReviewCard from '@/components/ReviewCard';
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg"
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const { data: userProfile } = useUserProfile();
-  const { data: products, isLoading } = useProductsList("/auth/artworks/me");
+  const { data: products, isLoading } = useProductsList("/auth/artworks/me", "get-user-artworks");
   const { data: followers } = useUserFollowersList();
   const { data: following } = useUserFollowingList();
   const { data: userReviews } = useUserReview()
+  const { data: savedArtworks, isLoading: savedArtworksLoading } = useProductsList('/auth/Saved', 'get-saved-artworks')
   const [isFollowersOpen, setIsFollowersOpen] = useState(false);
   const [openReviewPopup, setOpenReviewPopup] = useState(false);
   const [defaultFollowersFollowingTab, setDefaultFollowersFollowingTab] = useState<'followers' | 'following'>('followers');
+
+  const [view, setView] = useState<'uploaded' | 'saved'>('uploaded')
+
+  const transformedSavedArtworks = savedArtworks?.map((item: any) => ({
+    ...item.artwork
+  })) || [];
 
   useEffect(() => {
     document.title = 'Profile | Auroraa';
@@ -136,20 +144,65 @@ const Profile = () => {
           defaultTab={defaultFollowersFollowingTab}
         />
 
-        {/* Uploaded Products Grid */}
+        {/* <div className="flex items-center gap-2 p-1 rounded-full bg-muted w-fit mx-auto mb-6">
+          <Button
+            variant={view === 'uploaded' ? 'default' : 'ghost'}
+            className={`rounded-full px-6 font-medium transition-all duration-200 ${view === 'uploaded' ? 'shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            onClick={() => setView('uploaded')}
+          >
+            Uploaded
+          </Button>
+          <Button
+            variant={view === 'saved' ? 'default' : 'ghost'}
+            className={`rounded-full px-6 font-medium transition-all duration-200 ${view === 'saved' ? 'shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            onClick={() => setView('saved')}
+          >
+            Saved
+          </Button>
+        </div> */}
+
         <MasonryFeed
           length={products?.length}
           data={products}
           isLoading={isLoading}
-          url="/auth/artworks/me"
-          // className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full"
           className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full"
+          showLikeCount
         />
+
+        {/* <Tabs defaultValue="uploaded">
+          <TabsList className="mx-auto">
+            <TabsTrigger value="uploaded">Uploaded</TabsTrigger>
+            <TabsTrigger value="saved">Saved</TabsTrigger>
+          </TabsList>
+
+
+          <TabsContent value="uploaded">
+            <MasonryFeed
+              length={products?.length}
+              data={products}
+              isLoading={isLoading}
+              className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full"
+              showLikeCount
+            />
+          </TabsContent>
+
+          <TabsContent value="saved">
+            <MasonryFeed
+              length={transformedSavedArtworks?.length}
+              data={transformedSavedArtworks}
+              isLoading={savedArtworksLoading}
+              className="grid grid-cols-2 md:grid-cols-4 gap-1 w-full"
+            />
+          </TabsContent>
+        </Tabs> */}
+
       </div >
       <Dialog open={openReviewPopup} onOpenChange={setOpenReviewPopup}>
         <DialogContent className="sm:max-w-[425px]">
           {userReviews?.map((review) => (
-            <ReviewCard key={review.id} item={review} />
+            <ReviewCard key={review.id} item={review} handleRedirectToProfile={() => navigate(`/profile/${review.reviewer.username}`)} />
           ))}
         </DialogContent>
       </Dialog>

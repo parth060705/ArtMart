@@ -10,7 +10,6 @@ import { Routes as AppRoutes } from './lib/routes';
 
 // Providers
 import { ThemeProvider } from './components/ui/theme-provider';
-import { ProductSearchProvider } from './context/ProductSearchContext';
 import { queryClient } from './lib/client';
 
 // Layouts
@@ -23,21 +22,21 @@ const NotFound = React.lazy(() => import('./pages/NotFound'));
 const Home = React.lazy(() => import('./pages/Home'));
 const Loginpage = React.lazy(() => import('./pages/auth/Loginpage'));
 const Cart = React.lazy(() => import('./pages/Cart'));
-const ArtworkDetail = React.lazy(() => import('./pages/product/ArtworkDetails'));
+const ArtworkDetail = React.lazy(() => import('./pages/artwork/ArtworkDetails'));
 const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
 const ResetPasswordPage = React.lazy(() => import('./pages/auth/ResetPasswordPage'));
 const Profile = React.lazy(() => import('./pages/profile/Profile'));
 const ProfileUpdate = React.lazy(() => import('./pages/profile/ProfileUpdate'));
-const SearchProduct = React.lazy(() => import('./pages/product/SearchProduct'));
 const ChatWrapper = React.lazy(() => import('./pages/chat/chatWrapper'));
 const ChatList = React.lazy(() => import('./pages/chat/ChatList'));
-const ArtworksListingPage = React.lazy(() => import('./pages/product/ArtworksListingPage'));
+const ArtworksListingPage = React.lazy(() => import('./pages/artwork/ArtworksListingPage'));
 const PublicProfile = React.lazy(() => import('./pages/profile/PublicProfile'));
 const ArtistsPage = React.lazy(() => import('./pages/ArtistsPage'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./pages/TermsAndConditions'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
-const UploadArtwork = React.lazy(() => import('./pages/product/UploadArtwork'));
+const UploadArtwork = React.lazy(() => import('./pages/artwork/UploadArtwork'));
+const EditArtwork = React.lazy(() => import('./pages/artwork/EditArtwork'));
 const SavedArtworksPage = React.lazy(() => import('./pages/SavedArtworksPage'));
 
 // Admin Pages
@@ -84,65 +83,63 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="theme">
-      <ProductSearchProvider>
-        <QueryClientProvider client={queryClient}>
-          <Toaster richColors position="top-center" />
-          {/* Update notification is now handled by useServiceWorkerUpdate toast */}
-          <Suspense fallback={<PageLoader />}>
-            <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
-                <Route path="/auth" element={<MainLayout />}>
-                  <Route index element={<Loginpage />} />
-                  <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
-                  <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
-                </Route>
-                <Route path="/" element={<MainLayout />}>
-                  <Route index element={<Home />} />
-                  <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
-                  <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
-                  <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
-                  <Route path={AppRoutes.SearchProductPage} element={<SearchProduct />} />
-                  <Route path={AppRoutes.CartPage} element={<Cart />} />
-                  <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
-                  <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
-                  <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
-                  <Route path={AppRoutes.SavedPage} element={<SavedArtworksPage />} />
-                  <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
-                  <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
-                  <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
-                  <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
-                  <Route path={AppRoutes.SettingsPage} element={<SettingsPage />} />
+      <QueryClientProvider client={queryClient}>
+        <Toaster richColors position="top-center" />
+        {/* Update notification is now handled by useServiceWorkerUpdate toast */}
+        <Suspense fallback={<PageLoader />}>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/auth" element={<MainLayout />}>
+                <Route index element={<Loginpage />} />
+                <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
+                <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
+              </Route>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Home />} />
+                <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
+                <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
+                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
+                <Route path={AppRoutes.CartPage} element={<Cart />} />
+                <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
+                <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
+                <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
+                <Route path={`${AppRoutes.EditArtworkPage}/:id`} element={<EditArtwork />} />
+                <Route path={AppRoutes.SavedPage} element={<SavedArtworksPage />} />
+                <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
+                <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
+                <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
+                <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
+                <Route path={AppRoutes.SettingsPage} element={<SettingsPage />} />
 
-                  {/* chat */}
-                  <Route path="/chat/:peerId" element={<ChatWrapper />} />
-                  <Route path={AppRoutes.ChatPage} element={<ChatList />} />
+                {/* chat */}
+                <Route path="/chat/:peerId" element={<ChatWrapper />} />
+                <Route path={AppRoutes.ChatPage} element={<ChatList />} />
 
 
-                  {/* ------------------------------------------------------------------------------------------- */}
-                  <Route path="/admin/user_manage" element={<UserManage />} />
-                  <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
-                  <Route path="/admin/orders_manage" element={<OrderManage />} />
-                  <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
-                  {/* ------------------------------------------------------------------------------------------- */}
+                {/* ------------------------------------------------------------------------------------------- */}
+                <Route path="/admin/user_manage" element={<UserManage />} />
+                <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
+                <Route path="/admin/orders_manage" element={<OrderManage />} />
+                <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
+                {/* ------------------------------------------------------------------------------------------- */}
 
-                  <Route path="*" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />
 
-                  {/* Protected Routes Group */}
-                  {/* <Route element={<ProtectedRoute />}>s
+                {/* Protected Routes Group */}
+                {/* <Route element={<ProtectedRoute />}>s
             <Route path={AppRoutes.CartPage} element={<Cart />} />
             <Route path={AppRoutes.ProfilePage} element={<Profile />} />
           </Route> */}
 
-                </Route>
-              </Routes>
-              <InstallButton />
-            </BrowserRouter>
-          </Suspense>
-          <ReactQueryDevtools initialIsOpen={false} position="bottom" />
-        </QueryClientProvider>
-      </ProductSearchProvider>
-    </ThemeProvider>
+              </Route>
+            </Routes>
+            <InstallButton />
+          </BrowserRouter>
+        </Suspense>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom" />
+      </QueryClientProvider>
+a    </ThemeProvider>
   );
 }
 

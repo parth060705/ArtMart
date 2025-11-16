@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 interface ProductCardProps extends Product {
   variant?: "default" | "gallery";
   onClick?: () => void;
+  showLikeCount?: boolean;
 }
 
 export default function ProductCard({
@@ -20,6 +21,7 @@ export default function ProductCard({
   comments,
   how_many_like,
   variant = "default",
+  showLikeCount,
   onClick,
 }: ProductCardProps) {
 
@@ -52,7 +54,7 @@ export default function ProductCard({
         style={{ aspectRatio: "3/4", background: "var(--card)" }}
       />
 
-      {isProfilePage && <div className="flex justify-start items-center gap-1 ml-auto absolute bottom-0 left-0 right-0 pl-2 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+      {isProfilePage && showLikeCount && <div className="flex justify-start items-center gap-1 ml-auto absolute bottom-0 left-0 right-0 pl-2 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
           <Heart className="w-4 h-4 fill-white" />{how_many_like?.like_count} 
       </div>}
 

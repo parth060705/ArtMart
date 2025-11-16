@@ -34,10 +34,14 @@ export const uploadProductSchema = z.object({
     description: z.string().min(1, { message: 'Description is required' }),
     price: z.string().optional(),
     category: z.string().min(1, { message: 'Category is required' }),
-    images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
-    tags: z.array(z.string()).min(1, { message: 'At least one tag is required for better search' }),
+    // images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
+    images: z.array(z.any()).refine(
+        (images) => images.length > 0,
+        { message: 'At least one image is required' }
+    ),
+    tags: z.string().min(1, { message: 'At least one tag is required for better search' }),
     quantity: z.string().optional(),
-    forSale: z.boolean().default(false),
+    forSale: z.boolean().default(false).optional(),
 }).refine((data) => {
     if (data.forSale) {
         return data.price && data.price.trim() !== '' && data.quantity && data.quantity.trim() !== '';

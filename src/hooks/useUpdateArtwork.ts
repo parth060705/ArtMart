@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axios";
+import { ProductFormData } from "@/lib/types";
 
-export const useUploadProduct = () => {
+export const useUpdateArtwork = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-
-      const { data } = await axiosClient.post("/auth/artworks", formData, {
+      const { data } = await axiosClient.patch(`/auth/update/artworks/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       return data;
     },
-    onSuccess: () => {
+    onSuccess: () => {  
       queryClient.invalidateQueries({ queryKey: ["artworks"] });
-      queryClient.invalidateQueries({ queryKey: ["get-user-artworks"] });
+      queryClient.invalidateQueries({ queryKey: ["productDetails", id] });
     },
   });
 };

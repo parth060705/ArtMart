@@ -25,11 +25,10 @@ const Navbar = ({
     title: "Auroraa",
   },
 }: NavbarProps) => {
-  const { isAuthenticated, username, userProfile, logout } = useAuth();
+  const { isAuthenticated, username, userProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
-  const isChatListPage = location.pathname === '/chat-list';
 
   const handleProfileClick = () => {
     if (isAuthenticated) {

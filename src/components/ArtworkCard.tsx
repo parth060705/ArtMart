@@ -25,31 +25,37 @@ const ArtworkCard = ({
     createdAt,
     how_many_like,
     id,
-    isSaved
+    isSaved,
+    isLike,
 }: Product) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
     const [likeAnimating, setLikeAnimating] = useState(false);
     const [justOptimisticallyLiked, setJustOptimisticallyLiked] = useState(false);
-    const [isLocalLiked, setIsLocalLiked] = useState<boolean>(false);
-    const [localLikeCount, setLocalLikeCount] = useState<number>(0);
+    const [isLocalLiked, setIsLocalLiked] = useState<boolean>(isLike || false);
+    const [localLikeCount, setLocalLikeCount] = useState<number>(how_many_like?.like_count || 0);
     const [isLocalSaved, setIsLocalSaved] = useState<boolean>(isSaved || false);
     const [isSaveLoading, setIsSaveLoading] = useState<boolean>(false);
-    const { data: likeStatus } = useUserLikeStatus(id || '');
+    
+    // Only fetch like status if not provided via props
+    const { data: likeStatus } = isLike === undefined ? useUserLikeStatus(id || '') : { data: null };
+    
     const { mutate: likeProduct } = useLikeProduct(id || '');
     const { mutate: dislikeProduct } = useDisLikeProduct(id || '');
     const { mutateAsync: addToSaved, isPending: isWishListPending } = useSaveArtwork(id || '');
     const { mutateAsync: removeFromSaved, isPending: isUnSavePending } = useUnSaveArtworks(id || '');
 
     useEffect(() => {
-        if (!justOptimisticallyLiked) {
-            if (likeStatus) setIsLocalLiked(likeStatus.has_liked);
+        if (isLike === undefined && !justOptimisticallyLiked) {
+            if (likeStatus) {
+                setIsLocalLiked(likeStatus.has_liked);
+            }
             if (how_many_like?.like_count !== undefined) {
                 setLocalLikeCount(how_many_like.like_count);
             }
         }
-    }, [likeStatus, how_many_like, justOptimisticallyLiked]);
+    }, [likeStatus, how_many_like, justOptimisticallyLiked, isLike]);
 
     const handleLikeButtonClick = () => {
         if (!isAuthenticated) {
@@ -59,35 +65,50 @@ const ArtworkCard = ({
 
         if (likeAnimating) return;
         setLikeAnimating(true);
+        
+        // Get current state before making changes
+        const currentState = isLocalLiked;
+        const newState = !currentState;
+        const prevCount = localLikeCount;
+        const newCount = currentState ? Math.max(0, prevCount - 1) : prevCount + 1;
+
+        // Optimistically update local state
+        setIsLocalLiked(newState);
+        setLocalLikeCount(newCount);
         setJustOptimisticallyLiked(true);
 
-        const wasLiked = isLocalLiked;
-        const prevCount = localLikeCount;
-        const newCount = wasLiked ? Math.max(0, prevCount - 1) : prevCount + 1;
-
-        setIsLocalLiked(!wasLiked);
-        setLocalLikeCount(newCount);
-
-        queryClient.setQueryData(['like', id], { has_liked: !wasLiked });
+        // Optimistically update React Query cache
+        queryClient.setQueryData(['like', id], { has_liked: newState });
         queryClient.setQueryData(['productDetails', id], (old: any) => ({
             ...old,
             how_many_like: { ...old?.how_many_like, like_count: newCount }
         }));
 
-        const mutation = wasLiked ? dislikeProduct : likeProduct;
+        // Determine which mutation to use based on the new state
+        const mutation = newState ? likeProduct : dislikeProduct;
+        
+        // Execute the mutation
         mutation(undefined, {
-            onError: () => {
-                setIsLocalLiked(wasLiked);
+            onError: (error) => {
+                console.error('Like/Dislike error:', error);
+                // Revert optimistic updates on error
+                setIsLocalLiked(currentState);
                 setLocalLikeCount(prevCount);
+                queryClient.setQueryData(['like', id], { has_liked: currentState });
+                queryClient.setQueryData(['productDetails', id], (old: any) => ({
+                    ...old,
+                    how_many_like: { ...old?.how_many_like, like_count: prevCount }
+                }));
                 toast.error('Failed to update like. Please try again.');
             },
             onSettled: () => {
-                setJustOptimisticallyLiked(false);
+                // Invalidate queries to ensure we have fresh data
                 queryClient.invalidateQueries({ queryKey: ['productDetails', id] });
                 queryClient.invalidateQueries({ queryKey: ['like', id] });
+                setJustOptimisticallyLiked(false);
+                setLikeAnimating(false);
             },
         });
-        setLikeAnimating(false);
     };
 
     const handleSaveButtonClick = () => {

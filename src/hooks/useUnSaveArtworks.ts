@@ -11,6 +11,7 @@ export const useUnSaveArtworks = (artwork_id: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["save"] });
+      queryClient.invalidateQueries({ queryKey: ["get-saved-artworks"] });
     },
   });
 };

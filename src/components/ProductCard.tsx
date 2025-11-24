@@ -1,10 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Product } from "@/lib/types";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 interface ProductCardProps extends Product {
   variant?: "default" | "gallery";
   onClick?: () => void;
+  showLikeCount?: boolean;
 }
 
 export default function ProductCard({
@@ -17,9 +19,12 @@ export default function ProductCard({
   tags,
   likes,
   comments,
+  how_many_like,
   variant = "default",
+  showLikeCount,
   onClick,
 }: ProductCardProps) {
+
   const safeTags = Array.isArray(tags)
     ? tags.flatMap((tagString) =>
       tagString
@@ -28,6 +33,9 @@ export default function ProductCard({
         .filter(Boolean)
     )
     : [];
+
+  const isProfilePage = useLocation().pathname.includes('/profile');
+
   return (
     <div
       key={id}
@@ -46,8 +54,12 @@ export default function ProductCard({
         style={{ aspectRatio: "3/4", background: "var(--card)" }}
       />
 
+      {isProfilePage && showLikeCount && <div className="flex justify-start items-center gap-1 ml-auto absolute bottom-0 left-0 right-0 pl-2 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+          <Heart className="w-4 h-4 fill-white" />{how_many_like?.like_count} 
+      </div>}
+
       {/* Overlay: hidden by default, show on hover/focus/tap */}
-      <div
+      {!isProfilePage && <div
         className="absolute inset-0 flex flex-col justify-between opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-300 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 md:p-5"
         tabIndex={-1}
       >
@@ -91,7 +103,7 @@ export default function ProductCard({
             </button>
           </div> */}
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

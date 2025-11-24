@@ -26,6 +26,7 @@ export class Routes {
     static ProfileUpdatePage = "/me/profile/:username/update"
     static ProfilePublicPage = "/profile"
     static UploadProductPage = "upload"
+    static EditArtworkPage = "artwork-editor"
     static SearchProductPage = "search"
     static AuthLoginPage = "/auth/login"
     static AuthRegisterPage = "/auth/register"

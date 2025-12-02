@@ -111,6 +111,7 @@ export type Product = {
   isSaved: boolean;
   location: string;
   createdAt: string;
+  status?: string;
 };
 
 // ------------------ COMMENT ------------------

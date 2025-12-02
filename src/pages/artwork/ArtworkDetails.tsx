@@ -273,6 +273,17 @@ const ArtworkDetail = () => {
     );
   }
 
+  // If artwork is hidden, show message instead of content
+  if (artwork?.status === 'hidden') {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-6">
+        <div className="max-w-xl w-full text-center text-sm sm:text-base italic bg-[var(--card)] border border-[var(--accent)] text-[var(--muted-foreground)] rounded px-4 py-3">
+          This artwork has been removed for violating our community guidelines.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 py-10">
 
@@ -448,12 +459,22 @@ const ArtworkDetail = () => {
                     <img
                       src={comment.user?.profileImage || placeholderProfileImage}
                       alt={comment.user?.username || "user"}
-                      className="w-10 h-10 rounded-full border-2 border-[var(--accent)] object-cover shadow cursor-pointer"
+                      className="w-10 h-10 rounded-full border-2 border-[var(--accent)] object-cover shadow cursor-pointer flex-shrink-0"
                       onClick={() => handleRedirectToProfile(comment?.user.username)}
                     />
                     <div className="flex flex-col">
                       <span className="font-semibold text-sm cursor-pointer hover:underline" onClick={() => handleRedirectToProfile(comment?.user.username)}>{comment?.user?.username}</span>
-                      <p className="text-sm text-[var(--foreground)]">{comment.content}</p>
+                      <p
+                        className={`text-sm break-words whitespace-normal ${
+                          comment?.status === 'hidden'
+                            ? 'text-xs italic bg-[var(--card)] border border-[var(--accent)] rounded px-3 py-2 text-[var(--muted-foreground)]'
+                            : 'text-[var(--foreground)]'
+                        }`}
+                      >
+                        {comment?.status === 'hidden'
+                          ? 'This comment has been removed for violating our community guidelines.'
+                          : comment.content}
+                      </p>
                       {/* Optional timestamp */}
                       {/* <span className="text-xs text-[var(--muted-foreground)] mt-1">
                             {new Date(comment.createdAt).toLocaleDateString()}

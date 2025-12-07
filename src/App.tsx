@@ -38,6 +38,8 @@ const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
 const UploadArtwork = React.lazy(() => import('./pages/artwork/UploadArtwork'));
 const EditArtwork = React.lazy(() => import('./pages/artwork/EditArtwork'));
 const SavedArtworksPage = React.lazy(() => import('./pages/SavedArtworksPage'));
+const BlogListPage = React.lazy(() => import('./pages/blog/BlogList'));
+const BlogPostPage = React.lazy(() => import('./pages/blog/BlogPost'));
 
 // Admin Pages
 const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
@@ -116,7 +118,6 @@ function App() {
                 <Route path="/chat/:peerId" element={<ChatWrapper />} />
                 <Route path={AppRoutes.ChatPage} element={<ChatList />} />
 
-
                 {/* ------------------------------------------------------------------------------------------- */}
                 <Route path="/admin/user_manage" element={<UserManage />} />
                 <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
@@ -133,13 +134,16 @@ function App() {
           </Route> */}
 
               </Route>
+              <Route path={AppRoutes.BlogPage} element={<BlogListPage />} />
+              <Route path={`${AppRoutes.BlogPage}/:slug`} element={<BlogPostPage />} />
+
             </Routes>
             <InstallButton />
           </BrowserRouter>
         </Suspense>
         <ReactQueryDevtools initialIsOpen={false} position="bottom" />
       </QueryClientProvider>
-a    </ThemeProvider>
+    </ThemeProvider>
   );
 }
 

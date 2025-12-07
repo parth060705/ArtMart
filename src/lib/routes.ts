@@ -40,6 +40,7 @@ export class Routes {
     static TermsAndConditionsPage = "/terms-and-conditions"
     static SettingsPage = "/settings"
     static ChatPage = "/auth/chat-list"
+    static BlogPage ="/blog"
 }
 
 interface NavbarRoutes {

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.0] - 2025-12-09
+### Added
+- Added blog with survey link on blog post and home page
+
 ## [1.3.2] - 2025-12-02
 ### Added
 - content moderation feature for list of artworks details, comments, review and user review

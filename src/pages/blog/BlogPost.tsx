@@ -104,12 +104,12 @@ const BlogPost: React.FC = () => {
         </section>
 
         <section className="mt-12 rounded-2xl bg-card ring-1 ring-border p-6">
-          <h2 className="text-2xl font-semibold">Share your voice: 2‑min Auroraa survey</h2>
+          <h2 className="text-2xl font-semibold">A tool that protects your Art from AI ?</h2>
           <p className="mt-2 text-foreground/80">
-            Help us build tools artists truly need. Your feedback guides our roadmap.
+            Help shape Auroraa — a tool that keeps your art visually safe and protected from AI style theft.
           </p>
           <a
-            href="https://forms.gle/your-google-form-id"
+            href="https://app.youform.com/forms/wz18crkh"
             target="_blank"
             rel="noreferrer"
             className="mt-4 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow hover:opacity-95"
@@ -125,8 +125,8 @@ const BlogPost: React.FC = () => {
         <section className="mt-10 rounded-2xl bg-card ring-1 ring-border p-6">
           <h3 className="text-xl font-semibold">Create with Auroraa</h3>
           <p className="mt-2 text-foreground/80">Join a platform designed for artists. Upload your art, get discovered and grow your audience.</p>
-          <Link to="/upload" className="mt-4 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow hover:opacity-95">
-            Get started
+          <Link to="/products" className="mt-4 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow hover:opacity-95">
+            Explore Auroraa
           </Link>
         </section>
       </article>

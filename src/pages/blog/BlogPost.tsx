@@ -104,9 +104,9 @@ const BlogPost: React.FC = () => {
         </section>
 
         <section className="mt-12 rounded-2xl bg-card ring-1 ring-border p-6">
-          <h2 className="text-2xl font-semibold">A tool that protects your Art from AI ?</h2>
+          <h2 className="text-2xl font-semibold">Do artists need AI protection?</h2>
           <p className="mt-2 text-foreground/80">
-            Help shape Auroraa — a tool that keeps your art visually safe and protected from AI style theft.
+            We are building tool that keeps your art visually safe and protected from AI style theft.
           </p>
           <a
             href="https://app.youform.com/forms/wz18crkh"

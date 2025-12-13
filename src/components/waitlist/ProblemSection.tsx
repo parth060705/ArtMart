@@ -56,7 +56,7 @@ const ProblemSection = () => {
 
 
     return (
-        <section className="py-20 md:py-32 bg-gradient-to-b from-[#FEFBFF] to-[#FEFBFF]/30">
+        <section id='problem' className="py-20 md:py-32 bg-gradient-to-b from-[#FEFBFF] to-[#FEFBFF]/30">
             <div className="container mx-auto px-4">
                 {/* Section Header */}
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

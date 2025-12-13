@@ -10,8 +10,8 @@ const Header = () => {
 
     const navigationItems = [
         { label: 'How It Works', href: '#how-it-works' },
-        { label: 'Community Benefits', href: '#benefits' },
-        { label: 'Artist Stories', href: '#stories' },
+        { label: 'FAQ', href: '#faq' },
+        { label: 'Problem', href: '#problem' },
     ];
 
     useEffect(() => {

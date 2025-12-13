@@ -55,7 +55,7 @@ const FAQSection = () => {
         {
             id: 7,
             question: 'What file formats are supported?',
-            answer: 'We support all major image formats including JPG, PNG, TIFF, PSD, and WebP. Maximum file size is 50MB per image. We are working on adding support for animated formats and video content in future updates.',
+            answer: 'We support all major image formats including JPG, PNG, TIFF, PSD, and WebP. Maximum file size is 10MB per image.',
             category: 'Technical'
         },
         {
@@ -176,7 +176,7 @@ const FAQSection = () => {
                 </div>
 
                 {/* Category Filter */}
-                <div className="max-w-4xl mx-auto mt-8">
+                {/* <div className="max-w-4xl mx-auto mt-8">
                     <div className="flex flex-wrap items-center justify-center gap-2">
                         <span className="text-sm text-[#6B7280]">Filter by:</span>
                         {categories.map((category) => (
@@ -192,7 +192,7 @@ const FAQSection = () => {
                             </button>
                         ))}
                     </div>
-                </div>
+                </div> */}
 
                 {/* Still Have Questions CTA */}
                 <div className="max-w-2xl mx-auto mt-16 text-center bg-[#F8FAFC] rounded-2xl p-8 border border-[#rgba(124, 58, 237, 0.2)]">

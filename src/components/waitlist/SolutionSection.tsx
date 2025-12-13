@@ -5,6 +5,7 @@ import { useState } from 'react';
 // import Icon from '@/components/ui/AppIcon';
 import { CircleCheck, LockKeyhole, Sparkles } from 'lucide-react';
 import AppImage from './AppImage';
+import solutionImage from '../../assets/solution-image.png'
 
 interface Feature {
     id: number;
@@ -25,7 +26,7 @@ const SolutionSection = () => {
             title: 'Style Cloaking',
             description: 'Advanced AI-resistant technology that protects your unique artistic style from being scraped and copied by AI models',
             icon: 'ShieldCheckIcon',
-            preview: "https://img.rocket.new/generatedImages/rocket_gen_img_10f1f2b22-1765609463023.png",
+            preview: solutionImage,
             previewAlt: 'Before and after comparison showing artwork with invisible protection layer applied',
             benefits: [
                 'Invisible to human viewers',

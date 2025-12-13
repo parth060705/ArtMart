@@ -43,14 +43,23 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
         setShowOptionalFields(true);
     };
 
-    const handleFinalSubmit = (e: React.FormEvent) => {
+    const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
-        setTimeout(() => {
-            setIsSubmitting(false);
-            onSuccess();
-        }, 1500);
+        const formData = new FormData();
+        formData.append("entry.1167542943", email);
+        if (artisticMedium) {
+            formData.append("entry.255503934", artisticMedium);
+        }
+        if (experienceLevel) {
+            formData.append("entry.1104521048", experienceLevel);
+        } await fetch('https://docs.google.com/forms/d/e/1FAIpQLSe2uP0xP2I7TJCBdKy20oYdnghKFqI4cuRZGH8h8pLj3e3J9A/formResponse', {
+            method: 'POST',
+            mode: "no-cors",
+            body: formData,
+        });
+        setIsSubmitting(false);
+        onSuccess();
     };
 
     if (!isHydrated) {
@@ -94,6 +103,7 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
                                         <input
                                             type="email"
                                             id="email"
+                                            name='entry.1167542943'
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="artist@example.com"
@@ -159,6 +169,7 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
                                     <select
                                         id="medium"
                                         value={artisticMedium}
+                                        name='entry.255503934'
                                         onChange={(e) => setArtisticMedium(e.target.value)}
                                         className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-[#1F2937]"
                                     >
@@ -182,6 +193,7 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
                                     <select
                                         id="experience"
                                         value={experienceLevel}
+                                        name='entry.1104521048'
                                         onChange={(e) => setExperienceLevel(e.target.value)}
                                         className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7C3AED] text-[#1F2937]"
                                     >
@@ -230,7 +242,7 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
                             <span>Secure</span>
                         </div>
                         <div className="flex items-center space-x-2 text-sm text-[#6B7280]">
-                            <Ban size={16} className="text-success"  />
+                            <Ban size={16} className="text-success" />
                             <span>No Spam Ever</span>
                         </div>
                         {/* <div className="flex items-center space-x-2 text-sm text-[#6B7280]">

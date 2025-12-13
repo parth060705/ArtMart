@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.1] - 2025-12-14
+### Added
+- Added waitlist form
+
 ## [1.4.0] - 2025-12-09
 ### Added
 - Added blog with survey link on blog post and home page

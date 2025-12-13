@@ -40,7 +40,6 @@ const WaitListPage = () => {
             <Header />
             <main>
                 <HeroSection onJoinWaitlist={scrollToWaitlist} />
-                {/* <ProblemValidation /> */}
                 <ProblemSection />
                 <SolutionIntro />
                 <SolutionSection />

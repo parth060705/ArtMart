@@ -1,5 +1,3 @@
-'use client';
-
 import { ArrowRightIcon, Ban, Check, CheckCircleIcon, CircleAlert, IterationCw, Lock, Mail, ShieldCheck, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
 // import Icon from '@/components/ui/AppIcon';

@@ -89,8 +89,8 @@ const PrivacyPolicy = () => {
                             <h2 className="text-2xl font-semibold text-foreground mb-4">8. Contact Us</h2>
                             <p>If you have questions, reach us at:</p>
                             <p className="mt-2">
-                                <a href="mailto:admin@auroraa.in" className="text-primary hover:underline flex items-center">
-                                    <span className="mr-2">📧</span> admin@auroraa.in
+                                <a href="mailto:auroraa@auroraa.in" className="text-primary hover:underline flex items-center">
+                                    <span className="mr-2">📧</span> auroraa@auroraa.in
                                 </a>
                             </p>
                         </section>

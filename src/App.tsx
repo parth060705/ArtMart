@@ -46,6 +46,7 @@ const UserManage = React.lazy(() => import('./admin-panel/user_manage'));
 const ArtworkManage = React.lazy(() => import('./admin-panel/artwork_manage'));
 const OrderManage = React.lazy(() => import('./admin-panel/orders_manage'));
 const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dashboard'));
+const WaitListPage = React.lazy(() => import('./pages/WaitListPage'));
 
 // Components
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
@@ -136,6 +137,7 @@ function App() {
               </Route>
               <Route path={AppRoutes.BlogPage} element={<BlogListPage />} />
               <Route path={`${AppRoutes.BlogPage}/:slug`} element={<BlogPostPage />} />
+              <Route path={AppRoutes.WaitListPage} element={<WaitListPage />} />
 
             </Routes>
             <InstallButton />

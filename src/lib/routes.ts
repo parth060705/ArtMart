@@ -41,6 +41,7 @@ export class Routes {
     static SettingsPage = "/settings"
     static ChatPage = "/auth/chat-list"
     static BlogPage ="/blog"
+    static WaitListPage = "/waitlist"
 }
 
 interface NavbarRoutes {

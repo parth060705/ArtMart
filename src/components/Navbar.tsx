@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { navbarRoutes } from "@/lib/routes";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import profilePlaceHolderImage from '@/assets/placeholder-profile-image.jpg';
+import { Plus } from 'lucide-react';
+
 interface NavbarProps {
   logo?: {
     url: string;
@@ -29,6 +31,7 @@ const Navbar = ({
   const location = useLocation();
   const navigate = useNavigate();
   const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
+  const isProfilePage = /^\/profile\/[^/]+$/.test(location.pathname);
 
   const handleProfileClick = () => {
     if (isAuthenticated) {
@@ -45,20 +48,20 @@ const Navbar = ({
     <div className="">
 
       {/* mobile header  */}
-      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !isChatPage && <div>
-        <div className="px-4 py-6 md:hidden flex justify-between items-center">
+      {location.pathname !== Routes.AuthLoginPage && location.pathname !== Routes.AuthRegisterPage && !isChatPage && !isProfilePage &&  <div>
+        {/* <div className="px-4 py-6 md:hidden flex justify-between items-center">
           <Link to={logo.url} className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {logo.title}
           </Link>
           <div className="relative">
             <Link to={Routes.ChatPage}>
               <MessageCircleIcon className="w-6 h-6" />
-            </Link>
+            </Link>!isProfilePage &&  */}
             {/* <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
               3
             </Badge> */}
-          </div>
-        </div>
+          {/* </div>
+        </div> */}
       </div>}
 
       {/* Instagram/Pinterest-like Desktop Sidebar */}
@@ -121,80 +124,77 @@ const Navbar = ({
           </div>
         </div>
       </div>
+      
+ {/* Mobile Bottom Navigation */}
+        {!isChatPage && (
+          <div className="fixed bottom-4 left-0 right-0 z-50 md:hidden">
+            <div className="mx-auto w-[85%] max-w-md">
+              <div className="relative flex items-center justify-between bg-background/95 backdrop-blur-md shadow-xl rounded-full px-6 py-3">
 
-      {/* Mobile Bottom Navigation - Hide only on chat page but show on chat list page */}
-      {isChatPage ? null : <div className="block lg-hidden">
-        {/* Bottom nav bar for mobile */}
-        <div className="fixed bottom-0 left-0 w-full bg-background border-t border-gray-200 z-50 shadow-md md:hidden">
-          <div className="flex justify-between items-center px-6 py-2 relative">
+                {/* Home */}
+                <Link
+                  to="/"
+                  className={`flex flex-col items-center text-xs transition-colors ${location.pathname === '/' ? 'text-accent' : 'text-muted-foreground'
+                    }`}
+                >
+                  <Home className="w-5 h-5 mb-0.5" />
+                  Home
+                </Link>
 
-            {/* Home */}
-            <Link
-              to="/"
-              className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground'}`}
-            >
-              <Home className="w-6 h-6 mb-1" />
-              Home
-            </Link>
+                {/* Discover */}
+                <Link
+                  to="/products"
+                  className={`flex flex-col items-center text-xs transition-colors ${location.pathname === '/products'
+                      ? 'text-accent'
+                      : 'text-muted-foreground'
+                    }`}
+                >
+                  <Box className="w-5 h-5 mb-0.5" />
+                  Discover
+                </Link>
 
-            {/* Products */}
-            <Link
-              to="/products"
-              className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-accent' : 'text-foreground'}`}
-            >
-              <Box className="w-6 h-6 mb-1" />
-              Discover
-            </Link>
+                {/* Floating Create Button */}
+                <Link
+                  to={`/${Routes.UploadProductPage}`}
+                  className="absolute left-1/2 -top-1 -translate-x-1/2"
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform">
+                    <Plus className="w-6 h-6" />
+                  </div>
+                </Link>
 
+                {/* Artists */}
+                <Link
+                  to={Routes.ArtistsRankingPage}
+                  className={`flex flex-col items-center text-xs transition-colors ${location.pathname === Routes.ArtistsRankingPage
+                      ? 'text-accent'
+                      : 'text-muted-foreground'
+                    }`}
+                >
+                  <Users className="w-5 h-5 mb-0.5" />
+                  Artists
+                </Link>
 
-            {/* Artists */}
-            <Link
-              to={Routes.ArtistsRankingPage}
-              className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground"
-            >
-              <Users className="w-6 h-6 mb-1" />
-              Artists
-            </Link>
+                {/* Profile */}
+                <button
+                  onClick={handleProfileClick}
+                  className={`flex flex-col items-center text-xs transition-colors ${location.pathname.startsWith('/profile')
+                      ? 'text-accent'
+                      : 'text-muted-foreground'
+                    }`}
+                >
+                  <img
+                    src={userProfile?.profileImage || profilePlaceHolderImage}
+                    alt="Profile"
+                    className="w-6 h-6 rounded-full object-cover border border-accent mb-0.5"
+                  />
+                  Profile
+                </button>
 
-            {/* Create Button */}
-            <Link
-              to={`/${Routes.UploadProductPage}`}
-              className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg text-xl font-bold"
-            >
-              +
-            </Link>
-
-            {/* Profile */}
-            <div
-              onClick={handleProfileClick}
-              className={`flex flex-col items-center text-sm ${window.location.pathname.startsWith('/profile') ? 'text-accent' : 'text-foreground'
-                }`}
-            >
-              <img
-                src={userProfile?.profileImage || profilePlaceHolderImage}
-                alt="Profile"
-                className="w-7 h-7 rounded-full border-2 border-[var(--accent)] object-cover mb-1"
-
-              />
-              Profile
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Filter Sidebar Drawer */}
-        {/* <Sheet open={openFilter} onOpenChange={setOpenFilter}>
-            <SheetContent side="right" className="max-w-xs w-full">
-              <FilterSidebar
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
-                priceRange={priceRange}
-                setPriceRange={setPriceRange}
-              />
-            </SheetContent>
-          </Sheet> */}
-      </div>}
+        )}
 
     </div>
   );

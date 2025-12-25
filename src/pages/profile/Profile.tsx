@@ -285,7 +285,7 @@ const Profile = () => {
     <>
       <div className="max-w-5xl mx-auto">
         {/* HERO HEADER */}
-        <div className="relative h-[60vh] w-full overflow-hidden mb-6">
+        <div className="relative h-[100vh] w-full overflow-hidden mb-6">
           <img
             src={userProfile.profileImage || placeholderProfileImage}
             alt={userProfile.name}

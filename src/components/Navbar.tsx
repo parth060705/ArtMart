@@ -1,4 +1,4 @@
-import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon, Users } from "lucide-react";
+import { User, Box, Home, ShoppingCart, Bookmark, MessageCircleCode, MessageCircleIcon, Users, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link, Route, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/user/auth/UseAuth";
@@ -149,16 +149,16 @@ const Navbar = ({
                       : 'text-muted-foreground'
                     }`}
                 >
-                  <Box className="w-5 h-5 mb-0.5" />
-                  Discover
+                  <Search className="w-6 h-6 mb-0.5" />
+                  Search
                 </Link>
 
                 {/* Floating Create Button */}
                 <Link
                   to={`/${Routes.UploadProductPage}`}
-                  className="absolute left-1/2 -top-1 -translate-x-1/2"
+                  className="absolute left-1/2 -top-4 -translate-x-1/2"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform">
                     <Plus className="w-6 h-6" />
                   </div>
                 </Link>

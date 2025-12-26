@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // import Icon from '@/components/ui/AppIcon';
 
 interface WaitlistFormProps {
-    onSuccess: () => void;
+    onSuccess?: () => void;
 }
 
 const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
@@ -57,7 +57,7 @@ const WaitlistForm = ({ onSuccess }: WaitlistFormProps) => {
             body: formData,
         });
         setIsSubmitting(false);
-        onSuccess();
+        onSuccess && onSuccess();
     };
 
     if (!isHydrated) {

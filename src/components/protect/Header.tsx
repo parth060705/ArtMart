@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 // import Link from 'next/link';
 // import Icon from '@/components/ui/AppIcon';
 
-const Header = () => {
+interface HeaderProps {
+    navigationItems: any[]
+}
+
+const Header = ({ navigationItems }:HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
-    const navigationItems = [
-        { label: 'How It Works', href: '#how-it-works' },
-        { label: 'FAQ', href: '#faq' },
-        { label: 'Problem', href: '#problem' },
-    ];
 
     useEffect(() => {
         const handleScroll = () => {
@@ -94,7 +93,7 @@ const Header = () => {
                     </nav>
 
                     {/* Desktop CTA */}
-                    <div className="hidden md:block">
+                    {/* <div className="hidden md:block">
                         <a
                             href="#waitlist"
                             onClick={(e) => handleAnchorClick(e, '#waitlist')}
@@ -102,7 +101,7 @@ const Header = () => {
                         >
                             Join Waitlist
                         </a>
-                    </div>
+                    </div> */}
 
                     {/* Mobile Menu Button */}
                     <button

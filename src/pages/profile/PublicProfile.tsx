@@ -147,7 +147,7 @@ const Profile = () => {
             toast.error('Please log in to chat with users');
             return;
         }
-        navigate(`/chat/${userProfile?.username}`);
+        navigate(`/${Routes.ChatPage}/${userProfile?.username}`);
     }
 
     useEffect(() => {

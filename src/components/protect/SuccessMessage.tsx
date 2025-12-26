@@ -3,7 +3,7 @@
 import { CircleCheck, ShareIcon, SparkleIcon } from "lucide-react";
 
 interface SuccessMessageProps {
-    email: string;
+    email?: string;
 }
 
 const SuccessMessage = ({ email }: SuccessMessageProps) => {

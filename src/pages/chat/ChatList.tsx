@@ -15,15 +15,15 @@ const ChatList = () => {
     const navigate = useNavigate();
 
     if (!isAuthenticated) {
-        navigate(Routes.AuthLoginPage, {
-            state: { from: Routes.ChatPage },
+        navigate(`/${Routes.AuthLoginPage}`, {
+            state: { from: `/${Routes.ChatPage}` },
             replace: true,
         });
         return null;
     }
 
     const handleChatClick = (username: string) => {
-        navigate(`/chat/${username}`);
+        navigate(`/${Routes.ChatPage}/${username}`);
     };
 
     if (isLoading) {
@@ -83,10 +83,10 @@ const ChatList = () => {
                                                 <MessageCircle className="h-4 w-4 text-muted-foreground mr-2" />
                                             )}
                                             <p className="text-sm text-muted-foreground truncate">
-                                                {chat.lastMessageType === 'text' 
-                                                    ? chat.lastMessage 
-                                                    : chat.lastMessageType === 'image' 
-                                                        ? '📷 Image' 
+                                                {chat.lastMessageType === 'text'
+                                                    ? chat.lastMessage
+                                                    : chat.lastMessageType === 'image'
+                                                        ? '📷 Image'
                                                         : '📄 File'}
                                             </p>
                                         </div>

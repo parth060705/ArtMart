@@ -19,7 +19,7 @@ const SavedArtworksPage = () => {
     useEffect(() => {
         // Redirect if user is not authenticated
         if (!isAuthenticated) {
-            navigate(Routes.AuthLoginPage, {
+            navigate(`/${Routes.AuthLoginPage}`, {
                 state: { from: location },
                 replace: true
             });

@@ -4,6 +4,7 @@ import Seo from '@/components/Seo'
 import BlogHeader from '@/components/blog/BlogHeader'
 import BlogFooter from '@/components/blog/BlogFooter'
 import { loadAllPosts } from '@/blog/store'
+import { Routes } from '@/lib/routes'
 
 const BlogList: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ const BlogList: React.FC = () => {
         <section className="grid gap-6 sm:grid-cols-2">
           {loadAllPosts().map((post) => (
             <Link
-              to={`/blog/${post.slug}`}
+              to={`/${Routes.BlogPage}/${post.slug}`}
               key={post.slug}
               className="block overflow-hidden rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm"
             >

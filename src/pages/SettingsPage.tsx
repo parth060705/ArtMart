@@ -41,7 +41,7 @@ const SettingsPage = () => {
         logout();
         toast.success('Logged out successfully!');
         setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = `${Routes.SocialBasePage}`;
         }, 500);
     };
 
@@ -96,10 +96,10 @@ const SettingsPage = () => {
                         <Link to={Routes.SavedPage} className='md:hidden'>
                             <Button className="cursor-pointer">Saved Artworks</Button>
                         </Link>
-                        <Link to={`/reset-password`}>
+                        <Link to={`/${Routes.AuthResetPasswordPage}`}>
                             <Button className="cursor-pointer">Reset Password</Button>
                         </Link>
-                        <Link to={`/me/profile/${userProfile?.username}/update`}>
+                        <Link to={`/${Routes.ProfileUpdatePage.replace(':username', userProfile?.username || '')}`}>
                             <Button variant="default" className="cursor-pointer">Update Profile</Button>
                         </Link>
                         <Button onClick={handleLogout} className="w-max bg-red-600">Logout</Button>

@@ -32,7 +32,7 @@ const Navbar = ({
 
   const handleProfileClick = () => {
     if (isAuthenticated) {
-      navigate(`/me/profile/${username}`);
+      navigate(`/creators/me/profile/${username}`);
     } else {
       navigate(Routes.AuthLoginPage, {
         state: { from: Routes.ProfilePage },
@@ -90,7 +90,7 @@ const Navbar = ({
           {isAuthenticated ? (
             <div className="space-y-2">
               <Link
-                to={`/me/profile/${username}`}
+                to={`/${Routes.ProfilePage}/${username}`}
                 className="flex items-center px-4 py-3 rounded-lg hover:bg-muted/50 transition-colors"
               >
                 <img
@@ -112,10 +112,10 @@ const Navbar = ({
             </div>
           )}
           <div className="mt-4">
-            <Link to={Routes.TermsAndConditionsPage}>
+            <Link to={`/${Routes.TermsAndConditionsPage}`}>
               <Button variant="ghost" size="sm">Terms & Conditions</Button>
             </Link>
-            <Link to={Routes.PrivacyPolicyPage}>
+            <Link to={`/${Routes.PrivacyPolicyPage}`}>
               <Button variant="ghost" size="sm">Privacy Policy</Button>
             </Link>
           </div>
@@ -130,7 +130,7 @@ const Navbar = ({
 
             {/* Home */}
             <Link
-              to="/"
+              to={`${Routes.SocialBasePage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground'}`}
             >
               <Home className="w-6 h-6 mb-1" />
@@ -139,7 +139,7 @@ const Navbar = ({
 
             {/* Products */}
             <Link
-              to="/products"
+              to={`${Routes.ProductsListingPage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-accent' : 'text-foreground'}`}
             >
               <Box className="w-6 h-6 mb-1" />

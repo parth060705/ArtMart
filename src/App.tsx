@@ -47,6 +47,7 @@ const ArtworkManage = React.lazy(() => import('./admin-panel/artwork_manage'));
 const OrderManage = React.lazy(() => import('./admin-panel/orders_manage'));
 const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dashboard'));
 const WaitListPage = React.lazy(() => import('./pages/WaitListPage'));
+const AuroraaPage = React.lazy(() => import('./pages/AuroraaPage'));
 
 // Components
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
@@ -83,7 +84,7 @@ function App() {
       },
     });
   }, []);
-
+  console.log(`/${AppRoutes.ProfilePage}/:username`)
   return (
     <ThemeProvider defaultTheme="light" storageKey="theme">
       <QueryClientProvider client={queryClient}>
@@ -93,52 +94,54 @@ function App() {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
+              <Route index element={<WaitListPage />} />
+              <Route path="/auroraa" element={<AuroraaPage />} />
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
-                <Route path={AppRoutes.AuthLoginPage} element={<Loginpage />} />
-                <Route path={AppRoutes.AuthRegisterPage} element={<RegisterPage />} />
+                <Route path={`/${AppRoutes.AuthLoginPage}`} element={<Loginpage />} />
+                <Route path={`/${AppRoutes.AuthRegisterPage}`} element={<RegisterPage />} />
+                <Route path={`/${AppRoutes.AuthResetPasswordPage}`} element={<ResetPasswordPage />} />
+                <Route path="*" element={<NotFound />} />
               </Route>
-              <Route path="/" element={<MainLayout />}>
+              <Route path={`/${AppRoutes.SocialBasePage}`} element={<MainLayout />}>
                 <Route index element={<Home />} />
-                <Route path={AppRoutes.AuthResetPasswordPage} element={<ResetPasswordPage />} />
-                <Route path={AppRoutes.ProductsListingPage} element={<ArtworksListingPage />} />
-                <Route path={`${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
-                <Route path={AppRoutes.CartPage} element={<Cart />} />
-                <Route path={`${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
-                <Route path={AppRoutes.ProfileUpdatePage} element={<ProfileUpdate />} />
-                <Route path={AppRoutes.UploadProductPage} element={<UploadArtwork />} />
-                <Route path={`${AppRoutes.EditArtworkPage}/:id`} element={<EditArtwork />} />
-                <Route path={AppRoutes.SavedPage} element={<SavedArtworksPage />} />
-                <Route path={`${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
-                <Route path={AppRoutes.ArtistsRankingPage} element={<ArtistsPage />} />
-                <Route path={AppRoutes.TermsAndConditionsPage} element={<TermsAndConditions />} />
-                <Route path={AppRoutes.PrivacyPolicyPage} element={<PrivacyPolicy />} />
-                <Route path={AppRoutes.SettingsPage} element={<SettingsPage />} />
+                <Route path={`/${AppRoutes.ProductsListingPage}`} element={<ArtworksListingPage />} />
+                <Route path={`/${AppRoutes.ProductDetailPage}/:id`} element={<ArtworkDetail />} />
+                <Route path={`/${AppRoutes.ProfilePage}/:username`} element={<Profile />} />
+                <Route path={`/${AppRoutes.ProfileUpdatePage}`} element={<ProfileUpdate />} />
+                <Route path={`/${AppRoutes.UploadProductPage}`} element={<UploadArtwork />} />
+                <Route path={`/${AppRoutes.EditArtworkPage}/:id`} element={<EditArtwork />} />
+                <Route path={`/${AppRoutes.SavedPage}`} element={<SavedArtworksPage />} />
+                <Route path={`/${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
+                <Route path={`/${AppRoutes.ArtistsRankingPage}`} element={<ArtistsPage />} />
+                {/* <Route path={AppRoutes.CartPage} element={<Cart />} /> */}
 
                 {/* chat */}
-                <Route path="/chat/:peerId" element={<ChatWrapper />} />
-                <Route path={AppRoutes.ChatPage} element={<ChatList />} />
+                <Route path={`/${AppRoutes.ChatPage}/:peerId`} element={<ChatWrapper />} />
+                <Route path={`/${AppRoutes.ChatListPage}`} element={<ChatList />} />
+                <Route path={`/${AppRoutes.SettingsPage}`} element={<SettingsPage />} />
 
                 {/* ------------------------------------------------------------------------------------------- */}
-                <Route path="/admin/user_manage" element={<UserManage />} />
+                {/* <Route path="/admin/user_manage" element={<UserManage />} />
                 <Route path="/admin/artwork_manage" element={<ArtworkManage />} />
                 <Route path="/admin/orders_manage" element={<OrderManage />} />
-                <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} />
+                <Route path="/admin/admin_dashboard" element={<AdminDashboardSkeleton />} /> */}
                 {/* ------------------------------------------------------------------------------------------- */}
 
-                <Route path="*" element={<NotFound />} />
 
                 {/* Protected Routes Group */}
                 {/* <Route element={<ProtectedRoute />}>s
             <Route path={AppRoutes.CartPage} element={<Cart />} />
             <Route path={AppRoutes.ProfilePage} element={<Profile />} />
-          </Route> */}
+            </Route> */}
 
+                <Route path="*" element={<NotFound />} />
               </Route>
-              <Route path={AppRoutes.BlogPage} element={<BlogListPage />} />
-              <Route path={`${AppRoutes.BlogPage}/:slug`} element={<BlogPostPage />} />
-              <Route path={AppRoutes.WaitListPage} element={<WaitListPage />} />
-
+              <Route path={`/${AppRoutes.TermsAndConditionsPage}`} element={<TermsAndConditions />} />
+              <Route path={`/${AppRoutes.PrivacyPolicyPage}`} element={<PrivacyPolicy />} />
+              <Route path={`/${AppRoutes.BlogPage}`} element={<BlogListPage />} />
+              <Route path={`/${AppRoutes.BlogPage}/:slug`} element={<BlogPostPage />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <InstallButton />
           </BrowserRouter>
@@ -150,3 +153,4 @@ function App() {
 }
 
 export default App;
+

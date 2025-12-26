@@ -5,7 +5,7 @@ interface NavItem {
     title: string;
     url: string;
     icon: ComponentType<{ className?: string }>;
-    customClass?: string;     
+    customClass?: string;
 }
 
 interface NavbarRoutes {
@@ -14,34 +14,36 @@ interface NavbarRoutes {
         [key: string]: {
             title: string;
             url: string;
-            customClass?: string; 
+            customClass?: string;
         };
     };
 }
 
 export class Routes {
-    static ProductsListingPage = "products"
-    static ProductDetailPage = "product"
-    static ProfilePage = "/me/profile"
-    static ProfileUpdatePage = "/me/profile/:username/update"
-    static ProfilePublicPage = "/profile"
-    static UploadProductPage = "upload"
-    static EditArtworkPage = "artwork-editor"
-    static SearchProductPage = "search"
-    static AuthLoginPage = "/auth/login"
-    static AuthRegisterPage = "/auth/register"
-    static AuthForgotPasswordPage = "/auth/forgot-password"
-    static AuthResetPasswordPage = "/reset-password"
-    static CartPage = "/auth/cart"
-    static WishListPage = "/auth/wishlist"
-    static SavedPage = "/auth/saved"
-    static ArtistsRankingPage = "/artists-ranking"
-    static PrivacyPolicyPage = "/privacy-policy"
-    static TermsAndConditionsPage = "/terms-and-conditions"
-    static SettingsPage = "/settings"
-    static ChatPage = "/auth/chat-list"
-    static BlogPage ="/blog"
-    static WaitListPage = "/waitlist"
+    static SocialBasePage = 'creators'
+    static ProductsListingPage = `${Routes.SocialBasePage}/products`
+    static ProductDetailPage = `${Routes.SocialBasePage}/product`
+    static ProfilePage = `${Routes.SocialBasePage}/me/profile`
+    static ProfileUpdatePage = `${Routes.SocialBasePage}/me/profile/:username/update`
+    static ProfilePublicPage = `${Routes.SocialBasePage}/profile`
+    static UploadProductPage = `${Routes.SocialBasePage}/upload`
+    static EditArtworkPage = `${Routes.SocialBasePage}/artwork-editor`
+    static SearchProductPage = `${Routes.SocialBasePage}/search`
+    static SavedPage = `${Routes.SocialBasePage}/saved`
+    static ArtistsRankingPage = `${Routes.SocialBasePage}/artists-ranking`
+    static SettingsPage = `${Routes.SocialBasePage}/settings`
+    static ChatListPage = `${Routes.SocialBasePage}/chat-list`
+    static ChatPage = `${Routes.SocialBasePage}/chat`
+    static AuthLoginPage = "auth/login"
+    static AuthRegisterPage = "auth/register"
+    static AuthForgotPasswordPage = "auth/forgot-password"
+    static AuthResetPasswordPage = "auth/reset-password"
+    static CartPage = "auth/cart"
+    static WishListPage = "auth/wishlist"
+    static PrivacyPolicyPage = "privacy-policy"
+    static TermsAndConditionsPage = "terms-and-conditions"
+    static BlogPage = "blog"
+    static ProtectPage = "protect"
 }
 
 interface NavbarRoutes {
@@ -50,7 +52,7 @@ interface NavbarRoutes {
         [key: string]: {
             title: string;
             url: string;
-            customClass?: string; 
+            customClass?: string;
         };
     };
 }
@@ -59,12 +61,12 @@ export const navbarRoutes: NavbarRoutes = {
     other: [
         {
             title: "Home",
-            url: "/",
+            url: `/${Routes.SocialBasePage}`,
             icon: Home
         },
         {
             title: "Discover",
-            url: '/products',
+            url: `/${Routes.SocialBasePage}/products`,
             icon: Box
         },
         {
@@ -77,29 +79,29 @@ export const navbarRoutes: NavbarRoutes = {
         },
         {
             title: "Artists",
-            url: '/artists-ranking',
+            url: `/${Routes.SocialBasePage}/artists-ranking`,
             icon: Users
         },
         {
             title: "Chat",
-            url: Routes.ChatPage,
+            url: `/${Routes.ChatListPage}`,
             icon: MessageCircle,
         },
         {
             title: "Saved",
-            url: Routes.SavedPage,
+            url: `/${Routes.SavedPage}`,
             icon: Bookmark,
         },
         {
             title: "Settings",
-            url: '/settings',
+            url: `/${Routes.SettingsPage}`,
             icon: Sliders
         },
     ],
     auth: {
-        login: { title: "Login", url: Routes.AuthLoginPage },
-        signup: { title: "Sign up", url: Routes.AuthRegisterPage },
-        addtoCart: { title: "Add to Cart", url: Routes.CartPage },
-        wishlist: { title: "Wishlist", url: Routes.WishListPage },
+        login: { title: "Login", url: `/${Routes.AuthLoginPage}` },
+        signup: { title: "Sign up", url: `/${Routes.AuthRegisterPage}` },
+        addtoCart: { title: "Add to Cart", url: `${Routes.CartPage}` },
+        wishlist: { title: "Wishlist", url: `${Routes.WishListPage}` },
     },
 };

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import placeholderProfileImage from "@/assets/placeholder-profile-image.jpg";
+import { Routes } from "@/lib/routes";
 interface FollowersAndFollowingPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -25,7 +26,7 @@ const FollowersAndFollowingPopup: React.FC<FollowersAndFollowingPopupProps> = ({
 
   const handleChat = (userId: string) => {
     onOpenChange(false); // close popup
-    navigate(`/chat/${userId}`);
+    navigate(`/${Routes.ChatPage}/${userId}`);
   };
 
   return (

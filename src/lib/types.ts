@@ -50,7 +50,7 @@ export interface TopArtsistResponse {
   username: string;
   profileImage: string;
   rank?: number;
-  weightedRating: number;
+  // weightedRating: number;
 }
 
 export interface UserSearchResult {
@@ -63,7 +63,7 @@ export interface UserSearchResult {
   reviewCount: number;
   bio: string;
   rank?: number;
-  weightedRating: number;
+  // weightedRating: number;
 
 }
 

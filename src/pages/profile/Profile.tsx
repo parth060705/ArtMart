@@ -285,7 +285,7 @@ const Profile = () => {
     <>
       <div className="max-w-5xl mx-auto">
         {/* HERO HEADER */}
-        <div className="relative h-[100vh] w-full overflow-hidden mb-6">
+        <div className="relative h-[70vh] w-full overflow-hidden mb-6">
           <img
             src={userProfile.profileImage || placeholderProfileImage}
             alt={userProfile.name}
@@ -303,15 +303,19 @@ const Profile = () => {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-8 text-white">
-            <img
-              src={userProfile.profileImage || placeholderProfileImage}
-              className="w-20 h-20 rounded-full border-1 object-cover mb-4"
-            />
-            <h1 className="text-3xl font-bold">{userProfile.name}</h1>
-            <p className="text-sm text-white/80 max-w-md">
-              {userProfile.bio || 'No bio added yet'}
-            </p>
+          <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-8 text-white gap-2">
+            <div className='flex flex-row gap-6'>
+              <img
+                src={userProfile.profileImage || placeholderProfileImage}
+                className="w-20 h-20 rounded-full overflow-hidden object-cover border"
+              />
+              <div>
+                <h1 className="text-2xl font-bold">{userProfile.name}</h1>
+                <p className="text-sm text-white/80 max-w-md">
+                  {userProfile.location || 'No location added yet'}
+                </p>
+              </div>
+            </div>
 
             {/* STATS */}
             <div className="flex gap-6 mt-4 text-center">
@@ -337,6 +341,16 @@ const Profile = () => {
                 <span>Rank {userProfile?.rank || 'N/A'}</span>
               </div>
             </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-white/50">
+                Bio
+              </p>
+
+              <p className="text-xs max-w-md">
+                {userProfile.bio || "No bio added yet"}
+              </p>
+            </div>
+
           </div>
         </div>
 
@@ -359,10 +373,10 @@ const Profile = () => {
             showLikeCount
           />
         </div>
-      </div>
+      </div >
 
       {/* REVIEWS MODAL */}
-      <Dialog open={openReviewPopup} onOpenChange={setOpenReviewPopup}>
+      < Dialog open={openReviewPopup} onOpenChange={setOpenReviewPopup} >
         <DialogContent className="sm:max-w-[425px]">
           {userReviews?.map((review) => (
             <ReviewCard
@@ -372,7 +386,7 @@ const Profile = () => {
             />
           ))}
         </DialogContent>
-      </Dialog>
+      </Dialog >
     </>
   );
 };

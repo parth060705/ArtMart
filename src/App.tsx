@@ -94,8 +94,8 @@ function App() {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route index element={<WaitListPage />} />
-              <Route path="/auroraa" element={<AuroraaPage />} />
+              {/* <Route index element={<WaitListPage />} /> */}
+              <Route index element={<AuroraaPage />} />
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
                 <Route path={`/${AppRoutes.AuthLoginPage}`} element={<Loginpage />} />

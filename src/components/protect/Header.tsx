@@ -8,7 +8,7 @@ interface HeaderProps {
     navigationItems: any[]
 }
 
-const Header = ({ navigationItems }:HeaderProps) => {
+const Header = ({ navigationItems }: HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 

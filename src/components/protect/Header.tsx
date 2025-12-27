@@ -128,13 +128,13 @@ const Header = ({ navigationItems }: HeaderProps) => {
                                 {item.label}
                             </a>
                         ))}
-                        <a
+                        {/* <a
                             href="#waitlist"
                             onClick={(e) => handleAnchorClick(e, '#waitlist')}
                             className="block w-full px-4 py-3 bg-[#F59E0B] text-[#1F2937] font-semibold text-center rounded-lg shadow-aurora hover:shadow-aurora-strong hover:scale-105 ease-in-out transition-all duration-300"
                         >
                             Join Waitlist
-                        </a>
+                        </a> */}
                     </nav>
                 </div>
             )}

@@ -69,7 +69,7 @@ const Profile = () => {
   return (
     <>
       {/* ================= FIXED HERO BACKGROUND ================= */}
-      <div className="fixed top-0 left-0 h-[70vh] w-full z-0">
+      <div className="fixed top-0 left-0 h-[100vh] w-full z-0">
         <img
           src={userProfile.profileImage || placeholderProfileImage}
           alt={userProfile.name}
@@ -156,7 +156,7 @@ const Profile = () => {
         </div>
 
         {/* ================= FEED ================= */}
-        <div className="bg-background pt-6">
+        {/* <div className="bg-background pt-6"> */}
           <div className="max-w-5xl mx-auto px-2 md:px-0">
             <MasonryFeed
               length={products?.length}
@@ -166,7 +166,7 @@ const Profile = () => {
               showLikeCount
             />
           </div>
-        </div>
+        {/* </div> */}
       </div>
 
       {/* ================= MODALS ================= */}

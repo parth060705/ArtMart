@@ -48,7 +48,7 @@ const OrderManage = React.lazy(() => import('./admin-panel/orders_manage'));
 const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dashboard'));
 const WaitListPage = React.lazy(() => import('./pages/WaitListPage'));
 const AuroraaPage = React.lazy(() => import('./pages/AuroraaPage'));
-
+const AuroraaProtectPage = React.lazy(() => import('./pages/AuroraaProtectPage'));
 // Components
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
 // Simple loading spinner component
@@ -96,6 +96,7 @@ function App() {
             <Routes>
               {/* <Route index element={<WaitListPage />} /> */}
               <Route index element={<AuroraaPage />} />
+              <Route path={`/${AppRoutes.ProtectPage}`} element={<AuroraaProtectPage />} />
               <Route path="/auth" element={<MainLayout />}>
                 <Route index element={<Loginpage />} />
                 <Route path={`/${AppRoutes.AuthLoginPage}`} element={<Loginpage />} />
@@ -115,7 +116,6 @@ function App() {
                 <Route path={`/${AppRoutes.ProfilePublicPage}/:userId`} element={<PublicProfile />} />
                 <Route path={`/${AppRoutes.ArtistsRankingPage}`} element={<ArtistsPage />} />
                 {/* <Route path={AppRoutes.CartPage} element={<Cart />} /> */}
-
                 {/* chat */}
                 <Route path={`/${AppRoutes.ChatPage}/:peerId`} element={<ChatWrapper />} />
                 <Route path={`/${AppRoutes.ChatListPage}`} element={<ChatList />} />

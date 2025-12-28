@@ -118,13 +118,14 @@ const AuroraaPage = () => {
 
             {/* Hero Section */}
             <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-                {/* Aurora Background Effects */}
+                {/* Aurora Background Effects - Optimized for mobile */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <motion.div
                         className="absolute top-0 left-1/4 w-96 h-96 bg-purple-300/30 rounded-full blur-3xl"
+                        initial={{ scale: 1, opacity: 0.3 }}
                         animate={{
-                            scale: [1, 1.1, 1],
-                            opacity: [0.3, 0.5, 0.3],
+                            scale: 1.1,
+                            opacity: 0.5,
                         }}
                         transition={{
                             duration: 8,
@@ -132,12 +133,18 @@ const AuroraaPage = () => {
                             repeatType: 'reverse',
                             ease: 'easeInOut',
                         }}
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            willChange: 'transform, opacity'
+                        }}
                     />
                     <motion.div
                         className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-300/30 rounded-full blur-3xl"
+                        initial={{ scale: 0.9, opacity: 0.2 }}
                         animate={{
-                            scale: [0.9, 1, 0.9],
-                            opacity: [0.2, 0.4, 0.2],
+                            scale: 1,
+                            opacity: 0.4,
                         }}
                         transition={{
                             duration: 10,
@@ -146,12 +153,18 @@ const AuroraaPage = () => {
                             ease: 'easeInOut',
                             delay: 1
                         }}
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            willChange: 'transform, opacity'
+                        }}
                     />
                     <motion.div
                         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-400/20 rounded-full blur-3xl"
+                        initial={{ scale: 1, opacity: 0.1 }}
                         animate={{
-                            scale: [1, 1.2, 1],
-                            opacity: [0.1, 0.3, 0.1],
+                            scale: 1.2,
+                            opacity: 0.3,
                         }}
                         transition={{
                             duration: 12,
@@ -159,6 +172,11 @@ const AuroraaPage = () => {
                             repeatType: 'reverse',
                             ease: 'easeInOut',
                             delay: 2
+                        }}
+                        style={{
+                            backfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            willChange: 'transform, opacity'
                         }}
                     />
                 </div>

@@ -5,6 +5,7 @@ import Header from '@/components/protect/Header';
 import { Link } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
 import SuccessMessage from '@/components/protect/SuccessMessage';
+import Seo from '@/components/Seo';
 
 const AuroraaPage = () => {
     const [email, setEmail] = useState('');
@@ -14,8 +15,54 @@ const AuroraaPage = () => {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [waitlistCount] = useState(2847);
 
+    // SEO Data
+    const seoData = {
+        title: "Auroraa - Built for Artists in the AI Age | Protect Your Creative Work",
+        description: "Join thousands of artists protecting their creative work with Auroraa. AI-age focused platform where creativity is respected, ownership matters, and artists feel safe sharing their work.",
+        og: {
+            title: "Auroraa - Built for Artists in the AI Age",
+            description: "Protect your creative work in the digital age. Join our community of 2,847+ artists who trust Auroraa for creative protection.",
+            type: "website",
+            url: "https://auroraa.in"
+        },
+        canonical: "https://auroraa.in"
+    };
+
+    // Structured Data for SEO
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Auroraa",
+        "description": "A platform built for artists in the AI age, focused on protecting creative work and fostering a safe community.",
+        "url": "https://auroraa.in",
+        "logo": "https://auroraa.in/logo.png",
+        "sameAs": [
+            "https://instagram.com/auroraadotin",
+            "https://www.facebook.com/auroraa.a.social.marketplace.for.art.a",
+            "https://youtube.com/@AuroraaCommunity"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Alex Rivera",
+            "jobTitle": "Founder & CEO"
+        }
+    };
+
     useEffect(() => {
         setIsVisible(true);
+        // Add structured data to head
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+        
+        return () => {
+            document.head.removeChild(script);
+        };
     }, []);
 
     const handleSubmit = async (e: any) => {
@@ -56,7 +103,9 @@ const AuroraaPage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 via-amber-50 to-purple-100 text-gray-900 font-sans overflow-x-hidden">
+        <>
+            <Seo {...seoData} />
+            <div className="min-h-screen bg-gradient-to-br from-purple-50 via-amber-50 to-purple-100 text-gray-900 font-sans overflow-x-hidden">
             <Header navigationItems={navigationItems} />
             {/* Success Popup */}
             <AnimatePresence>
@@ -1206,6 +1255,7 @@ const AuroraaPage = () => {
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
             </div>
         </div>
+        </>
     );
 };
 

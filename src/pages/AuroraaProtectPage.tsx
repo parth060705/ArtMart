@@ -280,7 +280,7 @@ const AuroraaProtectPage = () => {
                                         repeatType: 'reverse',
                                     }}
                                 />
-                                <div className="relative bg-white/80 backdrop-blur-sm p-1 rounded-2xl shadow-2xl">
+                                <div id='hero-section' className="relative bg-white/80 backdrop-blur-sm p-1 rounded-2xl shadow-2xl">
                                     <div className="p-8 text-center">
                                         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-100 to-amber-50 mb-6 shadow-inner">
                                             <Lock className="h-12 w-12 text-purple-600" />
@@ -380,9 +380,19 @@ const AuroraaProtectPage = () => {
                         Join the waitlist to get early access to Auroraa Protect and be the first to know when we launch.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button className="px-8 py-4 bg-white text-purple-900 font-semibold rounded-xl hover:bg-purple-50 transition-colors">
+                        <a 
+                            href="#hero-section" 
+                            className="px-8 py-4 bg-white text-purple-900 font-semibold rounded-xl hover:bg-purple-50 transition-colors"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                document.getElementById('hero-section')?.scrollIntoView({ 
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }}
+                        >
                             Join Waitlist
-                        </button>
+                        </a>
                     </div>
                 </div>
             </section>

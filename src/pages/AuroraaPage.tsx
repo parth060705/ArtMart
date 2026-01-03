@@ -1161,7 +1161,7 @@ const AuroraaPage = () => {
                             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Product</h3>
                             <ul className="space-y-3">
                                 <li>
-                                    <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors">Auroraa Protect</a>
+                                    <Link to={Routes.ProtectPage} className="text-gray-600 hover:text-purple-600 transition-colors">Auroraa Protect</Link>
                                 </li>
                             </ul>
                         </div>

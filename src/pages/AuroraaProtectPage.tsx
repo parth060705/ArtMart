@@ -639,11 +639,10 @@ const AuroraaProtectPage = () => {
                             height: Math.random() * 400 + 100 + 'px',
                             left: Math.random() * 100 + '%',
                             top: Math.random() * 100 + '%',
-                            background: `radial-gradient(circle, ${
-                                i % 3 === 0 ? 'rgba(6, 91, 152, 0.15)' : 
-                                i % 3 === 1 ? 'rgba(27, 127, 220, 0.15)' : 
-                                'rgba(13, 184, 211, 0.15)'
-                            }, transparent)`,
+                            background: `radial-gradient(circle, ${i % 3 === 0 ? 'rgba(6, 91, 152, 0.15)' :
+                                    i % 3 === 1 ? 'rgba(27, 127, 220, 0.15)' :
+                                        'rgba(13, 184, 211, 0.15)'
+                                }, transparent)`,
                             filter: 'blur(60px)'
                         }}
                         animate={{
@@ -870,12 +869,12 @@ const AuroraaProtectPage = () => {
                         Join the waitlist to get early access to Auroraa Protect and be the first to know when we launch.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a 
-                            href="#hero-section" 
+                        <a
+                            href="#hero-section"
                             className="px-8 py-4 bg-white text-[#065B98] font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
                             onClick={(e) => {
                                 e.preventDefault();
-                                document.getElementById('hero-section')?.scrollIntoView({ 
+                                document.getElementById('hero-section')?.scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'start'
                                 });
@@ -892,7 +891,7 @@ const AuroraaProtectPage = () => {
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-4 gap-8 mb-12">
                         <div>
-                            <Link to='/' className="text-2xl font-bold logo-font bg-gradient-to-r from-[#1B7FDC] via-[#0DB8D3] to-[#1B7FDC] bg-clip-text text-transparent">
+                            <Link to='/' className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Auroraa
                             </Link>
                             <p className="text-gray-400 mb-6 mt-3">Empowering artists in the digital age with protection-first technology.</p>

@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.4.2] - 2025-12-27
+### Added
+- Added auroraa page (landing page)
+- Changes routes
+
 ## [1.4.1] - 2025-12-14
 ### Added
 - Added waitlist form

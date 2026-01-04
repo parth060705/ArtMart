@@ -133,7 +133,7 @@ export default function RegisterPage() {
         registerMutation.mutate(formData, {
             onSuccess: (data) => {
                 toast.success('Registration successful!');
-                setTimeout(() => navigate('/auth/login'), 500);
+                setTimeout(() => navigate(`/${Routes.AuthLoginPage}`), 500);
             },
             onError: (error: any) => {
                 toast.error(error?.response?.data?.message || 'Registration failed');
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                     login(data?.tokens?.access_token, data?.tokens?.refresh_token);
                     toast.success('Login successful!');
                     // Redirect to the previous page or home
-                    navigate('/');
+                    navigate(`/${Routes.SocialBasePage}`);
                 },
                 onError: (error: any) => {
                     console.error('Login error:', error);
@@ -181,7 +181,7 @@ export default function RegisterPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/');
+            navigate(`/${Routes.SocialBasePage}`);
         }
     }, [isAuthenticated, navigate]);
 
@@ -317,7 +317,7 @@ export default function RegisterPage() {
                                                     <FormLabel className="text-sm font-normal text-foreground">
                                                         I agree to the{' '}
                                                         <Link
-                                                            to={Routes.TermsAndConditionsPage}
+                                                            to={`/${Routes.TermsAndConditionsPage}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
@@ -327,7 +327,7 @@ export default function RegisterPage() {
                                                         </Link>
                                                         {' '}and{' '}
                                                         <Link
-                                                            to={Routes.PrivacyPolicyPage}
+                                                            to={`/${Routes.PrivacyPolicyPage}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-primary hover:underline"
@@ -358,7 +358,7 @@ export default function RegisterPage() {
                     </Form>
                     <div className="mt-6 text-center text-sm sm:text-base">
                         Already have an account?{' '}
-                        <Link to={Routes.AuthLoginPage} className="font-medium text-primary underline-offset-4 hover:underline">
+                        <Link to={`/${Routes.AuthLoginPage}`} className="font-medium text-primary underline-offset-4 hover:underline">
                             Sign in
                         </Link>
                     </div>

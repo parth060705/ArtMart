@@ -13,6 +13,7 @@ import { useLogin } from '@/hooks/user/auth/useLogin';
 import { useEffect } from 'react';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useGoogleLoginRegister } from '@/hooks/user/auth/useGoogleLoginRegister';
+import { Routes } from '@/lib/routes';
 
 const formSchema = loginFormSchema
 
@@ -97,7 +98,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate(`/${Routes.SocialBasePage}`);
     }
   }, [isAuthenticated, navigate]);
 
@@ -160,7 +161,7 @@ const LoginPage = () => {
                       <div className="flex justify-between items-center">
                         <FormLabel htmlFor="password">Password</FormLabel>
                         <Link
-                          to="/reset-password"
+                          to={`/${Routes.AuthResetPasswordPage}`}
                           className="ml-auto inline-block text-sm underline"
                         >
                           Forgot your password?
@@ -187,7 +188,7 @@ const LoginPage = () => {
           </Form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link to="/auth/register" className="underline">
+            <Link to={`/${Routes.AuthRegisterPage}`} className="underline">
               Sign up
             </Link>
           </div>

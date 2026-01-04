@@ -1,17 +1,18 @@
 import { useState } from 'react';
 
-import FAQSection from '@/components/waitlist/FAQSection';
-import Header from '@/components/waitlist/Header';
-import HeroSection from '@/components/waitlist/HeroSection';
-import HowItWorksSection from '@/components/waitlist/HowItWorks';
-import ProblemSection from '@/components/waitlist/ProblemSection';
-import ProblemValidation from '@/components/waitlist/ProblemValidation';
-import ScrollProgressIndicator from '@/components/waitlist/ScrollProgressIndicator';
-import SolutionIntro from '@/components/waitlist/SolutionIntro';
-import SolutionSection from '@/components/waitlist/SolutionSection';
-import SuccessMessage from '@/components/waitlist/SuccessMessage';
-import WaitlistForm from '@/components/waitlist/WaitListForm';
-import Footer from '@/components/waitlist/Footer';
+import FAQSection from '@/components/protect/FAQSection';
+import Header from '@/components/protect/Header';
+import HeroSection from '@/components/protect/HeroSection';
+import HowItWorksSection from '@/components/protect/HowItWorks';
+import ProblemSection from '@/components/protect/ProblemSection';
+import ProblemValidation from '@/components/protect/ProblemValidation';
+import ScrollProgressIndicator from '@/components/protect/ScrollProgressIndicator';
+import SolutionIntro from '@/components/protect/SolutionIntro';
+import SolutionSection from '@/components/protect/SolutionSection';
+import StatsSection from '@/components/protect/StatsSection';
+import SuccessMessage from '@/components/protect/SuccessMessage';
+import WaitlistForm from '@/components/protect/WaitListForm';
+import Footer from '@/components/protect/Footer';
 
 // import "../styles/waitList.css"
 
@@ -34,13 +35,20 @@ const WaitListPage = () => {
         }
     };
 
+    const navigationItems = [
+        { label: 'How It Works', href: '#how-it-works' },
+        { label: 'FAQ', href: '#faq' },
+        { label: 'Problem', href: '#problem' },
+    ];
+
     return (
         <>
             <ScrollProgressIndicator />
-            <Header />
+            <Header navigationItems={navigationItems} />
             <main>
                 <HeroSection onJoinWaitlist={scrollToWaitlist} />
                 <ProblemSection />
+                <StatsSection />
                 <SolutionIntro />
                 <SolutionSection />
                 <HowItWorksSection />

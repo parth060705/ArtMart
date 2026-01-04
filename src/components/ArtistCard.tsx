@@ -1,3 +1,4 @@
+import { Routes } from "@/lib/routes";
 import { TopArtsistResponse, UserSearchResult } from "@/lib/types";
 import { Award, Star, StarHalf, User } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -36,7 +37,7 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse | UserSearchR
 
             {/* Info */}
             <div className="flex-1 flex flex-col justify-center">
-                <Link to={`/profile/${artist.username}`}>
+                <Link to={`/${Routes.ProfilePublicPage}/${artist.username}`}>
                     <h3 className="text-sm sm:text-base font-semibold text-[var(--foreground)] truncate">{artist.username}</h3>
                 </Link>
                 <div className="flex items-center mt-1 gap-1">

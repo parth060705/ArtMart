@@ -45,10 +45,10 @@ const SuccessMessage = ({ email }: SuccessMessageProps) => {
                         </p>
 
                         {/* Email Confirmation */}
-                        <div className="p-4 bg-[#F9F9F9] rounded-lg mb-8">
+                        {/* <div className="p-4 bg-[#F9F9F9] rounded-lg mb-8">
                             <p className="text-sm text-[#6B7280] mb-1">Confirmation sent to:</p>
                             <p className="text-lg font-semibold text-[#4C1D95]">{email}</p>
-                        </div>
+                        </div> */}
 
                         {/* What Happens Next */}
                         <div className="text-left space-y-6 mb-8">

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Instagram, Facebook, Youtube } from 'lucide-react'
+import { Routes } from '@/lib/routes'
 
 const BlogFooter: React.FC = () => {
   return (
@@ -45,14 +46,14 @@ const BlogFooter: React.FC = () => {
           <div>
             <h5 className="text-sm font-semibold">Explore</h5>
             <ul className="mt-2 space-y-2 text-sm">
-              <li><Link to="/blog" className="text-foreground/70 hover:text-foreground">Blog Home</Link></li>
-              <li><Link to="/products" className="text-foreground/70 hover:text-foreground">Discover Art</Link></li>
-              <li><Link to="/artists-ranking" className="text-foreground/70 hover:text-foreground">Top Artists</Link></li>
+              <li><Link to={`/${Routes.BlogPage}`} className="text-foreground/70 hover:text-foreground">Blog Home</Link></li>
+              <li><Link to={`/${Routes.ProductsListingPage}`} className="text-foreground/70 hover:text-foreground">Discover Art</Link></li>
+              <li><Link to={`/${Routes.ArtistsRankingPage}`} className="text-foreground/70 hover:text-foreground">Top Artists</Link></li>
             </ul>
           </div>
           <div>
             <h5 className="text-sm font-semibold">Get involved</h5>
-            <Link to="/upload" className="mt-4 inline-flex rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground">
+            <Link to={`/${Routes.UploadProductPage}`} className="mt-4 inline-flex rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground">
               Upload your art
             </Link>
           </div>
@@ -60,8 +61,8 @@ const BlogFooter: React.FC = () => {
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-foreground/60">
           <p>© {new Date().getFullYear()} Auroraa. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link to="/privacy-policy" className="hover:text-foreground">Privacy</Link>
-            <Link to="/terms-and-conditions" className="hover:text-foreground">Terms</Link>
+            <Link to={`/${Routes.PrivacyPolicyPage}`} className="hover:text-foreground">Privacy</Link>
+            <Link to={`/${Routes.TermsAndConditionsPage}`} className="hover:text-foreground">Terms</Link>
           </div>
         </div>
       </div>

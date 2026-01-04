@@ -33,8 +33,8 @@ const Header = ({ navigationItems }: HeaderProps) => {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-aurora ${isScrolled
-                ? 'bg-background/95 backdrop-blur-sm shadow-aurora'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+                ? 'backdrop-blur-sm shadow-lg'
                 : 'bg-transparent'
                 }`}
         >
@@ -84,7 +84,7 @@ const Header = ({ navigationItems }: HeaderProps) => {
                                 key={item.href}
                                 href={item.href}
                                 onClick={(e) => handleAnchorClick(e, item.href)}
-                                className="text-sm lg:text-base font-medium text-[#1F2937] hover:text-[#4C1D95] transition-aurora relative group"
+                                className="text-sm lg:text-base font-medium text-[#fff] hover:text-[#4C1D95] transition-aurora relative group "
                             >
                                 {item.label}
                                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#4C1D95] group-hover:w-full transition-all duration-300" />

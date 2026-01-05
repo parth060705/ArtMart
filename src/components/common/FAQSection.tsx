@@ -1,8 +1,5 @@
-'use client';
-
-import { ChevronDown, ChevronRight, FileQuestion, Icon, Search, } from 'lucide-react';
+import { ChevronDown, FileQuestion, Search, } from 'lucide-react';
 import { useState } from 'react';
-// import Icon from '@/components/ui/AppIcon';
 
 interface FAQItem {
     id: number;
@@ -55,7 +52,7 @@ const FAQSection = () => {
         {
             id: 7,
             question: 'What file formats are supported?',
-            answer: 'We support all major image formats including JPG, PNG, TIFF, PSD, and WebP. Maximum file size is 10MB per image.',
+            answer: 'We support JPG or JPEG file format for now. Support for other file format will be added soon.',
             category: 'Technical'
         },
         {
@@ -74,51 +71,20 @@ const FAQSection = () => {
     const categories = Array.from(new Set(faqs.map(faq => faq.category)));
 
     return (
-        <section id="faq" className="py-20 md:py-32 bg-gradient-to-b from-background to-[#F8FAFC]/30">
+        <section id="faq" className="py-20 md:py-32 bg-gradient-to-b from-[#193546] to-[#0f2533]">
             <div className="container mx-auto px-4">
                 {/* Section Header */}
-                {/* <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <div className="inline-flex items-center space-x-2 bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium">
-                        <FileQuestion />
-                        <span>FAQ</span>
-                    </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-                        Your Questions Answered
-                    </h2>
-                    <p className="text-lg text-text-secondary">
-                        Everything you need to know about protecting your artwork from AI
-                    </p>
-                </div> */}
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <div className="inline-flex items-center space-x-2 bg-[#EF4444]/10 text-[#EF4444] px-4 py-2 rounded-full text-sm font-medium">
+                    <div className="inline-flex items-center space-x-2 bg-[#0DB8D3]/10 text-[#0DB8D3] px-4 py-2 rounded-full text-sm font-medium">
                         <FileQuestion />
                         <span>FAQ</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EF4444]">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
                         Your Questions Answered
                     </h2>
-                    <p className="text-lg text-text-secondary">
+                    <p className="text-lg text-gray-400">
                         Everything you need to know about protecting your artwork from AI
                     </p>
-                </div>
-
-                {/* Search Bar */}
-                <div className="max-w-2xl mx-auto mb-12">
-                    <div className="relative">
-                        {/* <Icon
-                            name="MagnifyingGlassIconk
-                            size={20}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-                        /> */}
-                        <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search questions..."
-                            className="w-full pl-12 pr-4 py-4 bg-[#F8FAFC] border border-[#rgba(124, 58, 237, 0.2)] rounded-xl text-[#1F2937] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-primary transition-all ease-in-out duration-300"
-                        />
-                    </div>
                 </div>
 
                 {/* FAQ List */}
@@ -127,7 +93,7 @@ const FAQSection = () => {
                         filteredFAQs.map((faq) => (
                             <div
                                 key={faq.id}
-                                className="bg-[#F8FAFC] rounded-xl border border-[#rgba(124, 58, 237, 0.2)] overflow-hidden transition-all ease-in-out duration-300 hover:border-[#rgba(124, 58, 237, 0.2)]"
+                                className="bg-[#0f2533] rounded-xl border border-[#1B7FDC]/20 overflow-hidden transition-all ease-in-out duration-300 hover:border-[#0DB8D3]/40"
                             >
                                 <button
                                     onClick={() => setOpenFAQ(openFAQ === faq.id ? null : faq.id)}
@@ -135,21 +101,15 @@ const FAQSection = () => {
                                 >
                                     <div className="flex-1 pr-4">
                                         <div className="flex items-center space-x-2 mb-2">
-                                            <span className="text-xs font-medium text-[#4C1D95] bg-[#4C1D95]/10 px-2 py-1 rounded">
+                                            <span className="text-xs font-medium text-[#0DB8D3] bg-[#0DB8D3]/10 px-2 py-1 rounded">
                                                 {faq.category}
                                             </span>
                                         </div>
-                                        <h3 className="text-lg font-semibold text-[#4C1D95]">
+                                        <h3 className="text-lg font-semibold text-white">
                                             {faq.question}
                                         </h3>
                                     </div>
-                                    {/* <Icon
-                                        name="ChevronDownIcon"
-                                        size={24}
-                                        className={`flex-shrink-0 text-muted-foreground transition-transform duration-300 ${openFAQ === faq.id ? 'rotate-180' : ''
-                                            }`}
-                                    /> */}
-                                    <ChevronDown size={24} className={`flex-shrink-0 text-[#6B7280] transition-transform duration-300 ${openFAQ === faq.id ? 'rotate-180' : ''
+                                    <ChevronDown size={24} className={`flex-shrink-0 text-gray-400 transition-transform duration-300 ${openFAQ === faq.id ? 'rotate-180' : ''
                                         }`} />
                                 </button>
 
@@ -158,7 +118,7 @@ const FAQSection = () => {
                                         }`}
                                 >
                                     <div className="px-6 pb-5 pt-2">
-                                        <p className="text-[#6B7280] leading-relaxed">
+                                        <p className="text-gray-400 leading-relaxed">
                                             {faq.answer}
                                         </p>
                                     </div>
@@ -167,8 +127,8 @@ const FAQSection = () => {
                         ))
                     ) : (
                         <div className="text-center py-12">
-                            <Search size={48} className="text-[#6B7280] mx-auto mb-4" />
-                            <p className="text-[#6B7280]">
+                            <Search size={48} className="text-gray-400 mx-auto mb-4" />
+                            <p className="text-gray-400">
                                 No questions found matching &quot;{searchQuery}&quot;
                             </p>
                         </div>
@@ -193,30 +153,6 @@ const FAQSection = () => {
                         ))}
                     </div>
                 </div> */}
-
-                {/* Still Have Questions CTA */}
-                <div className="max-w-2xl mx-auto mt-16 text-center bg-[#F8FAFC] rounded-2xl p-8 border border-[#rgba(124, 58, 237, 0.2)]">
-                    {/* <ChatBubbleLeftRightIcon size={48} className="text-primary mx-auto mb-4" />
-                    < size={48} className="text-primary mx-auto mb-4" /> */}
-                    <h3 className="text-2xl font-bold text-[#4C1D95] mb-2">
-                        Still have questions?
-                    </h3>
-                    <p className="text-[#6B7280] mb-6">
-                        Join our community and get answers from fellow artists and our support team
-                    </p>
-                    <button
-                        onClick={() => {
-                            const waitlistSection = document.getElementById('waitlist');
-                            if (waitlistSection) {
-                                waitlistSection.scrollIntoView({ behavior: 'smooth' });
-                            }
-                        }}
-                        className="inline-flex items-center space-x-2 bg-[#4C1D95] hover:bg-[#4C1D95]/90 text-white font-semibold px-6 py-3 rounded-lg transition-all ease-in-out duration-300"
-                    >
-                        <span>Join the Waitlist</span>
-                        <ChevronRight size={20} />
-                    </button>
-                </div>
             </div>
         </section>
     );

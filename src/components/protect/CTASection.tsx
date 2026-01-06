@@ -11,7 +11,7 @@ const CTASection = () => {
                 <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
                     Join the waitlist to get early access to Auroraa Protect and be the first to know when we launch.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <a
                         href="#hero-section"
                         className="px-8 py-4 bg-white text-[#065B98] font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-lg"
@@ -25,7 +25,7 @@ const CTASection = () => {
                     >
                         Join Waitlist
                     </a>
-                </div>
+                </div> */}
             </div>
         </section>
     )

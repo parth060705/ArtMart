@@ -31,7 +31,19 @@ const HeroSectionWithFileUpload = () => {
 
     const validateFileType = (file: File): boolean => {
         const validTypes = ['image/jpeg', 'image/jpg'];
-        return validTypes.includes(file.type);
+        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+        
+        if (!validTypes.includes(file.type)) {
+            setFileError('Only JPG and JPEG files are supported for now.');
+            return false;
+        }
+        
+        if (file.size > maxSize) {
+            setFileError('File size must be less than 50MB.');
+            return false;
+        }
+        
+        return true;
     };
 
     const handleApplyProtection = async () => {
@@ -68,9 +80,8 @@ const HeroSectionWithFileUpload = () => {
         if (files && files.length > 0) {
             const file = files[0];
             
-            // Validate file type
+            // Validate file type and size
             if (!validateFileType(file)) {
-                setFileError('Only JPG and JPEG files are supported for now.');
                 setUploadedFile(null);
                 e.target.value = ''; // Clear the input
                 return;
@@ -113,9 +124,8 @@ const HeroSectionWithFileUpload = () => {
         if (files.length > 0) {
             const file = files[0];
             
-            // Validate file type
+            // Validate file type and size
             if (!validateFileType(file)) {
-                setFileError('Only JPG and JPEG files are supported for now.');
                 setUploadedFile(null);
                 return;
             }
@@ -224,7 +234,7 @@ const HeroSectionWithFileUpload = () => {
                                             Drag and drop or click to browse
                                         </p>
                                         <p className="text-xs text-gray-500 mt-2">
-                                            Supports: JPG, JPEG (Max 10MB)
+                                            Supports: JPG, JPEG (Max 50MB)
                                         </p>
                                     </div>
                                 )}

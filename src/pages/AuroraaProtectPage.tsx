@@ -22,7 +22,7 @@ const AuroraaProtectPage = () => {
             <BetaFeatureInfo />
             {/* <HeroSection /> */}
             <FeaturedSection />
-            <CTASection />
+            {/* <CTASection /> */}
             <Footer />
         </div>
     );

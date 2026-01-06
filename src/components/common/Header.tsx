@@ -1,6 +1,8 @@
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '@/hooks/user/auth/UseAuth';
+import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
 // import Link from 'next/link';
 // import Icon from '@/components/ui/AppIcon';
 
@@ -11,6 +13,9 @@ interface HeaderProps {
 const Header = ({ navigationItems }: HeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const { isAuthenticated, logout } = useAuth();
+    const { data: userProfile } = useUserProfile();
 
 
     useEffect(() => {
@@ -22,12 +27,36 @@ const Header = ({ navigationItems }: HeaderProps) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Close profile dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Element;
+            if (isProfileOpen && !target.closest('.profile-dropdown')) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [isProfileOpen]);
+
     const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
         const element = document.querySelector(href);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             setIsMenuOpen(false);
+        }
+    };
+
+    const handleLinkClick = (href: string) => {
+        const element = document.querySelector(href);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setIsMenuOpen(false);
+        } else {
+            // For external routes or when element doesn't exist, use navigate
+            window.location.href = href;
         }
     };
 
@@ -76,41 +105,119 @@ const Header = ({ navigationItems }: HeaderProps) => {
                     <Link to='/' className="text-2xl font-bold logo-font bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                         Auroraa
                     </Link>
+                    {/* <Link to='/' className="text-2xl font-bold logo-font bg-gradient-to-r from-[#065B98] via-[#1B7FDC] to-[#0DB8D3] bg-clip-text text-transparent"> 
+                        Auroraa
+                    </Link> */}
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-8">
-                        {navigationItems.map((item) => (
-                            <a
-                                key={item.href}
-                                href={item.href}
-                                onClick={(e) => handleAnchorClick(e, item.href)}
-                                className="text-sm lg:text-base font-medium text-[#fff] hover:text-[#4C1D95] transition-aurora relative group "
-                            >
-                                {item.label}
-                                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#4C1D95] group-hover:w-full transition-all duration-300" />
-                            </a>
-                        ))}
-                    </nav>
+                    <div className='flex gap-4'>
+                        {/* Desktop Navigation */}
+                        <nav className="hidden md:flex items-center space-x-8">
+                            {navigationItems.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    to={item.href}
+                                    onClick={() => handleLinkClick(item.href)}
+                                    className="text-sm lg:text-base font-medium text-[#fff] hover:text-[#4C1D95] transition-aurora relative group "
+                                >
+                                    {item.label}
+                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#4C1D95] group-hover:w-full transition-all duration-300" />
+                                </Link>
+                            ))}
+                        </nav>
 
-                    {/* Desktop CTA */}
-                    {/* <div className="hidden md:block">
-                        <a
-                            href="#waitlist"
-                            onClick={(e) => handleAnchorClick(e, '#waitlist')}
-                            className="inline-flex items-center px-6 py-2.5 bg-[#F59E0B] text-[#1F2937] font-semibold rounded-lg shadow-aurora hover:shadow-2xl hover:scale-105 ease-in-out transition-all duration-300"
-                        >
-                            Join Waitlist
-                        </a>
-                    </div> */}
+                        {/* Profile Section */}
+                        {isAuthenticated ? (
+                            <div className="relative hidden md:block profile-dropdown">
+                                <button
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#F8FAFC]/10 transition-colors"
+                                    aria-label="Profile menu"
+                                >
+                                    <div className="w-8 h-8 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] rounded-full flex items-center justify-center">
+                                        <User className="w-4 h-4 text-white" />
+                                    </div>
+                                </button>
+
+                                {/* Profile Dropdown */}
+                                {isProfileOpen && (
+                                    <div className="absolute right-0 mt-2 w-64 bg-[#193546] border border-[#1B7FDC]/20 rounded-lg shadow-lg z-50">
+                                        <div className="p-4 border-b border-[#1B7FDC]/20">
+                                            <p className="text-white font-medium">
+                                                {userProfile?.name || 'User'}
+                                            </p>
+                                            <p className="text-sm text-gray-400">
+                                                {userProfile?.email || 'user@auroraa.com'}
+                                            </p>
+                                        </div>
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    logout();
+                                                    setIsProfileOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                            >
+                                                <LogOut className="w-4 h-4" />
+                                                <span>Logout</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ) : null}
+                    </div>
 
                     {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden p-2 rounded-lg hover:bg-[#F8FAFC] transition-all duration-300 ease-in-out"
-                        aria-label="Toggle menu"
-                    >
-                        {isMenuOpen ? <X size={24} className="text-[#1F2937]" /> : <Menu size={24} className="text-[#1F2937]" />}
-                    </button>
+                    <div className="md:hidden flex items-center gap-3">
+                        {/* Profile Icon for Mobile */}
+                        {isAuthenticated && (
+                            <div className="relative profile-dropdown">
+                                <button
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#F8FAFC]/10 transition-colors"
+                                    aria-label="Profile menu"
+                                >
+                                    <div className="w-8 h-8 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] rounded-full flex items-center justify-center">
+                                        <User className="w-4 h-4 text-white" />
+                                    </div>
+                                </button>
+
+                                {/* Profile Dropdown for Mobile */}
+                                {isProfileOpen && (
+                                    <div className="absolute right-0 mt-2 w-64 bg-[#193546] border border-[#1B7FDC]/20 rounded-lg shadow-lg z-50">
+                                        <div className="p-4 border-b border-[#1B7FDC]/20">
+                                            <p className="text-white font-medium">
+                                                {userProfile?.name || 'User'}
+                                            </p>
+                                            <p className="text-sm text-gray-400">
+                                                {userProfile?.email || 'user@auroraa.com'}
+                                            </p>
+                                        </div>
+                                        <div className="p-2">
+                                            <button
+                                                onClick={() => {
+                                                    logout();
+                                                    setIsProfileOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-3 px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                                            >
+                                                <LogOut className="w-4 h-4" />
+                                                <span>Logout</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="p-2 rounded-lg hover:bg-[#F8FAFC]/10 transition-all duration-300 ease-in-out"
+                            aria-label="Toggle menu"
+                        >
+                            {isMenuOpen ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -119,22 +226,22 @@ const Header = ({ navigationItems }: HeaderProps) => {
                 <div className="md:hidden bg-[#FEFBFF] border-t border-[rgba(124, 58, 237, 0.2)] shadow-2xl">
                     <nav className="container mx-auto px-4 py-4 space-y-3">
                         {navigationItems.map((item) => (
-                            <a
+                            <Link
                                 key={item.href}
-                                href={item.href}
-                                onClick={(e) => handleAnchorClick(e, item.href)}
+                                to={item.href}
+                                onClick={() => handleLinkClick(item.href)}
                                 className="block px-4 py-3 text-base font-medium text-[#1F2937] hover:bg-[#F8FAFC] hover:text-[#4C1D95] rounded-lg transition-all duration-300 ease-in-out"
                             >
                                 {item.label}
-                            </a>
+                            </Link>
                         ))}
                         {/* <a
-                            href="#waitlist"
-                            onClick={(e) => handleAnchorClick(e, '#waitlist')}
-                            className="block w-full px-4 py-3 bg-[#F59E0B] text-[#1F2937] font-semibold text-center rounded-lg shadow-aurora hover:shadow-aurora-strong hover:scale-105 ease-in-out transition-all duration-300"
-                        >
-                            Join Waitlist
-                        </a> */}
+                        href="#waitlist"
+                        onClick={(e) => handleAnchorClick(e, '#waitlist')}
+                        className="block w-full px-4 py-3 bg-[#F59E0B] text-[#1F2937] font-semibold text-center rounded-lg shadow-aurora hover:shadow-aurora-strong hover:scale-105 ease-in-out transition-all duration-300"
+                    >
+                        Join Waitlist
+                    </a> */}
                     </nav>
                 </div>
             )}

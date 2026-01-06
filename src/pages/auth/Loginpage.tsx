@@ -25,7 +25,10 @@ const LoginPage = () => {
   const googleLoginRegister = useGoogleLoginRegister();
   const fromUpload = location.state?.from?.pathname === '/upload';
   const fromProfile = location.state?.from === '/me/profile';
-
+  const fromProtect = location.state?.from?.pathname?.pathname === '/protect';
+  console.log({ fromProtect })
+  console.log({ fromProfile })
+  console.log({ fromUpload })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +50,7 @@ const LoginPage = () => {
         login(data.access_token, data.refresh_token);
         toast.success('Login successful!');
         // Redirect to the previous page or home
-        const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : '/';
+        const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : fromProtect ? '/protect' : `/${Routes.ProtectPage}`;
         navigate(redirectTo);
       },
       onError: (error: any) => {
@@ -71,7 +74,7 @@ const LoginPage = () => {
           login(data?.tokens?.access_token, data?.tokens?.refresh_token);
           toast.success('Login successful!');
           // Redirect to the previous page or home
-          const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : '/';
+          const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : fromProtect ? '/protect' : `/${Routes.ProtectPage}`;
           navigate(redirectTo);
         },
         onError: (error: any) => {
@@ -96,11 +99,13 @@ const LoginPage = () => {
     document.title = 'Login | Auroraa';
   }, []);
 
+  // Redirect authenticated users to appropriate page based on where they came from
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(`/${Routes.SocialBasePage}`);
+      const redirectTo = fromUpload ? '/upload' : fromProfile ? '/me/profile' : fromProtect ? '/protect' : `/${Routes.ProtectPage}`;
+      navigate(redirectTo);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, fromUpload, fromProfile, fromProtect]);
 
 
   return (
@@ -109,7 +114,7 @@ const LoginPage = () => {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            {fromUpload || fromProfile ? (
+            {fromUpload || fromProfile || fromProtect ? (
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
@@ -121,6 +126,7 @@ const LoginPage = () => {
                     <p className="text-sm text-yellow-700">
                       {fromUpload && 'Please login to upload your artwork.'}
                       {fromProfile && 'Please login to access your profile.'}
+                      {fromProtect && 'Please login to protect your artwork with watermarks.'}
                     </p>
                   </div>
                 </div>
@@ -196,11 +202,11 @@ const LoginPage = () => {
           <GoogleLogin
             onSuccess={googleOnSuccessHandler}
             onError={googleOnErrorHandler}
-            useOneTap 
-            text="continue_with" 
-            shape="rectangular" 
-            size="large" 
-            width="100%" 
+            useOneTap
+            text="continue_with"
+            shape="rectangular"
+            size="large"
+            width="100%"
           />
         </CardContent>
       </Card>

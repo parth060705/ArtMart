@@ -8,10 +8,12 @@ import FinalCTA from '@/components/auroraaPage/FinalCTA';
 import FloatingDecorativeElements from '@/components/common/FloatingDecorativeElements';
 import Footer from '@/components/common/Footer';
 import FAQSection from '@/components/common/FAQSection';
+import { Routes } from '@/lib/routes';
 
 const AuroraaPage = () => {
 
     const navigationItems = [
+        { label: 'Auroraa Protect', href: Routes.ProtectPage },
         { label: 'Mission', href: '#mission' },
         { label: 'Community', href: '#community' },
     ];

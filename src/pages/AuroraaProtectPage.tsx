@@ -5,6 +5,8 @@ import Footer from '@/components/common/Footer';
 import HeroSection from '@/components/protect/HeroSection';
 import FeaturedSection from '@/components/protect/FeaturedSection';
 import CTASection from '@/components/protect/CTASection';
+import HeroSectionWithFileUpload from '@/components/protect/HeroSectionWithFileUpload';
+import BetaFeatureInfo from '@/components/protect/BetaFeatureInfo';
 
 const AuroraaProtectPage = () => {
 
@@ -16,7 +18,9 @@ const AuroraaProtectPage = () => {
         <div className="min-h-screen bg-[#193546] text-white font-sans overflow-x-hidden">
             <FloatingDecorativeElements />
             <Header navigationItems={navigationItems} />
-            <HeroSection />
+            <HeroSectionWithFileUpload />
+            <BetaFeatureInfo />
+            {/* <HeroSection /> */}
             <FeaturedSection />
             <CTASection />
             <Footer />

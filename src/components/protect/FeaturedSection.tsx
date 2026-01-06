@@ -10,6 +10,11 @@ const FeaturedSection = () => {
             description: 'Your artwork is processed so AI models cannot learn or replicate your style.'
         },
         {
+            icon: <Shield className="w-10 h-10 text-[#0DB8D3]" />,
+            title: 'No Ugly Watermarks',
+            description: 'Protection is embedded invisibly — your artwork looks untouched to the human eye.'
+        },
+        {
             icon: <Lock className="w-10 h-10 text-[#1B7FDC]" />,
             title: 'Visually Identical Output',
             description: 'The protected image looks the same to humans — no visible distortion or quality loss.'

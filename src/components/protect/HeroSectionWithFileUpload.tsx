@@ -236,8 +236,7 @@ const HeroSectionWithFileUpload = () => {
                                 <input
                                     id="upload"
                                     type="file"
-                                    className={`absolute inset-0 w-full h-full opacity-0 z-50 ${isAuthenticated ? 'cursor-pointer' : 'cursor-pointer'
-                                        }`}
+                                    className={`absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer ${isAuthenticated ? 'pointer-events-auto' : 'pointer-events-none'}`}
                                     onChange={handleFileChange}
                                     accept="image/jpeg,image/jpg"
                                     disabled={!isAuthenticated}
@@ -337,6 +336,7 @@ const HeroSectionWithFileUpload = () => {
                                         </button>
                                         <button
                                             onClick={() => setWatermarkType('ai')}
+                                            disabled
                                             // disabled // Uncomment when ready to disable or enable based on feature flag
                                             className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'ai'
                                                     ? 'bg-[#0DB8D3] text-white shadow-lg shadow-cyan-900/20'

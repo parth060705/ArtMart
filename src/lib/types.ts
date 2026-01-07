@@ -8,6 +8,7 @@ export interface User {
   id: string;
   name: string;
   username: string;
+  email: string;
   profileImage: string;
   bio: string;
   location: string;
@@ -45,7 +46,6 @@ export interface UserProfile extends User {
 export interface TopArtsistResponse {
   artistId: string;
   avgRating: number;
-  weightedRating: number;
   reviewCount: number;
   username: string;
   profileImage: string;
@@ -59,7 +59,6 @@ export interface UserSearchResult {
   username: string;
   profileImage?: string;
   avgRating: number;
-  weightedRating: number;
   reviewCount: number;
   bio: string;
   rank?: number;

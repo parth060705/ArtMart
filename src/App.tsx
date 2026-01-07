@@ -97,7 +97,7 @@ function App() {
               {/* <Route index element={<WaitListPage />} /> */}
               <Route index element={<AuroraaPage />} />
               <Route path={`/${AppRoutes.ProtectPage}`} element={<AuroraaProtectPage />} />
-              <Route path="/auth" element={<MainLayout />}>
+              <Route path="/auth">
                 <Route index element={<Loginpage />} />
                 <Route path={`/${AppRoutes.AuthLoginPage}`} element={<Loginpage />} />
                 <Route path={`/${AppRoutes.AuthRegisterPage}`} element={<RegisterPage />} />

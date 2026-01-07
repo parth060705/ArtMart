@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, AlertCircle, Trash2, ShieldCheck, Lock, Sparkles, Fingerprint } from 'lucide-react';
+import { Upload, AlertCircle, Trash2, ShieldCheck, Lock, Sparkles, Fingerprint, Download } from 'lucide-react';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
@@ -268,7 +268,7 @@ const HeroSectionWithFileUpload = () => {
                                     className={`absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer ${isAuthenticated ? 'pointer-events-auto' : 'pointer-events-none'}`}
                                     onChange={handleFileChange}
                                     accept="image/jpeg,image/jpg"
-                                    disabled={!isAuthenticated}
+                                    disabled={!isAuthenticated || isUploading}
                                 />
 
                                 <AnimatePresence mode="wait">
@@ -357,23 +357,32 @@ const HeroSectionWithFileUpload = () => {
                                         <button
                                             onClick={() => setWatermarkType('invisible')}
                                             className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'invisible'
-                                                    ? 'bg-[#1B7FDC] text-white shadow-lg shadow-blue-900/20'
-                                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                ? 'bg-[#1B7FDC] text-white shadow-lg shadow-blue-900/20'
+                                                : 'text-gray-400 hover:text-white hover:bg-white/5'
                                                 }`}
                                         >
                                             Invisible Watermark
                                         </button>
-                                        <button
-                                            onClick={() => setWatermarkType('ai')}
-                                            disabled
-                                            // disabled // Uncomment when ready to disable or enable based on feature flag
-                                            className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'ai'
+                                        <div className="relative flex-1 group">
+                                            <button
+                                                onClick={() => setWatermarkType('ai')}
+                                                disabled
+                                                // disabled // Uncomment when ready to disable or enable based on feature flag
+                                                className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'ai'
                                                     ? 'bg-[#0DB8D3] text-white shadow-lg shadow-cyan-900/20'
                                                     : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
-                                                }`}
-                                        >
-                                            AI Protection
-                                        </button>
+                                                    }`}
+                                            >
+                                                AI Protection
+                                            </button>
+
+                                            <div className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="rounded-md bg-black/90 text-white text-xs px-3 py-1.5 border border-white/10 shadow-lg whitespace-nowrap">
+                                                    Coming soon
+                                                </div>
+                                                <div className="mx-auto w-2 h-2 bg-black/90 rotate-45 -mt-1 border-l border-b border-white/10" />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <button
@@ -402,13 +411,23 @@ const HeroSectionWithFileUpload = () => {
                                                 <p className="text-sm text-gray-300 font-medium truncate">
                                                     {protectedFilename || 'protected-image.jpg'}
                                                 </p>
-                                                <a
-                                                    href={protectedImageUrl}
-                                                    download={protectedFilename || 'protected-image.jpg'}
-                                                    className="shrink-0 px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-gray-100 transition-colors"
+                                                <motion.div
+                                                    className="flex flex-col sm:flex-row gap-4 justify-center text-center"
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    whileInView={{ opacity: 1, y: 0 }}
+                                                    viewport={{ once: true }}
+                                                    transition={{ duration: 0.5, delay: 0.2 }}
                                                 >
-                                                    Download
-                                                </a>
+                                                    <a
+                                                        href={protectedImageUrl}
+                                                        download={protectedFilename || 'protected-image.jpg'}
+                                                        className="group inline-flex items-center space-x-2 px-8 py-2 bg-white text-black text-sm font-bold rounded-xl shadow-[0_0_20px_-5px_rgba(255,255,255,0.5)] hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.6)] hover:scale-105 transition-all ease-in-out cursor-pointer"
+                                                    >
+                                                        Download
+                                                        <Download className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                    </a>
+
+                                                </motion.div>
                                             </div>
 
                                             <div className="w-full rounded-lg overflow-hidden border border-white/10">

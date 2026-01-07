@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, AlertCircle, Trash2, ShieldCheck, Lock, Sparkles, Fingerprint } from 'lucide-react';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
@@ -13,9 +13,17 @@ const HeroSectionWithFileUpload = () => {
     const [fileError, setFileError] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [watermarkType, setWatermarkType] = useState<'invisible' | 'ai'>('invisible');
+    const [protectedImageUrl, setProtectedImageUrl] = useState<string | null>(null);
+    const [protectedFilename, setProtectedFilename] = useState<string | null>(null);
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        return () => {
+            if (protectedImageUrl) URL.revokeObjectURL(protectedImageUrl);
+        };
+    }, [protectedImageUrl]);
 
     const handleUploadClick = () => {
         if (!isAuthenticated) {
@@ -27,6 +35,11 @@ const HeroSectionWithFileUpload = () => {
     const handleRemoveFile = () => {
         setUploadedFile(null);
         setFileError(null);
+        if (protectedImageUrl) {
+            URL.revokeObjectURL(protectedImageUrl);
+            setProtectedImageUrl(null);
+            setProtectedFilename(null);
+        }
     };
 
     const validateFileType = (file: File): boolean => {
@@ -60,15 +73,19 @@ const HeroSectionWithFileUpload = () => {
         try {
             setFileError(null);
             setIsUploading(true);
-            const result = await uploadWatermark(uploadedFile);
-
-            if (result.success) {
-                console.log('Watermark applied successfully:', result.data);
-                // You can add success handling here, like showing a success message or redirecting
-                // For example: navigate('/success') or show a success notification
-            } else {
-                setFileError(result.message || 'Failed to apply watermark');
+            if (protectedImageUrl) {
+                URL.revokeObjectURL(protectedImageUrl);
+                setProtectedImageUrl(null);
+                setProtectedFilename(null);
             }
+
+            const result = await uploadWatermark(uploadedFile);
+            const url = URL.createObjectURL(result.blob);
+            setProtectedImageUrl(url);
+
+            const baseName = uploadedFile.name.replace(/\.[^/.]+$/, '');
+            const fallbackName = `${baseName}-protected.jpg`;
+            setProtectedFilename(result.filename || fallbackName);
         } catch (error) {
             console.error('Error applying watermark:', error);
             setFileError('Failed to apply watermark. Please try again.');
@@ -87,6 +104,12 @@ const HeroSectionWithFileUpload = () => {
         const files = e.target.files;
         if (files && files.length > 0) {
             const file = files[0];
+
+            if (protectedImageUrl) {
+                URL.revokeObjectURL(protectedImageUrl);
+                setProtectedImageUrl(null);
+                setProtectedFilename(null);
+            }
 
             // Validate file type and size
             if (!validateFileType(file)) {
@@ -131,6 +154,12 @@ const HeroSectionWithFileUpload = () => {
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             const file = files[0];
+
+            if (protectedImageUrl) {
+                URL.revokeObjectURL(protectedImageUrl);
+                setProtectedImageUrl(null);
+                setProtectedFilename(null);
+            }
 
             // Validate file type and size
             if (!validateFileType(file)) {
@@ -366,6 +395,31 @@ const HeroSectionWithFileUpload = () => {
                                             )}
                                         </span>
                                     </button>
+
+                                    {protectedImageUrl && (
+                                        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                                            <div className="flex items-center justify-between gap-3 mb-3">
+                                                <p className="text-sm text-gray-300 font-medium truncate">
+                                                    {protectedFilename || 'protected-image.jpg'}
+                                                </p>
+                                                <a
+                                                    href={protectedImageUrl}
+                                                    download={protectedFilename || 'protected-image.jpg'}
+                                                    className="shrink-0 px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-gray-100 transition-colors"
+                                                >
+                                                    Download
+                                                </a>
+                                            </div>
+
+                                            <div className="w-full rounded-lg overflow-hidden border border-white/10">
+                                                <img
+                                                    src={protectedImageUrl}
+                                                    alt="Protected preview"
+                                                    className="w-full h-48 object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </motion.div>
                             )}
                         </div>

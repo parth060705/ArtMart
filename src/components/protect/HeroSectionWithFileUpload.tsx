@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { Upload, Shield, Zap, Lock, X, AlertCircle, Trash2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Upload, AlertCircle, Trash2, ShieldCheck, Lock, Sparkles, Fingerprint } from 'lucide-react';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
@@ -13,6 +11,8 @@ const HeroSectionWithFileUpload = () => {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [showAuthPopup, setShowAuthPopup] = useState(false);
     const [fileError, setFileError] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [watermarkType, setWatermarkType] = useState<'invisible' | 'ai'>('invisible');
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,17 +32,17 @@ const HeroSectionWithFileUpload = () => {
     const validateFileType = (file: File): boolean => {
         const validTypes = ['image/jpeg', 'image/jpg'];
         const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-        
+
         if (!validTypes.includes(file.type)) {
             setFileError('Only JPG and JPEG files are supported for now.');
             return false;
         }
-        
+
         if (file.size > maxSize) {
             setFileError('File size must be less than 50MB.');
             return false;
         }
-        
+
         return true;
     };
 
@@ -52,10 +52,16 @@ const HeroSectionWithFileUpload = () => {
             return;
         }
 
+        if (watermarkType === 'ai') {
+            setFileError('AI protection is not available yet. Please use invisible watermark.');
+            return;
+        }
+
         try {
             setFileError(null);
+            setIsUploading(true);
             const result = await uploadWatermark(uploadedFile);
-            
+
             if (result.success) {
                 console.log('Watermark applied successfully:', result.data);
                 // You can add success handling here, like showing a success message or redirecting
@@ -66,6 +72,8 @@ const HeroSectionWithFileUpload = () => {
         } catch (error) {
             console.error('Error applying watermark:', error);
             setFileError('Failed to apply watermark. Please try again.');
+        } finally {
+            setIsUploading(false);
         }
     };
 
@@ -75,18 +83,18 @@ const HeroSectionWithFileUpload = () => {
             e.target.value = ''; // Clear the input
             return;
         }
-        
+
         const files = e.target.files;
         if (files && files.length > 0) {
             const file = files[0];
-            
+
             // Validate file type and size
             if (!validateFileType(file)) {
                 setUploadedFile(null);
                 e.target.value = ''; // Clear the input
                 return;
             }
-            
+
             // Clear any previous error and set the file
             setFileError(null);
             setUploadedFile(file);
@@ -95,8 +103,8 @@ const HeroSectionWithFileUpload = () => {
 
     const handleLoginRedirect = () => {
         setShowAuthPopup(false);
-        navigate(`/${Routes.AuthLoginPage}`, { 
-            state: { from: { pathname: location } } 
+        navigate(`/${Routes.AuthLoginPage}`, {
+            state: { from: { pathname: location } }
         });
     };
 
@@ -123,13 +131,13 @@ const HeroSectionWithFileUpload = () => {
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             const file = files[0];
-            
+
             // Validate file type and size
             if (!validateFileType(file)) {
                 setUploadedFile(null);
                 return;
             }
-            
+
             // Clear any previous error and set the file
             setFileError(null);
             setUploadedFile(file);
@@ -137,226 +145,283 @@ const HeroSectionWithFileUpload = () => {
     };
 
     return (
-        <section className="relative min-h-screen overflow-hidden pt-20 px-4 sm:px-8 bg-gradient-to-br from-[#193546] via-[#0f2533] to-[#193546]">
-            {/* Floating decorative elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-10 left-10 sm:top-20 sm:left-20 w-48 sm:w-72 h-48 sm:h-72 bg-[#1B7FDC]/10 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-10 right-10 sm:bottom-20 sm:right-20 w-64 sm:w-96 h-64 sm:h-96 bg-[#0DB8D3]/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <section className="relative w-full min-h-[90vh] flex flex-col justify-center overflow-hidden bg-[#0A0A0B] selection:bg-[#0DB8D3]/30 selection:text-[#0DB8D3]">
+
+            {/* Background Effects */}
+            <div className="absolute inset-0 z-0">
+                {/* Subtle Grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+                {/* Ambient Orbs */}
+                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#1B7FDC]/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#0DB8D3]/15 rounded-full blur-[140px] mix-blend-screen animate-pulse delay-700" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col lg:flex-row items-center gap-16">
+
+                {/* Text Content */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="flex-1 text-center lg:text-left space-y-8"
                 >
-                    <motion.h1
-                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight"
-                    >
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B7FDC] via-[#0DB8D3] to-[#1B7FDC]">
-                            Your digital assets,
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B7FDC]/10 border border-[#1B7FDC]/20 text-[#1B7FDC] text-sm font-medium">
+                        <ShieldCheck className="w-4 h-4" />
+                        <span>Enterprise Grade Protection</span>
+                    </div>
+
+                    <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                        Protect Your Art <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B7FDC] via-[#0DB8D3] to-[#1B7FDC] animate-gradient bg-[length:200%_auto]">
+                            In The AI Era
                         </span>
-                        <br />
-                        <motion.span
-                            className="text-[#0DB8D3]"
-                            animate={{
-                                textShadow: [
-                                    '0 0 0px rgba(13, 184, 211, 0)',
-                                    '0 0 20px rgba(13, 184, 211, 0.5)',
-                                    '0 0 0px rgba(13, 184, 211, 0)'
-                                ]
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                repeatType: 'reverse'
-                            }}
-                        >
-                            Protected like never before.
-                        </motion.span>
-                    </motion.h1>
+                    </h1>
+
+                    <p className="text-lg text-gray-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Secure your digital assets with invisible watermarking and advanced AI protection layers.
+                        Claim ownership and prevent unauthorized usage with a single drag and drop.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-[#0DB8D3]" />
+                            <span>Invisible Marking</span>
+                        </div>
+                        <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-600" />
+                        <div className="flex items-center gap-2">
+                            <Fingerprint className="w-4 h-4 text-[#0DB8D3]" />
+                            <span>Proof of Ownership</span>
+                        </div>
+                        <div className="hidden sm:block w-1 h-1 rounded-full bg-gray-600" />
+                        <div className="flex items-center gap-2">
+                            <Lock className="w-4 h-4 text-[#0DB8D3]" />
+                            <span>Tamper Proof</span>
+                        </div>
+                    </div>
                 </motion.div>
 
+                {/* Upload Card */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="flex items-center justify-center h-auto"
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    className="flex-1 w-full max-w-lg"
                 >
-                    <div className="w-full max-w-md relative">
-                        <motion.div
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
-                            onClick={handleUploadClick}
-                            className={`relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
-                                isDragOver
-                                    ? 'border-[#0DB8D3] bg-[#0DB8D3]/5'
-                                    : uploadedFile
-                                    ? 'border-[#1B7FDC] bg-[#1B7FDC]/5'
-                                    : isAuthenticated
-                                    ? 'border-gray-600 bg-[#0f2533]/50 hover:border-[#1B7FDC]/50 cursor-pointer'
-                                    : 'border-gray-700 bg-[#0f2533]/30 cursor-pointer'
-                            }`}
-                            whileHover={{ scale: 1.02 }}
-                        >
-                            <input
-                                id="upload"
-                                type="file"
-                                className={`absolute inset-0 w-full h-full opacity-0 ${
-                                    isAuthenticated ? 'cursor-pointer pointer-events-auto' : 'cursor-pointer pointer-events-none'
-                                }`}
-                                onChange={handleFileChange}
-                                accept="image/jpeg,image/jpg"
-                                disabled={!isAuthenticated}
-                            />
-                            
-                            <div className="pointer-events-none">
-                                <motion.div
-                                    animate={{ y: [0, -10, 0] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                    className="mx-auto w-16 h-16 mb-4"
-                                >
-                                    <Upload className="w-full h-full text-[#0DB8D3]" />
-                                </motion.div>
-                                
-                                {uploadedFile ? (
-                                    <div>
-                                        <p className="text-white font-medium mb-2">{uploadedFile.name}</p>
-                                        <p className="text-sm text-gray-400">Image selected</p>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <p className="text-white font-medium mb-2">
-                                            {isDragOver ? 'Drop your file here' : 'Upload your artwork'}
-                                        </p>
-                                        <p className="text-sm text-gray-400">
-                                            Drag and drop or click to browse
-                                        </p>
-                                        <p className="text-xs text-gray-500 mt-2">
-                                            Supports: JPG, JPEG (Max 50MB)
-                                        </p>
-                                    </div>
-                                )}
+                    <div className="relative group">
+                        {/* Glow effect */}
+                        <div className={`absolute -inset-1 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 ${isDragOver ? 'opacity-75' : ''}`}></div>
+
+                        <div className="relative bg-[#0f1115]/80 backdrop-blur-2xl border border-white/10 p-8 rounded-2xl shadow-2xl">
+
+                            {/* Upload Area */}
+                            <div
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                                onClick={handleUploadClick}
+                                className={`
+                                    relative border-2 border-dashed rounded-xl h-80 flex flex-col items-center justify-center text-center p-6
+                                    transition-all duration-300 group/upload
+                                    ${isDragOver
+                                        ? 'border-[#0DB8D3] bg-[#0DB8D3]/10 scale-[1.02]'
+                                        : uploadedFile
+                                            ? 'border-[#1B7FDC]/50 bg-[#1B7FDC]/10'
+                                            : isAuthenticated
+                                                ? 'border-gray-700 hover:border-[#0DB8D3]/50 hover:bg-[#0DB8D3]/5 cursor-pointer'
+                                                : 'border-gray-800 bg-gray-900/50 cursor-pointer'
+                                    }
+                                `}
+                            >
+                                <input
+                                    id="upload"
+                                    type="file"
+                                    className={`absolute inset-0 w-full h-full opacity-0 z-50 ${isAuthenticated ? 'cursor-pointer' : 'cursor-pointer'
+                                        }`}
+                                    onChange={handleFileChange}
+                                    accept="image/jpeg,image/jpg"
+                                    disabled={!isAuthenticated}
+                                />
+
+                                <AnimatePresence mode="wait">
+                                    {uploadedFile ? (
+                                        <motion.div
+                                            key="file-uploaded"
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            className="w-full flex flex-col items-center z-10"
+                                        >
+                                            <div className="relative w-32 h-32 rounded-lg overflow-hidden shadow-lg mb-4 border border-white/10">
+                                                <img
+                                                    src={URL.createObjectURL(uploadedFile)}
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                                    {/* Overlay on hover if needed */}
+                                                </div>
+                                            </div>
+                                            <p className="text-white font-medium truncate max-w-xs">{uploadedFile.name}</p>
+                                            <p className="text-sm text-gray-400 mt-1">{(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRemoveFile();
+                                                }}
+                                                className="mt-4 flex items-center gap-2 text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-4 py-2 rounded-full text-sm transition-colors z-50 pointer-events-auto"
+                                            >
+                                                <Trash2 className="w-3 h-3" />
+                                                Remove
+                                            </button>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                            key="upload-prompt"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            className="flex flex-col items-center"
+                                        >
+                                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#1B7FDC]/20 to-[#0DB8D3]/20 flex items-center justify-center mb-6 group-hover/upload:scale-110 transition-transform duration-300">
+                                                <Upload className="w-8 h-8 text-[#0DB8D3]" />
+                                            </div>
+                                            <h3 className="text-xl font-semibold text-white mb-2">
+                                                {isDragOver ? 'Drop it here!' : 'Upload your artwork'}
+                                            </h3>
+                                            <p className="text-gray-400 text-sm mb-4 max-w-[200px]">
+                                                Drag & drop your file here or click to browse
+                                            </p>
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/5 text-xs text-gray-500">
+                                                <span className="font-mono">JPG, JPEG</span>
+                                                <span className="w-1 h-1 rounded-full bg-gray-600"></span>
+                                                <span>Max 50MB</span>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
-                        </motion.div>
 
-                        {/* Error message */}
-                        {fileError && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <AlertCircle className="w-4 h-4 text-red-400" />
-                                    <p className="text-sm text-red-400">{fileError}</p>
-                                </div>
-                            </motion.div>
-                        )}
+                            {/* Error Toast */}
+                            <AnimatePresence>
+                                {fileError && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10, height: 0 }}
+                                        animate={{ opacity: 1, y: 0, height: 'auto' }}
+                                        exit={{ opacity: 0, y: -10, height: 0 }}
+                                        className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2 overflow-hidden"
+                                    >
+                                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                                        <p className="text-sm text-red-200">{fileError}</p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
-                        {/* Remove file button */}
-                        {uploadedFile && (
-                            <motion.button
-                                onClick={handleRemoveFile}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="absolute top-4 right-4 p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors border border-red-500/30"
-                                title="Remove file"
-                            >
-                                <Trash2 className="w-4 h-4" />
-                            </motion.button>
-                        )}
+                            {/* Actions */}
+                            {uploadedFile && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="mt-6 space-y-4"
+                                >
+                                    <div className="bg-[#0A0A0B]/50 p-1.5 rounded-xl flex gap-1 border border-white/5">
+                                        <button
+                                            onClick={() => setWatermarkType('invisible')}
+                                            className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'invisible'
+                                                    ? 'bg-[#1B7FDC] text-white shadow-lg shadow-blue-900/20'
+                                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                }`}
+                                        >
+                                            Invisible Watermark
+                                        </button>
+                                        <button
+                                            onClick={() => setWatermarkType('ai')}
+                                            // disabled // Uncomment when ready to disable or enable based on feature flag
+                                            className={`flex-1 py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-300 ${watermarkType === 'ai'
+                                                    ? 'bg-[#0DB8D3] text-white shadow-lg shadow-cyan-900/20'
+                                                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                                                }`}
+                                        >
+                                            AI Protection
+                                        </button>
+                                    </div>
 
-                        {/* Action button */}
-                        {uploadedFile && (
-                            <motion.button
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={handleApplyProtection}
-                                className="w-full mt-6 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                            >
-                                Apply Protection
-                            </motion.button>
-                        )}
+                                    <button
+                                        onClick={handleApplyProtection}
+                                        disabled={isUploading}
+                                        className="w-full bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] hover:from-[#156abc] hover:to-[#0aa3bb] text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-[#0DB8D3]/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+                                    >
+                                        <span className="flex items-center justify-center gap-2">
+                                            {isUploading ? (
+                                                <>
+                                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                                    <span>Processing...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>Apply {watermarkType === 'invisible' ? 'Invisible' : 'AI'} Protection</span>
+                                                    <ShieldCheck className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                                </>
+                                            )}
+                                        </span>
+                                    </button>
+                                </motion.div>
+                            )}
+                        </div>
                     </div>
                 </motion.div>
             </div>
 
-            {/* Authentication Popup */}
-            {showAuthPopup && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-                    onClick={() => setShowAuthPopup(false)}
-                >
+            {/* Auth Popup - Styled to match */}
+            <AnimatePresence>
+                {showAuthPopup && (
                     <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.9, opacity: 0 }}
-                        className="bg-[#193546] border border-[#1B7FDC]/20 rounded-2xl p-8 max-w-md mx-4"
-                        onClick={(e) => e.stopPropagation()}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+                        onClick={() => setShowAuthPopup(false)}
                     >
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-3">
-                                <AlertCircle className="w-6 h-6 text-[#0DB8D3]" />
-                                <h3 className="text-xl font-bold text-white">Account Required</h3>
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="bg-[#0f1115] border border-white/10 rounded-2xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Decorative background in popup */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#1B7FDC]/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+
+                            <div className="relative z-10">
+                                <div className="w-12 h-12 rounded-full bg-[#1B7FDC]/10 flex items-center justify-center mb-6">
+                                    <Lock className="w-6 h-6 text-[#1B7FDC]" />
+                                </div>
+
+                                <h3 className="text-2xl font-bold text-white mb-2">Login Required</h3>
+                                <p className="text-gray-400 mb-6 leading-relaxed">
+                                    Join thousands of artists protecting their work. Create an account to watermark, track, and secure your digital assets.
+                                </p>
+
+                                <div className="space-y-3">
+                                    <button
+                                        onClick={handleLoginRedirect}
+                                        className="w-full py-3 px-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+                                    >
+                                        Create Account / Login
+                                    </button>
+                                    <button
+                                        onClick={() => setShowAuthPopup(false)}
+                                        className="w-full py-3 px-4 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
-                            <button
-                                onClick={() => setShowAuthPopup(false)}
-                                className="text-gray-400 hover:text-white transition-colors"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <div className="space-y-4">
-                            <p className="text-gray-300 leading-relaxed">
-                                You need to create an account to apply watermarks and protect your artwork. This helps us verify ownership and provide you with the best protection features.
-                            </p>
-
-                            <div className="bg-[#0DB8D3]/10 border border-[#0DB8D3]/20 rounded-lg p-4">
-                                <h4 className="font-semibold text-[#0DB8D3] mb-2">Why create an account?</h4>
-                                <ul className="space-y-2 text-sm text-gray-300">
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-[#0DB8D3] mt-1">•</span>
-                                        <span>Add ownership watermarks to your artwork</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-[#0DB8D3] mt-1">•</span>
-                                        <span>Track your protected creations</span>
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-[#0DB8D3] mt-1">•</span>
-                                        <span>Access advanced protection features</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-3 mt-6">
-                            <button
-                                onClick={() => setShowAuthPopup(false)}
-                                className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
-                            >
-                                Maybe Later
-                            </button>
-                            <motion.button
-                                onClick={handleLoginRedirect}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="flex-1 px-4 py-2 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] text-white font-semibold rounded-lg hover:shadow-lg transition-all"
-                            >
-                                Create Account
-                            </motion.button>
-                        </div>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            )}
+                )}
+            </AnimatePresence>
         </section>
     )
 }

@@ -1,87 +1,82 @@
 import React from 'react'
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, ChevronDown, Sparkles, Shield, Lock, Users, Palette, Smile, Heart, Star, Instagram, Facebook, Youtube } from 'lucide-react';
+import { Shield, Lock, Users, Palette, Sparkles } from 'lucide-react';
 
 const WhyAuroraaExists = () => {
     return (
-        <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#0f2533]" id='mission'>
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMxQjdGREMiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0YzAtMi4yMDktMS43OTEtNC00LTRzLTQgMS43OTEtNCA0IDEuNzkxIDQgNCA0IDQtMS43OTEgNC00em0tMiAwYzAgMS4xMDQtLjg5NiAyLTIgMnMtMi0uODk2LTItMiAuODk2LTIgMi0yIDIgLjg5NiAyIDJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-10"></div>
-            <div className="max-w-6xl mx-auto relative">
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.8 }}
-                    className="space-y-12"
-                >
-                    <div className="text-center max-w-3xl mx-auto">
-                        <motion.span
-                            className="inline-flex items-center px-4 py-2 rounded-full bg-[#1B7FDC]/20 text-[#0DB8D3] text-sm font-medium mb-6 border border-[#1B7FDC]/30"
-                            initial={{ opacity: 0, y: 10 }}
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A0A0B] relative overflow-hidden" id='mission'>
+
+            {/* Background Gradients */}
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#1B7FDC]/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
+
+            <div className="max-w-7xl mx-auto relative z-10">
+                <div className="text-center max-w-3xl mx-auto mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B7FDC]/10 border border-[#1B7FDC]/20 text-[#1B7FDC] text-xs font-semibold uppercase tracking-wider mb-6"
+                    >
+                        <Shield className="w-3 h-3" />
+                        Our Mission
+                    </motion.div>
+
+                    <motion.h2
+                        className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        Why Auroraa Exists
+                    </motion.h2>
+
+                    <motion.p
+                        className="text-xl text-gray-400 leading-relaxed"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        We're here to change the way artists are treated in the digital world.
+                        Protection shouldn't be a luxury—it's a fundamental right.
+                    </motion.p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-8">
+                    {[
+                        {
+                            icon: <Lock className="w-6 h-6 text-[#0DB8D3]" />,
+                            title: "Protection First",
+                            description: "We put artist protection at the core of everything we build. It's not an afterthought—it's the foundation."
+                        },
+                        {
+                            icon: <Users className="w-6 h-6 text-[#1B7FDC]" />,
+                            title: "Community Power",
+                            description: "Together, we're stronger. Join a collective voice that advocates for artist rights and fair treatment."
+                        },
+                        {
+                            icon: <Palette className="w-6 h-6 text-[#0DB8D3]" />,
+                            title: "Creative Freedom",
+                            description: "Focus on what you do best—create—while we handle the complex security and protection measures."
+                        }
+                    ].map((item, index) => (
+                        <motion.div
+                            key={index}
+                            className="group bg-[#0f1115]/50 backdrop-blur-sm p-8 rounded-2xl border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-2 hover:bg-[#0f1115]"
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
+                            transition={{ delay: 0.2 + (index * 0.1) }}
                         >
-                            <Shield className="w-4 h-4 mr-2" />
-                            Our Mission
-                        </motion.span>
-
-                        <motion.h2
-                            className="text-4xl md:text-5xl font-bold text-center text-white mb-8 leading-tight"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            Why Auroraa exists
-                        </motion.h2>
-
-                        <motion.p
-                            className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.4 }}
-                        >
-                            We're here to change the way artists are treated in the digital world
-                        </motion.p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                icon: <Lock className="w-8 h-8 text-[#0DB8D3]" />,
-                                title: "Protection First",
-                                description: "We put artist protection at the core of everything we build, not as an afterthought."
-                            },
-                            {
-                                icon: <Users className="w-8 h-8 text-[#1B7FDC]" />,
-                                title: "Community Power",
-                                description: "Together, we're stronger. Join a community that values and protects your creative work."
-                            },
-                            {
-                                icon: <Palette className="w-8 h-8 text-[#0DB8D3]" />,
-                                title: "Creative Freedom",
-                                description: "Focus on what you do best—create—while we handle the protection part."
-                            }
-                        ].map((item, index) => (
-                            <motion.div
-                                key={index}
-                                className="bg-[#193546]/80 backdrop-blur-sm p-8 rounded-2xl border border-[#1B7FDC]/20 hover:border-[#0DB8D3]/40 shadow-lg hover:shadow-[0_8px_30px_rgba(13,184,211,0.2)] transition-all duration-300 hover:-translate-y-1"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.2 + (index * 0.1) }}
-                            >
-                                <div className="w-14 h-14 rounded-xl bg-[#065B98]/20 border border-[#1B7FDC]/30 flex items-center justify-center mb-6">
-                                    {item.icon}
-                                </div>
-                                <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                                <p className="text-gray-300 leading-relaxed">{item.description}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
+                            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                {item.icon}
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-4">{item.title}</h3>
+                            <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">{item.description}</p>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     )

@@ -20,7 +20,7 @@ const AuroraaPage = () => {
 
     return (
         <>
-            <div className="min-h-screen bg-[#193546] text-white font-sans overflow-x-hidden">
+            <div className="min-h-screen bg-[#0A0A0B] text-white font-sans overflow-x-hidden">
                 <Header navigationItems={navigationItems} />
                 <FloatingDecorativeElements />
                 <HeroSection />

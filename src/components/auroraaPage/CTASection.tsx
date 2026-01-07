@@ -30,7 +30,7 @@ const CTASection = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
                     >
-                        Join thousands of artists who trust Auroraa Protect to safeguard their creative work.
+                        Join artists who trust Auroraa Protect to safeguard their creative work.
                     </motion.p>
 
                     <motion.div
@@ -44,7 +44,7 @@ const CTASection = () => {
                             to={`/${Routes.ProtectPage}`}
                             className="px-8 py-4 bg-white text-[#065B98] font-semibold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center justify-center"
                         >
-                            Get Auroraa Protect Now
+                            Try Auroraa Protect Now
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Link>
                     </motion.div>

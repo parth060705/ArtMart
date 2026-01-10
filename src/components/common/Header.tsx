@@ -151,14 +151,14 @@ const Header = ({ navigationItems }: HeaderProps) => {
                                             </p>
                                         </div>
                                         <div className="p-2 space-y-1">
-                                            <Link
+                                            {/* <Link
                                                 to={`/${Routes.protectVerifyPage}`}
                                                 onClick={() => setIsProfileOpen(false)}
                                                 className="w-full flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                                             >
                                                 <ShieldCheck className="w-4 h-4 text-[#0DB8D3]" />
                                                 <span>Verify Artwork</span>
-                                            </Link>
+                                            </Link> */}
                                             <button
                                                 onClick={() => {
                                                     logout();

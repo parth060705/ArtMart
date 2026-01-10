@@ -141,7 +141,7 @@ const LoginPage = () => {
               <p className="text-xs text-[#EAB308]/90 leading-relaxed">
                 {fromUpload && 'Please login to upload your artwork.'}
                 {fromProfile && 'Please login to access your profile.'}
-                {fromProtect && 'Please login to protect your artwork with watermarks.'}
+                {fromProtect && 'Please login to protect your artwork.'}
               </p>
             </div>
           )}

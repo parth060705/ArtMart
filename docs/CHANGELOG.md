@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.3] - 2025-01-10
+### Added
+- Added verify route
+- changed the UI of login, page, landing page, register page, reset password page
+- added protect routes
+
 ## [1.4.2] - 2025-12-27
 ### Added
 - Added auroraa page (landing page)

@@ -49,6 +49,7 @@ const AdminDashboardSkeleton = React.lazy(() => import('./admin-panel/admin_dash
 const WaitListPage = React.lazy(() => import('./pages/WaitListPage'));
 const AuroraaPage = React.lazy(() => import('./pages/AuroraaPage'));
 const AuroraaProtectPage = React.lazy(() => import('./pages/AuroraaProtectPage'));
+const AuroraaProtectVerifyPage = React.lazy(() => import('./pages/AuroraaProtectVerifyPage'));
 // Components
 const InstallButton = React.lazy(() => import('@/components/InstallButton'));
 // Simple loading spinner component
@@ -97,6 +98,7 @@ function App() {
               {/* <Route index element={<WaitListPage />} /> */}
               <Route index element={<AuroraaPage />} />
               <Route path={`/${AppRoutes.ProtectPage}`} element={<AuroraaProtectPage />} />
+              <Route path={`/${AppRoutes.protectVerifyPage}`} element={<AuroraaProtectVerifyPage />} />
               <Route path="/auth">
                 <Route index element={<Loginpage />} />
                 <Route path={`/${AppRoutes.AuthLoginPage}`} element={<Loginpage />} />

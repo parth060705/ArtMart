@@ -44,6 +44,7 @@ export class Routes {
     static TermsAndConditionsPage = "terms-and-conditions"
     static BlogPage = "blog"
     static ProtectPage = "protect"
+    static protectVerifyPage = "verify"
 }
 
 interface NavbarRoutes {

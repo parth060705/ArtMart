@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useGoogleLoginRegister } from '@/hooks/user/auth/useGoogleLoginRegister';
 import { Routes } from '@/lib/routes';
+import { motion } from 'framer-motion';
+import { AlertCircle, Lock, Sparkles } from 'lucide-react';
 
 const formSchema = loginFormSchema
 
@@ -109,107 +111,133 @@ const LoginPage = () => {
 
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center px-4">
-      <Card className="mx-auto w-full max-w-[400px]">
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            {fromUpload || fromProfile || fromProtect ? (
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm text-yellow-700">
-                      {fromUpload && 'Please login to upload your artwork.'}
-                      {fromProfile && 'Please login to access your profile.'}
-                      {fromProtect && 'Please login to protect your artwork with watermarks.'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              'Enter your credentials to access your account'
-            )}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0B] font-sans">
+
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#1B7FDC]/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#0DB8D3]/10 rounded-full blur-[120px] mix-blend-screen animate-pulse delay-700" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-[420px] px-4"
+      >
+        <div className="bg-[#0f1115]/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 mb-4 text-[#0DB8D3]">
+              <Lock className="w-6 h-6" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
+            <p className="text-gray-400 text-sm">Enter your credentials to access your account</p>
+          </div>
+
+          {(fromUpload || fromProfile || fromProtect) && (
+            <div className="bg-[#EAB308]/10 border border-[#EAB308]/20 rounded-lg p-3 mb-6 flex gap-3 items-start">
+              <AlertCircle className="w-5 h-5 text-[#EAB308] shrink-0 mt-0.5" />
+              <p className="text-xs text-[#EAB308]/90 leading-relaxed">
+                {fromUpload && 'Please login to upload your artwork.'}
+                {fromProfile && 'Please login to access your profile.'}
+                {fromProtect && 'Please login to protect your artwork with watermarks.'}
+              </p>
+            </div>
+          )}
+
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="grid gap-4">
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-2">
-                      <FormLabel htmlFor="username">Username</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="username"
-                          placeholder="Enter your username"
-                          type="text"
-                          autoComplete="username"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-2">
-                      <div className="flex justify-between items-center">
-                        <FormLabel htmlFor="password">Password</FormLabel>
-                        <Link
-                          to={`/${Routes.AuthResetPasswordPage}`}
-                          className="ml-auto inline-block text-sm underline"
-                        >
-                          Forgot your password?
-                        </Link>
-                      </div>
-                      <FormControl>
-                        <Input
-                          type='password'
-                          id="password"
-                          placeholder="Enter your password"
-                          autoComplete="current-password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
-                  {loginMutation.isPending ? 'Logging in...' : 'Login'}
-                </Button>
-              </div>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-gray-300">Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your username"
+                        type="text"
+                        autoComplete="username"
+                        className="bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <FormLabel className="text-gray-300">Password</FormLabel>
+                      <Link
+                        to={`/${Routes.AuthResetPasswordPage}`}
+                        className="text-xs text-[#1B7FDC] hover:text-[#0DB8D3] transition-colors"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        placeholder="Enter your password"
+                        autoComplete="current-password"
+                        className="bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] hover:opacity-90 transition-opacity text-white font-semibold rounded-xl text-base"
+                disabled={loginMutation.isPending}
+              >
+                {loginMutation.isPending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Logging in...</span>
+                  </div>
+                ) : 'Login'}
+              </Button>
             </form>
           </Form>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <Link to={`/${Routes.AuthRegisterPage}`} className="underline">
+
+          <div className="mt-8 flex items-center gap-4">
+            <div className="h-px flex-1 bg-white/10"></div>
+            <span className="text-xs text-gray-500 uppercase tracking-wider">Or continue with</span>
+            <div className="h-px flex-1 bg-white/10"></div>
+          </div>
+
+          <div className="mt-6">
+            <div className="bg-white rounded-lg overflow-hidden flex justify-center">
+              <GoogleLogin
+                onSuccess={googleOnSuccessHandler}
+                onError={googleOnErrorHandler}
+                useOneTap
+                text="continue_with"
+                shape="rectangular"
+                // size="large"
+                width="100%"
+                theme="outline"
+              />
+            </div>
+          </div>
+
+          <p className="mt-8 text-center text-sm text-gray-400">
+            Don't have an account?{' '}
+            <Link to={`/${Routes.AuthRegisterPage}`} className="text-[#0DB8D3] hover:text-[#1B7FDC] font-medium transition-colors">
               Sign up
             </Link>
-          </div>
-          <div className="my-4 text-center text-sm">OR</div>
-          <GoogleLogin
-            onSuccess={googleOnSuccessHandler}
-            onError={googleOnErrorHandler}
-            useOneTap
-            text="continue_with"
-            shape="rectangular"
-            size="large"
-            width="100%"
-          />
-        </CardContent>
-      </Card>
+          </p>
+        </div>
+      </motion.div>
     </div>
   )
 };

@@ -7,6 +7,7 @@ import FeaturedSection from '@/components/protect/FeaturedSection';
 import CTASection from '@/components/protect/CTASection';
 import HeroSectionWithFileUpload from '@/components/protect/HeroSectionWithFileUpload';
 import BetaFeatureInfo from '@/components/protect/BetaFeatureInfo';
+import VerifySection from '@/components/protect/VerifySection';
 
 const AuroraaProtectPage = () => {
 
@@ -19,6 +20,7 @@ const AuroraaProtectPage = () => {
             <FloatingDecorativeElements />
             <Header navigationItems={navigationItems} />
             <HeroSectionWithFileUpload />
+            <VerifySection />
             <BetaFeatureInfo />
             {/* <HeroSection /> */}
             <FeaturedSection />

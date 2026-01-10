@@ -1,8 +1,9 @@
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut, ShieldCheck } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useUserProfile } from '@/hooks/user/auth/useUserProfile';
+import { Routes } from '@/lib/routes';
 // import Link from 'next/link';
 // import Icon from '@/components/ui/AppIcon';
 
@@ -149,7 +150,15 @@ const Header = ({ navigationItems }: HeaderProps) => {
                                                 {userProfile?.email || 'user@auroraa.com'}
                                             </p>
                                         </div>
-                                        <div className="p-2">
+                                        <div className="p-2 space-y-1">
+                                            <Link
+                                                to={`/${Routes.protectVerifyPage}`}
+                                                onClick={() => setIsProfileOpen(false)}
+                                                className="w-full flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                            >
+                                                <ShieldCheck className="w-4 h-4 text-[#0DB8D3]" />
+                                                <span>Verify Artwork</span>
+                                            </Link>
                                             <button
                                                 onClick={() => {
                                                     logout();
@@ -193,7 +202,15 @@ const Header = ({ navigationItems }: HeaderProps) => {
                                                 {userProfile?.email || 'user@auroraa.com'}
                                             </p>
                                         </div>
-                                        <div className="p-2">
+                                        <div className="p-2 space-y-1">
+                                            <Link
+                                                to={`/${Routes.protectVerifyPage}`}
+                                                onClick={() => setIsProfileOpen(false)}
+                                                className="w-full flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                            >
+                                                <ShieldCheck className="w-4 h-4 text-[#0DB8D3]" />
+                                                <span>Verify Artwork</span>
+                                            </Link>
                                             <button
                                                 onClick={() => {
                                                     logout();

@@ -1,10 +1,9 @@
 'use client'
-
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import {
@@ -16,27 +15,19 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Camera, User } from 'lucide-react'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { User, Lock, Mail, MapPin, Calendar, Hash, Phone, FileText } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
 import { registerFormSchema } from '@/lib/validation-schemas'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRegister } from '@/hooks/user/auth/useRegister'
-import { useEffect } from 'react'
 import { useAuth } from '@/hooks/user/auth/UseAuth'
 import { Routes } from '@/lib/routes'
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { useGoogleLoginRegister } from '@/hooks/user/auth/useGoogleLoginRegister'
+import { motion } from 'framer-motion'
 
-// Extend the register form schema with additional fields
+// Extend the register form schema with additional fields (keeping existing schema logic)
 const formSchema = registerFormSchema.extend({
     name: z.string()
         .min(2, 'Name must be at least 2 characters')
@@ -93,6 +84,7 @@ export default function RegisterPage() {
     const { login, isAuthenticated } = useAuth();
     const googleLoginRegister = useGoogleLoginRegister();
 
+    // Keeping the Type definition
     type FormValues = {
         name: string;
         email: string;
@@ -123,7 +115,6 @@ export default function RegisterPage() {
         setIsUploading(true);
         const formData = new FormData();
 
-        // Manually append each field to avoid TypeScript errors with dynamic keys
         formData.append('name', values.name);
         formData.append('email', values.email);
         formData.append('username', values.username);
@@ -153,7 +144,6 @@ export default function RegisterPage() {
                     }
                     login(data?.tokens?.access_token, data?.tokens?.refresh_token);
                     toast.success('Login successful!');
-                    // Redirect to the previous page or home
                     navigate(`/${Routes.SocialBasePage}`);
                 },
                 onError: (error: any) => {
@@ -186,15 +176,29 @@ export default function RegisterPage() {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div className="flex min-h-screen w-full items-center justify-center p-4 sm:p-6 pb-20 md:pb-6">
-            <Card className="w-full max-w-md sm:max-w-lg md:max-w-2xl">
-                <CardHeader>
-                    <CardTitle className="text-2xl">Create an account</CardTitle>
-                    <CardDescription>
-                        Create a new account by filling out the form below or continue with Google
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
+        <div className="relative w-full min-h-screen flex items-center justify-center overflow-auto bg-[#0A0A0B] font-sans py-12 px-4">
+            {/* Background Effects */}
+            <div className="fixed inset-0 z-0">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#1B7FDC]/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#0DB8D3]/10 rounded-full blur-[120px] mix-blend-screen animate-pulse delay-700" />
+            </div>
+
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="relative z-10 w-full max-w-2xl"
+            >
+                <div className="bg-[#0f1115]/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 sm:p-10">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 mb-4 text-[#0DB8D3]">
+                            <User className="w-6 h-6" />
+                        </div>
+                        <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
+                        <p className="text-gray-400">Join the community of artists and creators</p>
+                    </div>
+
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
@@ -203,10 +207,17 @@ export default function RegisterPage() {
                                     control={form.control}
                                     name="name"
                                     render={({ field }) => (
-                                        <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="name" className="text-sm sm:text-base">Full Name</FormLabel>
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-300 text-sm">Full Name</FormLabel>
                                             <FormControl>
-                                                <Input id="name" placeholder="John Doe" {...field} />
+                                                <div className="relative">
+                                                    <User className="absolute left-3 top-3 w-4 h-4 text-gray-500" />
+                                                    <Input
+                                                        placeholder="John Doe"
+                                                        className="pl-10 bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -218,16 +229,19 @@ export default function RegisterPage() {
                                     control={form.control}
                                     name="email"
                                     render={({ field }) => (
-                                        <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="email" className="text-sm sm:text-base">Email</FormLabel>
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-300 text-sm">Email</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    id="email"
-                                                    placeholder="johndoe@mail.com"
-                                                    type="email"
-                                                    autoComplete="email"
-                                                    {...field}
-                                                />
+                                                <div className="relative">
+                                                    <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-500" />
+                                                    <Input
+                                                        placeholder="johndoe@mail.com"
+                                                        type="email"
+                                                        autoComplete="email"
+                                                        className="pl-10 bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -239,16 +253,19 @@ export default function RegisterPage() {
                                     control={form.control}
                                     name="username"
                                     render={({ field }) => (
-                                        <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="username" className="text-sm sm:text-base">Username</FormLabel>
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-300 text-sm">Username</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    id="username"
-                                                    placeholder="tony"
-                                                    type="text"
-                                                    autoComplete="username"
-                                                    {...field}
-                                                />
+                                                <div className="relative">
+                                                    <span className="absolute left-3 top-3 text-gray-500 text-sm">@</span>
+                                                    <Input
+                                                        placeholder="tony"
+                                                        type="text"
+                                                        autoComplete="username"
+                                                        className="pl-8 bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -260,16 +277,19 @@ export default function RegisterPage() {
                                     control={form.control}
                                     name="password"
                                     render={({ field }) => (
-                                        <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="password">Password</FormLabel>
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-300 text-sm">Password</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    type='password'
-                                                    id="password"
-                                                    placeholder="******"
-                                                    autoComplete="new-password"
-                                                    {...field}
-                                                />
+                                                <div className="relative">
+                                                    <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-500" />
+                                                    <Input
+                                                        type='password'
+                                                        placeholder="Create a password"
+                                                        autoComplete="new-password"
+                                                        className="pl-10 bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -281,18 +301,21 @@ export default function RegisterPage() {
                                     control={form.control}
                                     name="confirmPassword"
                                     render={({ field }) => (
-                                        <FormItem className="grid gap-2">
-                                            <FormLabel htmlFor="confirmPassword">
+                                        <FormItem className="space-y-2">
+                                            <FormLabel className="text-gray-300 text-sm">
                                                 Confirm Password
                                             </FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    type='password'
-                                                    id="confirmPassword"
-                                                    placeholder="******"
-                                                    autoComplete="new-password"
-                                                    {...field}
-                                                />
+                                                <div className="relative">
+                                                    <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-500" />
+                                                    <Input
+                                                        type='password'
+                                                        placeholder="Confirm your password"
+                                                        autoComplete="new-password"
+                                                        className="pl-10 bg-[#0A0A0B]/50 border-white/10 text-white placeholder-gray-500 focus:border-[#1B7FDC]/50 focus:ring-[#1B7FDC]/20 transition-all h-11"
+                                                        {...field}
+                                                    />
+                                                </div>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -305,22 +328,22 @@ export default function RegisterPage() {
                                         control={form.control}
                                         name="terms"
                                         render={({ field }) => (
-                                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-xl border border-white/5 bg-white/5 p-4">
                                                 <FormControl>
                                                     <Checkbox
                                                         checked={field.value}
                                                         onCheckedChange={field.onChange}
-                                                        className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
+                                                        className="data-[state=checked]:bg-[#1B7FDC] border-white/20"
                                                     />
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
-                                                    <FormLabel className="text-sm font-normal text-foreground">
+                                                    <FormLabel className="text-sm font-normal text-gray-300">
                                                         I agree to the{' '}
                                                         <Link
                                                             to={`/${Routes.TermsAndConditionsPage}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="text-primary hover:underline"
+                                                            className="text-[#0DB8D3] hover:text-[#1B7FDC] transition-colors"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             Terms and Conditions
@@ -330,13 +353,13 @@ export default function RegisterPage() {
                                                             to={`/${Routes.PrivacyPolicyPage}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="text-primary hover:underline"
+                                                            className="text-[#0DB8D3] hover:text-[#1B7FDC] transition-colors"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             Privacy Policy
                                                         </Link>
                                                     </FormLabel>
-                                                    <FormMessage className="text-destructive text-xs" />
+                                                    <FormMessage className="text-red-400 text-xs" />
                                                 </div>
                                             </FormItem>
                                         )}
@@ -346,34 +369,51 @@ export default function RegisterPage() {
                                 <div className="md:col-span-2">
                                     <Button
                                         type="submit"
-                                        className="w-full py-6 text-base sm:py-2"
+                                        className="w-full h-12 bg-gradient-to-r from-[#1B7FDC] to-[#0DB8D3] hover:opacity-90 transition-opacity text-white font-bold rounded-xl text-base shadow-lg shadow-[#1B7FDC]/20"
                                         disabled={registerMutation.isPending || isUploading}
                                         size="lg"
                                     >
-                                        {isUploading ? 'Uploading...' : registerMutation.isPending ? 'Creating account...' : 'Create account'}
+                                        {isUploading ? 'Uploading...' : registerMutation.isPending ? (
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                                <span>Creating account...</span>
+                                            </div>
+                                        ) : 'Create account'}
                                     </Button>
                                 </div>
                             </div>
                         </form>
                     </Form>
-                    <div className="mt-6 text-center text-sm sm:text-base">
+
+                    <div className="mt-8 flex items-center gap-4">
+                        <div className="h-px flex-1 bg-white/10"></div>
+                        <span className="text-xs text-gray-500 uppercase tracking-wider">Or continue with</span>
+                        <div className="h-px flex-1 bg-white/10"></div>
+                    </div>
+
+                    <div className="mt-6">
+                        <div className="bg-white rounded-lg overflow-hidden flex justify-center">
+                            <GoogleLogin
+                                onSuccess={googleOnSuccessHandler}
+                                onError={googleOnErrorHandler}
+                                useOneTap
+                                text="continue_with"
+                                shape="rectangular"
+                                width="100%"
+                                theme="outline"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mt-8 text-center text-sm text-gray-400">
                         Already have an account?{' '}
-                        <Link to={`/${Routes.AuthLoginPage}`} className="font-medium text-primary underline-offset-4 hover:underline">
+                        <Link to={`/${Routes.AuthLoginPage}`} className="text-[#0DB8D3] hover:text-[#1B7FDC] font-medium transition-colors">
                             Sign in
                         </Link>
                     </div>
-                    <div className="my-4 text-center text-sm">OR</div>
-                    <GoogleLogin
-                        onSuccess={googleOnSuccessHandler}
-                        onError={googleOnErrorHandler}
-                        useOneTap
-                        text="continue_with"
-                        shape="rectangular"
-                        size="large"
-                        containerProps={{ style: { width: '50%', margin: 'auto' } }}
-                    />
-                </CardContent>
-            </Card>
+                </div>
+            </motion.div>
         </div>
     )
 }
+

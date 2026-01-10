@@ -21,7 +21,7 @@ const getFilenameFromContentDisposition = (contentDisposition?: string): string 
 
 export const uploadWatermark = async (file: File): Promise<WatermarkUploadResult> => {
   const token = localStorage.getItem('accessToken');
-  
+
   if (!token) {
     throw new Error('No authentication token found');
   }
@@ -51,3 +51,40 @@ export const uploadWatermark = async (file: File): Promise<WatermarkUploadResult
     throw error;
   }
 };
+
+export interface WatermarkVerificationResult {
+  verified: boolean;
+  issued_by_auroraa: boolean;
+  confidence: number;
+  status: string;
+  message: {
+    label: string;
+    message: string;
+  };
+}
+
+export const watermarkVerify = async (file: File): Promise<WatermarkVerificationResult> => {
+  const token = localStorage.getItem('accessToken');
+
+  if (!token) {
+    throw new Error('No authentication token found');
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post<WatermarkVerificationResult>(`${API_BASE_URL}/watermark/verify`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Watermark verify error:', error);
+    throw error;
+  }
+};
+

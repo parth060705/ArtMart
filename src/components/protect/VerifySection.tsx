@@ -229,19 +229,23 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
                                     className={`
                                         rounded-3xl p-8 border backdrop-blur-xl shadow-2xl relative overflow-hidden
                                         ${verificationResult.verified
-                                            ? 'bg-[#0DB8D3]/5 border-[#0DB8D3]/30 shadow-[0_0_50px_-10px_rgba(13,184,211,0.15)]'
+                                            ? (verificationResult.confidence * 100 > 80
+                                                ? 'bg-green-500/5 border-green-500/30 shadow-[0_0_50px_-10px_rgba(34,197,94,0.15)]'
+                                                : 'bg-[#0DB8D3]/5 border-[#0DB8D3]/30 shadow-[0_0_50px_-10px_rgba(13,184,211,0.15)]')
                                             : 'bg-red-500/5 border-red-500/30'
                                         }
                                     `}
                                 >
                                     {/* Glow Effect */}
-                                    <div className={`absolute top-0 right-0 w-[300px] h-[300px] blur-[100px] rounded-full pointer-events-none opacity-20 ${verificationResult.verified ? 'bg-[#0DB8D3]' : 'bg-red-500'}`} />
+                                    <div className={`absolute top-0 right-0 w-[300px] h-[300px] blur-[100px] rounded-full pointer-events-none opacity-20 ${verificationResult.verified ? (verificationResult.confidence * 100 > 80 ? 'bg-green-500' : 'bg-[#0DB8D3]') : 'bg-red-500'}`} />
 
                                     <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-8">
                                         <div className={`
                                             w-24 h-24 rounded-2xl flex items-center justify-center shrink-0 border-2
                                             ${verificationResult.verified
-                                                ? 'bg-[#0DB8D3]/10 border-[#0DB8D3] text-[#0DB8D3]'
+                                                ? (verificationResult.confidence * 100 > 80
+                                                    ? 'bg-green-500/10 border-green-500 text-green-500'
+                                                    : 'bg-[#0DB8D3]/10 border-[#0DB8D3] text-[#0DB8D3]')
                                                 : 'bg-red-500/10 border-red-500 text-red-500'
                                             }
                                         `}>
@@ -254,7 +258,7 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
 
                                         <div className="flex-1">
                                             <div className="flex flex-col gap-1 mb-4">
-                                                <span className={`text-sm font-bold uppercase tracking-wider ${verificationResult.verified ? 'text-[#0DB8D3]' : 'text-red-500'}`}>
+                                                <span className={`text-sm font-bold uppercase tracking-wider ${verificationResult.verified ? (verificationResult.confidence * 100 > 80 ? 'text-green-500' : 'text-[#0DB8D3]') : 'text-red-500'}`}>
                                                     {verificationResult.verified ? 'Verification Successful' : 'Verification Warning'}
                                                 </span>
                                                 <h2 className="text-3xl font-bold text-white">

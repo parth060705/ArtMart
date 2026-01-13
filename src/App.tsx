@@ -119,8 +119,8 @@ function App() {
                 <Route path={`/${AppRoutes.ArtistsRankingPage}`} element={<ArtistsPage />} />
                 {/* <Route path={AppRoutes.CartPage} element={<Cart />} /> */}
                 {/* chat */}
-                <Route path={`/${AppRoutes.ChatPage}/:peerId`} element={<ChatWrapper />} />
-                <Route path={`/${AppRoutes.ChatListPage}`} element={<ChatList />} />
+                <Route path="chat/:peerId" element={<ChatWrapper />} />
+                <Route path="chat-list" element={<ChatList />} />
                 <Route path={`/${AppRoutes.SettingsPage}`} element={<SettingsPage />} />
 
                 {/* ------------------------------------------------------------------------------------------- */}

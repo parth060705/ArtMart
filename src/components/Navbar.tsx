@@ -28,7 +28,7 @@ const Navbar = ({
   const { isAuthenticated, username, userProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const isChatPage = /^\/chat\/[^/]+$/.test(location.pathname);
+  const isChatPage = /^\/(?:creators)\/chat\/[^/]+$/.test(location.pathname);
 
   const handleProfileClick = () => {
     if (isAuthenticated) {
@@ -51,7 +51,7 @@ const Navbar = ({
             {logo.title}
           </Link>
           <div className="relative">
-            <Link to={`/${Routes.ChatPage}`}>
+            <Link to={`/${Routes.ChatListPage}`}>
               <MessageCircleIcon className="w-6 h-6" />
             </Link>
             {/* <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">

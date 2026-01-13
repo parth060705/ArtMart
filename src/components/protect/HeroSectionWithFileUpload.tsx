@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/user/auth/UseAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
 import { uploadWatermark } from '@/services/watermarkApi';
+import FeedbackCard from '@/components/common/FeedbackCard';
 
 const HeroSectionWithFileUpload = () => {
     const [isDragOver, setIsDragOver] = useState(false);
@@ -15,6 +16,7 @@ const HeroSectionWithFileUpload = () => {
     const [watermarkType, setWatermarkType] = useState<'invisible' | 'ai'>('invisible');
     const [protectedImageUrl, setProtectedImageUrl] = useState<string | null>(null);
     const [protectedFilename, setProtectedFilename] = useState<string | null>(null);
+    const [feedback, setFeedback] = useState<{ rating: 'positive' | 'negative', comment: string } | null>(null);
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -435,6 +437,12 @@ const HeroSectionWithFileUpload = () => {
                                                     src={protectedImageUrl}
                                                     alt="Protected preview"
                                                     className="w-full h-48 object-cover"
+                                                />
+                                            </div>
+
+                                            <div className="mt-6 border-t border-white/10 pt-6">
+                                                <FeedbackCard
+                                                    onFeedbackSubmit={(rating, comment) => setFeedback({ rating, comment })}
                                                 />
                                             </div>
                                         </div>

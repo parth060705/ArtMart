@@ -6,6 +6,7 @@ import { Upload, AlertCircle, Loader2, CheckCircle2, ShieldAlert, FileText, X, L
 import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
+import FeedbackCard from '@/components/common/FeedbackCard';
 
 interface VerifySectionProps {
     className?: string;
@@ -18,6 +19,7 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
     const [verificationResult, setVerificationResult] = useState<WatermarkVerificationResult | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [showAuthPopup, setShowAuthPopup] = useState(false);
+    const [feedback, setFeedback] = useState<{ rating: 'positive' | 'negative', comment: string } | null>(null);
 
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -289,6 +291,12 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
                                         </div>
                                     </div>
                                 </motion.div>
+                            )}
+
+                            {verificationResult && !isVerifying && (
+                                <FeedbackCard
+                                    onFeedbackSubmit={(rating, comment) => setFeedback({ rating, comment })}
+                                />
                             )}
                         </div>
                     )}

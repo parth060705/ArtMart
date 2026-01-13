@@ -130,7 +130,7 @@ const Navbar = ({
 
             {/* Home */}
             <Link
-              to={`${Routes.SocialBasePage}`}
+              to={`/${Routes.SocialBasePage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground'}`}
             >
               <Home className="w-6 h-6 mb-1" />
@@ -139,7 +139,7 @@ const Navbar = ({
 
             {/* Products */}
             <Link
-              to={`${Routes.ProductsListingPage}`}
+              to={`/${Routes.ProductsListingPage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-accent' : 'text-foreground'}`}
             >
               <Box className="w-6 h-6 mb-1" />
@@ -149,7 +149,7 @@ const Navbar = ({
 
             {/* Artists */}
             <Link
-              to={Routes.ArtistsRankingPage}
+              to={`/${Routes.ArtistsRankingPage}`}
               className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground"
             >
               <Users className="w-6 h-6 mb-1" />

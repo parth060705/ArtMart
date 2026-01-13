@@ -34,7 +34,7 @@ const Navbar = ({
     if (isAuthenticated) {
       navigate(`/creators/me/profile/${username}`);
     } else {
-      navigate(Routes.AuthLoginPage, {
+      navigate(`/${Routes.AuthLoginPage}`, {
         state: { from: Routes.ProfilePage },
         replace: true
       });
@@ -51,7 +51,7 @@ const Navbar = ({
             {logo.title}
           </Link>
           <div className="relative">
-            <Link to={Routes.ChatPage}>
+            <Link to={`/${Routes.ChatPage}`}>
               <MessageCircleIcon className="w-6 h-6" />
             </Link>
             {/* <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">

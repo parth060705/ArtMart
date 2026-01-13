@@ -43,7 +43,7 @@ const EditArtwork = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(Routes.AuthLoginPage, { state: { from: location } });
+      navigate(`/${Routes.AuthLoginPage}`, { state: { from: location } });
     }
   }, [isAuthenticated, navigate, location]);
 

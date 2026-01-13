@@ -15,7 +15,7 @@ const ChatWrapper = () => {
   // if not authenticated return to login page
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(Routes.AuthLoginPage, {
+      navigate(`/${Routes.AuthLoginPage}`, {
         state: { from: Routes.ChatPage },
         replace: true
       });

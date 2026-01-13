@@ -46,7 +46,7 @@ const Profile = () => {
   useEffect(() => {
     // Redirect if user is not authenticated
     if (!isAuthenticated) {
-      navigate(Routes.AuthLoginPage, {
+      navigate(`/${Routes.AuthLoginPage}`, {
         state: { from: location },
         replace: true
       });
@@ -122,7 +122,7 @@ const Profile = () => {
                   <span className="text-slate-500 dark:text-slate-400">Following</span>
                 </div>
               )}
-              <Link to={`${Routes.SettingsPage}`} className='md:hidden'>
+              <Link to={`/${Routes.SettingsPage}`} className='md:hidden'>
                 <Button variant="default" className="rounded-full px-6 font-semibold cursor-pointer"><Settings /></Button>
               </Link>
             </div>

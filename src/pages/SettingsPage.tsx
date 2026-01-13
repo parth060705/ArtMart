@@ -41,7 +41,7 @@ const SettingsPage = () => {
         logout();
         toast.success('Logged out successfully!');
         setTimeout(() => {
-            window.location.href = `${Routes.SocialBasePage}`;
+            window.location.href = `/${Routes.SocialBasePage}`;
         }, 500);
     };
 
@@ -93,7 +93,7 @@ const SettingsPage = () => {
 
                 {userProfile && (
                     <div className='flex flex-col gap-2'>
-                        <Link to={Routes.SavedPage} className='md:hidden'>
+                        <Link to={`/${Routes.SavedPage}`} className='md:hidden'>
                             <Button className="cursor-pointer">Saved Artworks</Button>
                         </Link>
                         <Link to={`/${Routes.AuthResetPasswordPage}`}>

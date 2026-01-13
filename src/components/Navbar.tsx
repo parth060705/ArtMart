@@ -34,7 +34,7 @@ const Navbar = ({
     if (isAuthenticated) {
       navigate(`/creators/me/profile/${username}`);
     } else {
-      navigate(Routes.AuthLoginPage, {
+      navigate(`/${Routes.AuthLoginPage}`, {
         state: { from: Routes.ProfilePage },
         replace: true
       });
@@ -51,7 +51,7 @@ const Navbar = ({
             {logo.title}
           </Link>
           <div className="relative">
-            <Link to={Routes.ChatPage}>
+            <Link to={`/${Routes.ChatPage}`}>
               <MessageCircleIcon className="w-6 h-6" />
             </Link>
             {/* <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs">
@@ -130,7 +130,7 @@ const Navbar = ({
 
             {/* Home */}
             <Link
-              to={`${Routes.SocialBasePage}`}
+              to={`/${Routes.SocialBasePage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground'}`}
             >
               <Home className="w-6 h-6 mb-1" />
@@ -139,7 +139,7 @@ const Navbar = ({
 
             {/* Products */}
             <Link
-              to={`${Routes.ProductsListingPage}`}
+              to={`/${Routes.ProductsListingPage}`}
               className={`flex flex-col items-center text-sm ${window.location.pathname === '/products' ? 'text-accent' : 'text-foreground'}`}
             >
               <Box className="w-6 h-6 mb-1" />
@@ -149,7 +149,7 @@ const Navbar = ({
 
             {/* Artists */}
             <Link
-              to={Routes.ArtistsRankingPage}
+              to={`/${Routes.ArtistsRankingPage}`}
               className="flex flex-col items-center text-sm ${window.location.pathname === '/' ? 'text-accent' : 'text-foreground"
             >
               <Users className="w-6 h-6 mb-1" />

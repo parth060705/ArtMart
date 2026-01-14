@@ -17,6 +17,6 @@ export interface CreateFeedbackResponse {
 }
 
 export const submitFeedback = async (payload: CreateFeedbackPayload): Promise<CreateFeedbackResponse> => {
-  const response = await axiosClient.post('/api/auth/feedback', payload);
+  const response = await axiosClient.post('/auth/feedback', payload);
   return response.data;
 };

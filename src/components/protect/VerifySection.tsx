@@ -28,10 +28,11 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
     const handleFeedbackSubmit = async (rating: 'positive' | 'negative', comment: string) => {
         try {
             await submitFeedback({
-                type: rating,
+                type: 'general',
                 message: comment?.trim() ? comment.trim() : rating === 'positive' ? 'Positive feedback' : 'Negative feedback',
                 page: location.pathname,
                 feature: 'verify',
+                rating: rating === 'positive' ? 1 : 0,
             });
             toast.success('Thanks for your feedback!');
         } catch (error) {

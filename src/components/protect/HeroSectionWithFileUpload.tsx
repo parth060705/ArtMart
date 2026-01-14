@@ -25,8 +25,9 @@ const HeroSectionWithFileUpload = () => {
     const handleFeedbackSubmit = async (rating: 'positive' | 'negative', comment: string) => {
         try {
             await submitFeedback({
-                type: rating,
+                type: 'general',
                 message: comment?.trim() ? comment.trim() : rating === 'positive' ? 'Positive feedback' : 'Negative feedback',
+                rating: rating === 'positive' ? 1 : 0,
                 page: location.pathname,
                 feature: 'watermark',
             });

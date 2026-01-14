@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
 import FeedbackCard from '@/components/common/FeedbackCard';
+import { submitFeedback } from '@/services/feedbackApi';
 
 interface VerifySectionProps {
     className?: string;
@@ -19,11 +20,25 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
     const [verificationResult, setVerificationResult] = useState<WatermarkVerificationResult | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [showAuthPopup, setShowAuthPopup] = useState(false);
-    const [feedback, setFeedback] = useState<{ rating: 'positive' | 'negative', comment: string } | null>(null);
 
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const handleFeedbackSubmit = async (rating: 'positive' | 'negative', comment: string) => {
+        try {
+            await submitFeedback({
+                type: rating,
+                message: comment?.trim() ? comment.trim() : rating === 'positive' ? 'Positive feedback' : 'Negative feedback',
+                page: location.pathname,
+                feature: 'verify',
+            });
+            toast.success('Thanks for your feedback!');
+        } catch (error) {
+            console.error('Feedback submit error:', error);
+            toast.error('Failed to submit feedback. Please try again.');
+        }
+    };
 
     const handleLoginRedirect = () => {
         setShowAuthPopup(false);
@@ -295,7 +310,7 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
 
                             {verificationResult && !isVerifying && (
                                 <FeedbackCard
-                                    onFeedbackSubmit={(rating, comment) => setFeedback({ rating, comment })}
+                                    onFeedbackSubmit={handleFeedbackSubmit}
                                 />
                             )}
                         </div>

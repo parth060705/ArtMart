@@ -6,6 +6,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '@/lib/routes';
 import { uploadWatermark } from '@/services/watermarkApi';
 import FeedbackCard from '@/components/common/FeedbackCard';
+import { submitFeedback } from '@/services/feedbackApi';
+import { toast } from 'sonner';
 
 const HeroSectionWithFileUpload = () => {
     const [isDragOver, setIsDragOver] = useState(false);
@@ -16,10 +18,24 @@ const HeroSectionWithFileUpload = () => {
     const [watermarkType, setWatermarkType] = useState<'invisible' | 'ai'>('invisible');
     const [protectedImageUrl, setProtectedImageUrl] = useState<string | null>(null);
     const [protectedFilename, setProtectedFilename] = useState<string | null>(null);
-    const [feedback, setFeedback] = useState<{ rating: 'positive' | 'negative', comment: string } | null>(null);
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const handleFeedbackSubmit = async (rating: 'positive' | 'negative', comment: string) => {
+        try {
+            await submitFeedback({
+                type: rating,
+                message: comment?.trim() ? comment.trim() : rating === 'positive' ? 'Positive feedback' : 'Negative feedback',
+                page: location.pathname,
+                feature: 'watermark',
+            });
+            toast.success('Thanks for your feedback!');
+        } catch (error) {
+            console.error('Feedback submit error:', error);
+            toast.error('Failed to submit feedback. Please try again.');
+        }
+    };
 
     useEffect(() => {
         return () => {
@@ -442,7 +458,7 @@ const HeroSectionWithFileUpload = () => {
 
                                             <div className="mt-6 border-t border-white/10 pt-6">
                                                 <FeedbackCard
-                                                    onFeedbackSubmit={(rating, comment) => setFeedback({ rating, comment })}
+                                                    onFeedbackSubmit={handleFeedbackSubmit}
                                                 />
                                             </div>
                                         </div>

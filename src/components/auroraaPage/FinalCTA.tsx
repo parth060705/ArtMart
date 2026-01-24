@@ -30,7 +30,7 @@ const FinalCTA = () => {
                     </h2>
 
                     <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 font-light">
-                        Join artists who are taking control of their creative future.
+                        Join people who are taking control of their digital assets.
                     </p>
 
                     <motion.div

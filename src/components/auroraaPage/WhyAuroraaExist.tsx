@@ -46,7 +46,7 @@ const WhyAuroraaExist = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
                         {
-                            title: 'Independent Artists',
+                            title: 'Independent Creators',
                             description: 'Take control of your creative career with tools designed for the independent spirit.',
                             icon: <Palette className="w-5 h-5 text-[#0DB8D3]" />
                         },
@@ -56,7 +56,7 @@ const WhyAuroraaExist = () => {
                             icon: <Component className="w-5 h-5 text-[#1B7FDC]" />
                         },
                         {
-                            title: 'Traditional Artists',
+                            title: 'Traditional Creators',
                             description: 'Bridge the gap between physical and digital while keeping your work protected.',
                             icon: <Brush className="w-5 h-5 text-[#0DB8D3]" />
                         },

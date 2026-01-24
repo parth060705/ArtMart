@@ -220,7 +220,7 @@ const HeroSectionWithFileUpload = () => {
                     </div>
 
                     <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-                        Protect Your Art <br />
+                        Protect Your Digital Assets <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B7FDC] via-[#0DB8D3] to-[#1B7FDC] animate-gradient bg-[length:200%_auto]">
                             In The AI Era
                         </span>
@@ -335,7 +335,7 @@ const HeroSectionWithFileUpload = () => {
                                                 <Upload className="w-8 h-8 text-[#0DB8D3]" />
                                             </div>
                                             <h3 className="text-xl font-semibold text-white mb-2">
-                                                {isDragOver ? 'Drop it here!' : 'Upload your artwork'}
+                                                {isDragOver ? 'Drop it here!' : 'Upload your image'}
                                             </h3>
                                             <p className="text-gray-400 text-sm mb-4 max-w-[200px]">
                                                 Drag & drop your file here or click to browse
@@ -498,7 +498,7 @@ const HeroSectionWithFileUpload = () => {
 
                                 <h3 className="text-2xl font-bold text-white mb-2">Login Required</h3>
                                 <p className="text-gray-400 mb-6 leading-relaxed">
-                                    Join thousands of artists protecting their work. Create an account to watermark, track, and secure your digital assets.
+                                    Create an account to watermark, track, and secure your digital assets (images only for now).
                                 </p>
 
                                 <div className="space-y-3">

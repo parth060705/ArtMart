@@ -100,18 +100,18 @@ const HeroSection = () => {
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 mx-auto backdrop-blur-sm"
                         >
                             <span className="w-2 h-2 rounded-full bg-[#0DB8D3] animate-pulse"></span>
-                            Building the Future of Digital Art
+                            Building the Future of Digital Assets
                         </motion.div>
 
                         <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.05]">
-                            Built for artists. <br />
+                            Built for digital assets. <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1B7FDC] via-[#0DB8D3] to-[#1B7FDC] animate-gradient bg-[length:200%_auto]">
                                 In the AI age.
                             </span>
                         </h1>
 
                         <p className="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-                            Auroraa is focused on building a better future where creativity is respected, ownership matters, and artists feel safe sharing their work.
+                            Auroraa is focused on building a better future where creativity is respected, ownership matters, and people feel safe sharing their digital assets.
                         </p>
 
                         <motion.div

@@ -38,7 +38,7 @@ const WhyAuroraaExists = () => {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
                     >
-                        We're here to change the way artists are treated in the digital world.
+                        We're here to change the way digital assets are protected in the online world.
                         Protection shouldn't be a luxury—it's a fundamental right.
                     </motion.p>
                 </div>
@@ -48,12 +48,12 @@ const WhyAuroraaExists = () => {
                         {
                             icon: <Lock className="w-6 h-6 text-[#0DB8D3]" />,
                             title: "Protection First",
-                            description: "We put artist protection at the core of everything we build. It's not an afterthought—it's the foundation."
+                            description: "We put digital asset protection at the core of everything we build. It's not an afterthought—it's the foundation."
                         },
                         {
                             icon: <Users className="w-6 h-6 text-[#1B7FDC]" />,
                             title: "Community Power",
-                            description: "Together, we're stronger. Join a collective voice that advocates for artist rights and fair treatment."
+                            description: "Together, we're stronger. Join a collective voice that advocates for ownership rights and fair treatment."
                         },
                         {
                             icon: <Palette className="w-6 h-6 text-[#0DB8D3]" />,

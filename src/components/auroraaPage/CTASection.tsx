@@ -20,7 +20,7 @@ const CTASection = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
                     >
-                        Ready to Protect Your Art?
+                        Ready to Protect Your Digital Assets?
                     </motion.h2>
 
                     <motion.p
@@ -30,7 +30,7 @@ const CTASection = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
                     >
-                        Join artists who trust Auroraa Protect to safeguard their creative work.
+                        Protect your digital assets—starting with images (PDFs, docs, and more coming soon).
                     </motion.p>
 
                     <motion.div

@@ -180,7 +180,7 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
                                     <p className="text-xl font-medium text-white mb-2">
                                         {isAuthenticated
                                             ? (isDragOver ? 'Drop it here!' : 'Drag and drop your image here')
-                                            : 'Login to Verify Artwork'
+                                            : 'Login to Verify Digital Assets'
                                         }
                                     </p>
                                     <p className="text-sm text-gray-500">
@@ -346,7 +346,7 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
 
                                 <h3 className="text-2xl font-bold text-white mb-2">Login Required</h3>
                                 <p className="text-gray-400 mb-6 leading-relaxed">
-                                    Join thousands of artists protecting their work. Create an account to watermark, track, and secure your digital assets.
+                                    Create an account to verify and secure your digital assets (images only for now).
                                 </p>
 
                                 <div className="space-y-3">

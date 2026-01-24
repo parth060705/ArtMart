@@ -8,13 +8,13 @@ const FeaturedSection = () => {
         {
             icon: <Shield className="w-6 h-6 text-[#0DB8D3]" />,
             title: 'AI-Untrainable Protection',
-            description: 'Your artwork is digitally altered at a pixel level so AI models cannot effectively learn or replicate your style.',
+            description: 'Your image is digitally altered at a pixel level so AI models cannot effectively learn or replicate your style.',
             glowColor: 'group-hover:shadow-[0_0_30px_-5px_rgba(13,184,211,0.3)]'
         },
         {
             icon: <Eye className="w-6 h-6 text-[#1B7FDC]" />,
             title: 'Invisible to Humans',
-            description: 'Protection is embedded invisibly. Your audience sees your art exactly as you intended, with zero visual distortion.',
+            description: 'Protection is embedded invisibly. Your audience sees your image exactly as you intended, with zero visual distortion.',
             glowColor: 'group-hover:shadow-[0_0_30px_-5px_rgba(27,127,220,0.3)]'
         },
         {
@@ -76,7 +76,7 @@ const FeaturedSection = () => {
                         transition={{ delay: 0.2 }}
                         className="text-xl text-gray-400 max-w-2xl mx-auto"
                     >
-                        Auroraa Protect offers comprehensive security features designed specifically for the modern digital artist.
+                        Auroraa Protect offers comprehensive security features designed for protecting digital assets (images only for now).
                     </motion.p>
                 </div>
 

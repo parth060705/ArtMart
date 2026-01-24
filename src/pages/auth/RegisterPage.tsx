@@ -196,7 +196,7 @@ export default function RegisterPage() {
                             <User className="w-6 h-6" />
                         </div>
                         <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-                        <p className="text-gray-400">Join the community of artists and creators</p>
+                        <p className="text-gray-400">Join the community protecting digital assets</p>
                     </div>
 
                     <Form {...form}>

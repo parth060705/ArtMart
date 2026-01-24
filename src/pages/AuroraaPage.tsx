@@ -28,7 +28,7 @@ const AuroraaPage = () => {
                 <WhyAuroraaExists />
                 <WhyAuroraaExist />
                 <FinalCTA />
-                <FAQSection />
+                {/* <FAQSection /> */}
                 <Footer />
             </div>
         </>

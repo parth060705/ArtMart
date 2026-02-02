@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://protect-api.auroraa.in';
+const API_BASE_URL = 'https://staging-b59c.onrender.com';
 
 export interface WatermarkUploadResult {
   blob: Blob;

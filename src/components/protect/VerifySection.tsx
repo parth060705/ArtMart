@@ -290,10 +290,10 @@ const VerifySection: React.FC<VerifySectionProps> = ({ className }) => {
 
                                             {verificationResult.verified && (
                                                 <div className="flex items-center gap-8 pt-6 border-t border-white/10">
-                                                    <div>
+                                                    {/* <div>
                                                         <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Confidence</p>
                                                         <p className="text-xl font-bold text-white">{(verificationResult.confidence * 100).toFixed(0)}%</p>
-                                                    </div>
+                                                    </div> */}
                                                     <div>
                                                         <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Issuer</p>
                                                         <p className="text-xl font-bold text-white">{verificationResult.issued_by_auroraa ? 'Auroraa Official' : 'Unknown'}</p>

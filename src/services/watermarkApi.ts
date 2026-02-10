@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://staging-b59c.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_PROTECT_API_URL;
 
 export interface WatermarkUploadResult {
   blob: Blob;

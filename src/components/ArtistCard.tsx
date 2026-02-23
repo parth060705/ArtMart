@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 const rankColors = ['bg-yellow-400', 'bg-gray-400', 'bg-amber-700'];
 
 const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse | UserSearchResult, rank?: number }) => {
-    const fullStars = Math.floor(artist.weightedRating);
-    const hasHalfStar = artist.weightedRating % 1 >= 0.5;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    const rating = Math.max(0, Math.min(5, artist.weightedRating || 0));
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = Math.max(0, 5 - fullStars - (hasHalfStar ? 1 : 0));
     const isTop3 = rank ? rank <= 3 : artist.rank ? artist.rank <= 3 : false;
     const rankColorClass = isTop3 ? rankColors[(rank ?? artist.rank) - 1] : 'bg-[var(--muted)]';
 
@@ -49,14 +50,14 @@ const ArtistCard = ({ artist, rank }: { artist: TopArtsistResponse | UserSearchR
                         <Star key={`empty-${i}`} className="w-3 h-3 text-gray-300" />
                     ))}
                     <span className="ml-1 text-xs text-[var(--muted-foreground)]">
-                        {artist.weightedRating.toFixed(1)}
+                        {artist.avgRating.toFixed(1)}
                     </span>
                 </div>
             </div>
 
             {/* Score */}
             <div className="flex-shrink-0 text-right ml-2 sm:ml-4">
-                <div className="text-sm sm:text-base font-bold text-[var(--primary)]">{artist.weightedRating.toFixed(1)}</div>
+                <div className="text-sm sm:text-base font-bold text-[var(--primary)]">{artist.avgRating.toFixed(1)}</div>
                 <div className="text-[10px] sm:text-xs text-[var(--muted-foreground)]">{artist.reviewCount} reviews</div>
             </div>
         </div>
